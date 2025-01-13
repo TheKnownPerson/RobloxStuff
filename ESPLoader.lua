@@ -331,7 +331,7 @@ UICorner_13.CornerRadius = UDim.new(0, 15)
 UICorner_13.Parent = Question
 
 local function ESPloader()
-	local scr = Instance.new('Script', ESP_2)
+	local scr = Instance.new('LocalScript', ESP_2)
 
 	local player = game.Players.LocalPlayer
 	local camera = workspace.CurrentCamera
@@ -499,7 +499,7 @@ local function ESPloader()
 end
 coroutine.wrap(ESPloader)()
 local function DestroyGUI()
-	local scr = Instance.new('Script', X)
+	local scr = Instance.new('LocalScript', X)
 
 	scr.Parent.MouseButton1Click:Connect(function()
 	scr.Parent.Visible = false
@@ -509,7 +509,7 @@ local function DestroyGUI()
 end
 coroutine.wrap(DestroyGUI)()
 local function Minimize()
-	local scr = Instance.new('Script', minimize)
+	local scr = Instance.new('LocalScript', minimize)
 
 	local Frame = scr.Parent.Parent.Window
 	scr.Parent.MouseButton1Click:Connect(function()
@@ -522,7 +522,7 @@ local function Minimize()
 end
 coroutine.wrap(Minimize)()
 local function WindowLoader()
-	local scr = Instance.new('Script', Window)
+	local scr = Instance.new('LocalScript', Window)
 
 	frame = scr.Parent.Parent
 	frame.Draggable = true
@@ -531,7 +531,7 @@ local function WindowLoader()
 end
 coroutine.wrap(WindowLoader)()
 local function BoxLoader()
-	local scr = Instance.new('Script', BoxesBox)
+	local scr = Instance.new('LocalScript', BoxesBox)
 
 	scr.Parent.MouseButton1Click:Connect(function()
 		if scr.Parent.BackgroundColor3 ~= Color3.new(0,1,0) then
@@ -543,7 +543,7 @@ local function BoxLoader()
 end
 coroutine.wrap(BoxLoader)()
 local function NamesLoader()
-	local scr = Instance.new('Script', Namesbox)
+	local scr = Instance.new('LocalScript', Namesbox)
 
 	scr.Parent.MouseButton1Click:Connect(function()
 		if scr.Parent.BackgroundColor3 ~= Color3.new(0,1,0) then
@@ -555,7 +555,7 @@ local function NamesLoader()
 end
 coroutine.wrap(NamesLoader)()
 local function HealthbarLoader()
-	local scr = Instance.new('Script', Healthbars)
+	local scr = Instance.new('LocalScript', Healthbars)
 
 	scr.Parent.MouseButton1Click:Connect(function()
 		if scr.Parent.BackgroundColor3 ~= Color3.new(0,1,0) then
@@ -567,7 +567,7 @@ local function HealthbarLoader()
 end
 coroutine.wrap(HealthbarLoader)()
 local function AimbotLoader()
-	local scr = Instance.new('Script', AimBot)
+	local scr = Instance.new('LocalScript', AimBot)
 
 	local uiserv = game:GetService("UserInputService")
 	local rs = game:GetService("RunService")
@@ -684,7 +684,7 @@ local function AimbotLoader()
 end
 coroutine.wrap(AimbotLoader)()
 local function ChooseFrame()
-	local scr = Instance.new('Script', Choose)
+	local scr = Instance.new('LocalScript', Choose)
 
 	frame = scr.Parent.Parent
 	frame.Draggable = true
@@ -693,7 +693,7 @@ local function ChooseFrame()
 end
 coroutine.wrap(ChooseFrame)()
 local function YesF()
-	local scr = Instance.new('Script', Yes)
+	local scr = Instance.new('LocalScript', Yes)
 
 	scr.Parent.MouseButton1Click:Connect(function()
 		scr.Parent.Parent.Parent.Parent.Parent.Parent.Parent:Destroy()
@@ -701,7 +701,7 @@ local function YesF()
 end
 coroutine.wrap(YesF)()
 local function NoF()
-	local scr = Instance.new('Script', No)
+	local scr = Instance.new('LocalScript', No)
 
 	scr.Parent.MouseButton1Click:Connect(function()
 		scr.Parent.Parent.Parent.Parent.Visible = false
