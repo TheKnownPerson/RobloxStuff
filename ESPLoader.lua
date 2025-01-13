@@ -331,11 +331,11 @@ UICorner_13.CornerRadius = UDim.new(0, 15)
 UICorner_13.Parent = Question
 
 local function ESPloader()
-	local script = Instance.new('LocalScript', ESP_2)
+	local scr = Instance.new('Script', ESP_2)
 
 	local player = game.Players.LocalPlayer
 	local camera = workspace.CurrentCamera
-	local ESP = script.Parent
+	local ESP = scr.Parent
 	local xOffset = 0
 	local yOffset = -50
 	
@@ -499,20 +499,20 @@ local function ESPloader()
 end
 coroutine.wrap(ESPloader)()
 local function DestroyGUI()
-	local script = Instance.new('LocalScript', X)
+	local scr = Instance.new('Script', X)
 
-	script.Parent.MouseButton1Click:Connect(function()
-	script.Parent.Visible = false
-	script.Parent.Parent.minimize.Visible = false
-	script.Parent.Parent.Choose.Visible = true
+	scr.Parent.MouseButton1Click:Connect(function()
+	scr.Parent.Visible = false
+	scr.Parent.Parent.minimize.Visible = false
+	scr.Parent.Parent.Choose.Visible = true
 	end)
 end
 coroutine.wrap(DestroyGUI)()
 local function Minimize()
-	local script = Instance.new('LocalScript', minimize)
+	local scr = Instance.new('Script', minimize)
 
-	local Frame = script.Parent.Parent.Window
-	script.Parent.MouseButton1Click:Connect(function()
+	local Frame = scr.Parent.Parent.Window
+	scr.Parent.MouseButton1Click:Connect(function()
 		if Frame.Visible == true then
 			Frame.Visible = false
 		else
@@ -522,52 +522,52 @@ local function Minimize()
 end
 coroutine.wrap(Minimize)()
 local function WindowLoader()
-	local script = Instance.new('LocalScript', Window)
+	local scr = Instance.new('Script', Window)
 
-	frame = script.Parent.Parent
+	frame = scr.Parent.Parent
 	frame.Draggable = true
 	frame.Active = true
 	frame.Selectable = true
 end
 coroutine.wrap(WindowLoader)()
 local function BoxLoader()
-	local script = Instance.new('LocalScript', BoxesBox)
+	local scr = Instance.new('Script', BoxesBox)
 
-	script.Parent.MouseButton1Click:Connect(function()
-		if script.Parent.BackgroundColor3 ~= Color3.new(0,1,0) then
-			script.Parent.BackgroundColor3 = Color3.new(0,1,0)
+	scr.Parent.MouseButton1Click:Connect(function()
+		if scr.Parent.BackgroundColor3 ~= Color3.new(0,1,0) then
+			scr.Parent.BackgroundColor3 = Color3.new(0,1,0)
 		else
-			script.Parent.BackgroundColor3 = Color3.new(1,0,0)
+			scr.Parent.BackgroundColor3 = Color3.new(1,0,0)
 		end
 	end)
 end
 coroutine.wrap(BoxLoader)()
 local function NamesLoader()
-	local script = Instance.new('LocalScript', Namesbox)
+	local scr = Instance.new('Script', Namesbox)
 
-	script.Parent.MouseButton1Click:Connect(function()
-		if script.Parent.BackgroundColor3 ~= Color3.new(0,1,0) then
-			script.Parent.BackgroundColor3 = Color3.new(0,1,0)
+	scr.Parent.MouseButton1Click:Connect(function()
+		if scr.Parent.BackgroundColor3 ~= Color3.new(0,1,0) then
+			scr.Parent.BackgroundColor3 = Color3.new(0,1,0)
 		else
-			script.Parent.BackgroundColor3 = Color3.new(1,0,0)
+			scr.Parent.BackgroundColor3 = Color3.new(1,0,0)
 		end
 	end)
 end
 coroutine.wrap(NamesLoader)()
 local function HealthbarLoader()
-	local script = Instance.new('LocalScript', Healthbars)
+	local scr = Instance.new('Script', Healthbars)
 
-	script.Parent.MouseButton1Click:Connect(function()
-		if script.Parent.BackgroundColor3 ~= Color3.new(0,1,0) then
-			script.Parent.BackgroundColor3 = Color3.new(0,1,0)
+	scr.Parent.MouseButton1Click:Connect(function()
+		if scr.Parent.BackgroundColor3 ~= Color3.new(0,1,0) then
+			scr.Parent.BackgroundColor3 = Color3.new(0,1,0)
 		else
-			script.Parent.BackgroundColor3 = Color3.new(1,0,0)
+			scr.Parent.BackgroundColor3 = Color3.new(1,0,0)
 		end
 	end)
 end
 coroutine.wrap(HealthbarLoader)()
 local function AimbotLoader()
-	local script = Instance.new('LocalScript', AimBot)
+	local scr = Instance.new('Script', AimBot)
 
 	local uiserv = game:GetService("UserInputService")
 	local rs = game:GetService("RunService")
@@ -580,7 +580,7 @@ local function AimbotLoader()
 	local isLeftMouseDown = false
 	local tool = false
 	
-	local toggleButton = script.Parent
+	local toggleButton = scr.Parent
 	
 	local function ubs()
 		toggleButton.BackgroundColor3 = aimbot and Color3.new(0, 1, 0) or Color3.new(1, 0, 0)
@@ -684,29 +684,29 @@ local function AimbotLoader()
 end
 coroutine.wrap(AimbotLoader)()
 local function ChooseFrame()
-	local script = Instance.new('LocalScript', Choose)
+	local scr = Instance.new('Script', Choose)
 
-	frame = script.Parent.Parent
+	frame = scr.Parent.Parent
 	frame.Draggable = true
 	frame.Active = true
 	frame.Selectable = true
 end
 coroutine.wrap(ChooseFrame)()
 local function YesF()
-	local script = Instance.new('LocalScript', Yes)
+	local scr = Instance.new('Script', Yes)
 
-	script.Parent.MouseButton1Click:Connect(function()
-		script.Parent.Parent.Parent.Parent.Parent.Parent.Parent:Destroy()
+	scr.Parent.MouseButton1Click:Connect(function()
+		scr.Parent.Parent.Parent.Parent.Parent.Parent.Parent:Destroy()
 	end)
 end
 coroutine.wrap(YesF)()
 local function NoF()
-	local script = Instance.new('LocalScript', No)
+	local scr = Instance.new('Script', No)
 
-	script.Parent.MouseButton1Click:Connect(function()
-		script.Parent.Parent.Parent.Parent.Visible = false
-		script.Parent.Parent.Parent.Parent.Parent.minimize.Visible = true
-		script.Parent.Parent.Parent.Parent.Parent.X.Visible = true
+	scr.Parent.MouseButton1Click:Connect(function()
+		scr.Parent.Parent.Parent.Parent.Visible = false
+		scr.Parent.Parent.Parent.Parent.Parent.minimize.Visible = true
+		scr.Parent.Parent.Parent.Parent.Parent.X.Visible = true
 	end)
 end
 coroutine.wrap(NoF)()
