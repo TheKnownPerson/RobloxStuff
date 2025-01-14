@@ -385,56 +385,67 @@ local function ESPloader()
 			local frame = components.Frame
 			local name = components.Label
 			local healthBar = components.HealthBar
-	
+
+			-- Check if the person is a player character
 			if person:IsA("Model") and person:FindFirstChild("HumanoidRootPart") and person:FindFirstChildOfClass("Humanoid") then
-				local humanoidRootPart = person:FindFirstChild("HumanoidRootPart")
-				local humanoid = person:FindFirstChildOfClass("Humanoid")
-				local screenPosition, isOnScreen = camera:WorldToViewportPoint(humanoidRootPart.Position)
-	
-				if isOnScreen and humanoid.Health > 0 then
-					if boxenabled then
-						frame.Position = UDim2.new(0, screenPosition.X + xOffset, 0, screenPosition.Y + yOffset)
-						frame.Visible = true
+				local player = game.Players:GetPlayerFromCharacter(person)  -- Check if it's a player character
+				if player then  -- Only proceed if it's a player
+					local humanoidRootPart = person:FindFirstChild("HumanoidRootPart")
+					local humanoid = person:FindFirstChildOfClass("Humanoid")
+					local screenPosition, isOnScreen = camera:WorldToViewportPoint(humanoidRootPart.Position)
+
+					if isOnScreen and humanoid.Health > 0 then
+						if boxenabled then
+							frame.Position = UDim2.new(0, screenPosition.X + xOffset, 0, screenPosition.Y + yOffset)
+							frame.Visible = true
+						else
+							frame.Visible = false
+						end
+
+						if nameenabled then
+							name.Position = UDim2.new(0, screenPosition.X + 80, 0, screenPosition.Y - 50)
+							name.Text = player.Name  -- Display player's name
+							name.Visible = true
+						else
+							name.Visible = false
+						end
+
+						if healthenabled then
+							local healthPercent = humanoid.Health / humanoid.MaxHealth
+							local healthBarWidth = math.max(healthPercent * 100, 1)
+
+							healthBar.Size = UDim2.new(0, healthBarWidth, 0, 5)
+							healthBar.BackgroundColor3 = Color3.fromRGB(
+								255 * (1 - healthPercent),
+								255 * healthPercent,
+								0
+							)
+							healthBar.Position = UDim2.new(0, screenPosition.X + 80, 0, screenPosition.Y - 70)
+							healthBar.Visible = true
+						else
+							healthBar.Visible = false
+						end
 					else
+						-- Hide the UI elements if the player is off-screen or dead
 						frame.Visible = false
-					end
-	
-					if nameenabled then
-						name.Position = UDim2.new(0, screenPosition.X + 80, 0, screenPosition.Y - 50)
-						name.Text = person.Name
-						name.Visible = true
-					else
 						name.Visible = false
-					end
-	
-					if healthenabled then
-						local healthPercent = humanoid.Health / humanoid.MaxHealth
-						local healthBarWidth = math.max(healthPercent * 100, 1)
-	
-						healthBar.Size = UDim2.new(0, healthBarWidth, 0, 5)
-						healthBar.BackgroundColor3 = Color3.fromRGB(
-							255 * (1 - healthPercent),
-							255 * healthPercent,
-							0
-						)
-						healthBar.Position = UDim2.new(0, screenPosition.X + 80, 0, screenPosition.Y - 70)
-						healthBar.Visible = true
-					else
 						healthBar.Visible = false
 					end
 				else
+					-- If it's not a player, hide the UI elements
 					frame.Visible = false
 					name.Visible = false
 					healthBar.Visible = false
 				end
 			else
+				-- If the person is not a valid model (non-player or NPC), hide the UI elements
 				frame.Visible = false
 				name.Visible = false
 				healthBar.Visible = false
 			end
 		end
 	end
-	
+
 	local function track(person)
 		if person:IsA("Model") and person:FindFirstChild("HumanoidRootPart") then
 			if person == player.Character then
@@ -482,15 +493,20 @@ local function ESPloader()
 		end
 	end
 	
-	game.Players.PlayerAdded:Connect(function(newplr)
-		newplr.CharacterAdded:Connect(function(chr)
-			track(chr)
+	game.Players.PlayerAdded:Connect(function(new)
+		new.CharacterAdded:Connect(function(character)
+			local hrp = character:WaitForChild("HumanoidRootPart", 5)
+			if hrp then
+				track(character)
+			else
+				print("HumanoidRootPart not found for player " .. new.Name)
+			end
 		end)
 	end)
-	
-	game.Players.PlayerRemoving:Connect(function(lplr)
-		if lplr.Character then
-			untrack(lplr.Character)
+
+	game.Players.PlayerRemoving:Connect(function(player)
+		if player.Character then
+			untrack(player.Character)
 		end
 	end)
 	
@@ -574,51 +590,51 @@ local function AimbotLoader()
 	local camera = workspace.CurrentCamera
 	local player = game.Players.LocalPlayer
 	local mouse = player:GetMouse()
-	
+
 	local radius = 25
 	local aimbot = false
 	local isLeftMouseDown = false
 	local tool = false
-	
+
 	local toggleButton = scr.Parent
-	
+
 	local function ubs()
 		toggleButton.BackgroundColor3 = aimbot and Color3.new(0, 1, 0) or Color3.new(1, 0, 0)
 	end
-	
+
 	local function te(_)
 		tool = true
 	end
-	
+
 	local function tue(_)
 		tool = false
 	end
-	
+
 	local function setupchr(character)
 		for _, child in pairs(character:GetChildren()) do
 			if child:IsA("Tool") then
 				te(child)
 			end
 		end
-	
+
 		character.ChildAdded:Connect(function(child)
 			if child:IsA("Tool") then
 				te(child)
 			end
 		end)
-	
+
 		character.ChildRemoved:Connect(function(child)
 			if child:IsA("Tool") then
 				tue(child)
 			end
 		end)
 	end
-	
+
 	player.CharacterAdded:Connect(setupchr)
 	if player.Character then
 		setupchr(player.Character)
 	end
-	
+
 	local function findvictim()
 		local mousepos = uiserv:GetMouseLocation()
 		local nearestvictim = nil
@@ -627,6 +643,7 @@ local function AimbotLoader()
 			if victim:IsA("Model")
 				and victim:FindFirstChild("HumanoidRootPart")
 				and victim:FindFirstChildOfClass("Humanoid")
+				and game.Players:GetPlayerFromCharacter(victim) ~= nil  -- Ensure it's a player
 				and victim ~= player.Character then
 				local screenpos, screen = camera:WorldToViewportPoint(victim.HumanoidRootPart.Position)
 				if screen then
@@ -640,36 +657,43 @@ local function AimbotLoader()
 		end
 		return nearestvictim
 	end
-	
+
 	local function victim(target)
 		if target and target:FindFirstChild("HumanoidRootPart") then
-			player.CameraMode = Enum.CameraMode.LockFirstPerson
+			if player.CameraMode == Enum.CameraMode.Classic then
+				player.CameraMode = Enum.CameraMode.LockFirstPerson
+			end
 			local position = target.HumanoidRootPart.Position
 			local camposition = camera.CFrame.Position
 			camera.CFrame = CFrame.lookAt(camposition, position)
-			task.delay(0.1, function()
-				player.CameraMode = Enum.CameraMode.Classic
-			end)
 		end
 	end
-	
+
 	toggleButton.MouseButton1Click:Connect(function()
 		aimbot = not aimbot
+		if not aimbot and player.CameraMode ~= Enum.CameraMode.Classic then
+			player.CameraMode = Enum.CameraMode.Classic
+		end
 		ubs()
 	end)
-	
+
 	uiserv.InputBegan:Connect(function(input)
 		if input.UserInputType == Enum.UserInputType.MouseButton1 then
 			isLeftMouseDown = true
 		end
 	end)
-	
+
 	uiserv.InputEnded:Connect(function(input)
 		if input.UserInputType == Enum.UserInputType.MouseButton1 then
 			isLeftMouseDown = false
+			if player.CameraMode ~= Enum.CameraMode.Classic then
+				task.delay(0.1, function()
+					player.CameraMode = Enum.CameraMode.Classic
+				end)
+			end
 		end
 	end)
-	
+
 	rs.RenderStepped:Connect(function()
 		if tool and aimbot and isLeftMouseDown then
 			local nearestvictim = findvictim()
@@ -678,9 +702,9 @@ local function AimbotLoader()
 			end
 		end
 	end)
-	
+
 	ubs()
-	
+
 end
 coroutine.wrap(AimbotLoader)()
 local function ChooseFrame()
@@ -693,9 +717,10 @@ local function ChooseFrame()
 end
 coroutine.wrap(ChooseFrame)()
 local function YesF()
+	local player = game.Players.LocalPlayer
 	local scr = Instance.new('LocalScript', Yes)
-
 	scr.Parent.MouseButton1Click:Connect(function()
+		player.CameraMode = Enum.CameraMode.Classic
 		scr.Parent.Parent.Parent.Parent.Parent.Parent.Parent:Destroy()
 	end)
 end
