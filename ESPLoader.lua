@@ -1,8 +1,3 @@
--- Gui to Lua
--- Version: 3.2
-
--- Instances:
-
 local BGui = Instance.new("ScreenGui")
 local Bar = Instance.new("Frame")
 local Name = Instance.new("TextLabel")
@@ -110,8 +105,6 @@ local UICorner_38 = Instance.new("UICorner")
 local Icons = Instance.new("Folder")
 local Houseicon = Instance.new("ImageButton")
 local Credits = Instance.new("ImageButton")
-
---Properties:
 
 BGui.Name = "BGui"
 BGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
@@ -923,9 +916,7 @@ Credits.ZIndex = 10
 Credits.Image = "rbxassetid://112599923040423"
 Credits.ScaleType = Enum.ScaleType.Fit
 
--- Scripts:
-
-local function TMYZZC_fake_script() -- Choose.LocalScript 
+local function ChooseWindow()
 	local script = Instance.new('LocalScript', Choose)
 
 	frame = script.Parent.Parent
@@ -933,8 +924,8 @@ local function TMYZZC_fake_script() -- Choose.LocalScript
 	frame.Active = true
 	frame.Selectable = true
 end
-coroutine.wrap(TMYZZC_fake_script)()
-local function NSXHMD_fake_script() -- Yes.LocalScript 
+coroutine.wrap(ChooseWindow)()
+local function YesButton()
 	local script = Instance.new('LocalScript', Yes)
 
 	local player = game.Players.LocalPlayer
@@ -959,8 +950,8 @@ local function NSXHMD_fake_script() -- Yes.LocalScript
 		onCharacterAdded(player.Character)
 	end
 end
-coroutine.wrap(NSXHMD_fake_script)()
-local function JKLLS_fake_script() -- No.LocalScript 
+coroutine.wrap(YesButton)()
+local function NoButton()
 	local script = Instance.new('LocalScript', No)
 
 	local iconsfolder = script.Parent.Parent.Parent.Parent.Parent.Icons:GetChildren()
@@ -984,8 +975,8 @@ local function JKLLS_fake_script() -- No.LocalScript
 		script.Parent.Parent.Parent.Parent.Parent.X.Visible = true
 	end)
 end
-coroutine.wrap(JKLLS_fake_script)()
-local function EXFKU_fake_script() -- Window.LocalScript 
+coroutine.wrap(NoButton)()
+local function WindowWindow()
 	local script = Instance.new('LocalScript', Window)
 
 	frame = script.Parent.Parent
@@ -993,8 +984,8 @@ local function EXFKU_fake_script() -- Window.LocalScript
 	frame.Active = true
 	frame.Selectable = true
 end
-coroutine.wrap(EXFKU_fake_script)()
-local function LRXHD_fake_script() -- Fly.LocalScript 
+coroutine.wrap(WindowWindow)()
+local function FlyButton()
 	local script = Instance.new('LocalScript', Fly)
 
 	local player = game.Players.LocalPlayer
@@ -1144,8 +1135,8 @@ local function LRXHD_fake_script() -- Fly.LocalScript
 	end)
 	
 end
-coroutine.wrap(LRXHD_fake_script)()
-local function MLPNQPC_fake_script() -- Speedboost.LocalScript 
+coroutine.wrap(FlyButton)()
+local function SpeedButton()
 	local script = Instance.new('LocalScript', Speedboost)
 
 	local walkspeed = 100
@@ -1202,8 +1193,8 @@ local function MLPNQPC_fake_script() -- Speedboost.LocalScript
 	end)
 	
 end
-coroutine.wrap(MLPNQPC_fake_script)()
-local function TTMBNYA_fake_script() -- Flinging.LocalScript 
+coroutine.wrap(SpeedButton)()
+local function FlingButton()
 	local script = Instance.new('LocalScript', Flinging)
 
 	local player = game.Players.LocalPlayer
@@ -1386,8 +1377,8 @@ local function TTMBNYA_fake_script() -- Flinging.LocalScript
 	end)
 	
 end
-coroutine.wrap(TTMBNYA_fake_script)()
-local function ACKBDR_fake_script() -- Invisibility.LocalScript 
+coroutine.wrap(FlingButton)()
+local function InvisButton()
 	local script = Instance.new('LocalScript', Invisibility)
 
 	local player = game.Players.LocalPlayer
@@ -1536,8 +1527,8 @@ local function ACKBDR_fake_script() -- Invisibility.LocalScript
 		end
 	end)
 end
-coroutine.wrap(ACKBDR_fake_script)()
-local function QSONGBR_fake_script() -- Feature.LocalScript 
+coroutine.wrap(InvisButton)()
+local function FeautreTemp()
 	local script = Instance.new('LocalScript', Feature)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -1548,8 +1539,8 @@ local function QSONGBR_fake_script() -- Feature.LocalScript
 		end
 	end)
 end
-coroutine.wrap(QSONGBR_fake_script)()
-local function DEFPWSM_fake_script() -- ClickToTP.LocalScript 
+coroutine.wrap(FeautreTemp)()
+local function ClickToTPButton()
 	local script = Instance.new('LocalScript', ClickToTP)
 
 	local enabled = false
@@ -1592,8 +1583,8 @@ local function DEFPWSM_fake_script() -- ClickToTP.LocalScript
 	end)
 	
 end
-coroutine.wrap(DEFPWSM_fake_script)()
-local function MFQH_fake_script() -- Feature_2.LocalScript 
+coroutine.wrap(ClickToTPButton)()
+local function FeatureTemp2()
 	local script = Instance.new('LocalScript', Feature_2)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -1604,8 +1595,8 @@ local function MFQH_fake_script() -- Feature_2.LocalScript
 		end
 	end)
 end
-coroutine.wrap(MFQH_fake_script)()
-local function NMZQQ_fake_script() -- Feature_3.LocalScript 
+coroutine.wrap(FeatureTemp2)()
+local function FeatureTemp3()
 	local script = Instance.new('LocalScript', Feature_3)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -1616,8 +1607,8 @@ local function NMZQQ_fake_script() -- Feature_3.LocalScript
 		end
 	end)
 end
-coroutine.wrap(NMZQQ_fake_script)()
-local function TRCZEQ_fake_script() -- Feature_4.LocalScript 
+coroutine.wrap(FeatureTemp3)()
+local function FeatureTemp4()
 	local script = Instance.new('LocalScript', Feature_4)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -1628,8 +1619,8 @@ local function TRCZEQ_fake_script() -- Feature_4.LocalScript
 		end
 	end)
 end
-coroutine.wrap(TRCZEQ_fake_script)()
-local function FTEH_fake_script() -- LoadESP.ESPLoad 
+coroutine.wrap(FeatureTemp4)()
+local function EspLoaderButtonScript()
 	local script = Instance.new('LocalScript', LoadESP)
 
 	local function loadesp()
@@ -2214,7 +2205,7 @@ local function FTEH_fake_script() -- LoadESP.ESPLoad
 	coroutine.wrap(HealthbarLoader)()
 	local function AimbotLoader()
 		local scr = Instance.new('Script', AimBot)
-	
+		local oldcam 
 		local uiserv = game:GetService("UserInputService")
 		local rs = game:GetService("RunService")
 		local camera = workspace.CurrentCamera
@@ -2224,45 +2215,11 @@ local function FTEH_fake_script() -- LoadESP.ESPLoad
 		local radius = 25
 		local aimbot = false
 		local isLeftMouseDown = false
-		local tool = false
 	
 		local toggleButton = scr.Parent
 	
 		local function ubs()
 			toggleButton.BackgroundColor3 = aimbot and Color3.new(0, 1, 0) or Color3.new(1, 0, 0)
-		end
-	
-		local function te(_)
-			tool = true
-		end
-	
-		local function tue(_)
-			tool = false
-		end
-	
-		local function setupchr(character)
-			for _, child in pairs(character:GetChildren()) do
-				if child:IsA("Tool") then
-					te(child)
-				end
-			end
-	
-			character.ChildAdded:Connect(function(child)
-				if child:IsA("Tool") then
-					te(child)
-				end
-			end)
-	
-			character.ChildRemoved:Connect(function(child)
-				if child:IsA("Tool") then
-					tue(child)
-				end
-			end)
-		end
-	
-		player.CharacterAdded:Connect(setupchr)
-		if player.Character then
-			setupchr(player.Character)
 		end
 	
 		local function findvictim()
@@ -2325,7 +2282,7 @@ local function FTEH_fake_script() -- LoadESP.ESPLoad
 		end)
 	
 		rs.RenderStepped:Connect(function()
-			if tool and aimbot and isLeftMouseDown then
+			if aimbot and isLeftMouseDown then
 				local nearestvictim = findvictim()
 				if nearestvictim then
 					victim(nearestvictim)
@@ -2334,7 +2291,6 @@ local function FTEH_fake_script() -- LoadESP.ESPLoad
 		end)
 	
 		ubs()
-	
 	end
 	coroutine.wrap(AimbotLoader)()
 	local function ChooseFrame()
@@ -2396,8 +2352,8 @@ local function FTEH_fake_script() -- LoadESP.ESPLoad
 		end
 	end)
 end
-coroutine.wrap(FTEH_fake_script)()
-local function IFDF_fake_script() -- minimize.LocalScript 
+coroutine.wrap(EspLoaderButtonScript)()
+local function MinimizeButton()
 	local script = Instance.new('LocalScript', minimize)
 
 	local Frame = script.Parent.Parent.Window
@@ -2434,8 +2390,8 @@ local function IFDF_fake_script() -- minimize.LocalScript
 		end
 	end)
 end
-coroutine.wrap(IFDF_fake_script)()
-local function ZJTNLSW_fake_script() -- X.LocalScript 
+coroutine.wrap(MinimizeButton)()
+local function XButtonDestroy()
 	local script = Instance.new('LocalScript', X)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -2447,8 +2403,8 @@ local function ZJTNLSW_fake_script() -- X.LocalScript
 	script.Parent.Parent.Icons.Credits.Visible = false
 	end)
 end
-coroutine.wrap(ZJTNLSW_fake_script)()
-local function KSYXT_fake_script() -- Houseicon.LocalScript 
+coroutine.wrap(XButtonDestroy)()
+local function HouseIconButton()
 	local script = Instance.new('LocalScript', Houseicon)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -2478,8 +2434,8 @@ local function KSYXT_fake_script() -- Houseicon.LocalScript
 		end
 	end)
 end
-coroutine.wrap(KSYXT_fake_script)()
-local function NWUDMJJ_fake_script() -- Credits.LocalScript 
+coroutine.wrap(HouseIconButton)()
+local function CreditsButton()
 	local script = Instance.new('LocalScript', Credits)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -2509,8 +2465,8 @@ local function NWUDMJJ_fake_script() -- Credits.LocalScript
 		end
 	end)
 end
-coroutine.wrap(NWUDMJJ_fake_script)()
-local function RUTQVUS_fake_script() -- Bar.LocalScript 
+coroutine.wrap(CreditsButton)()
+local function BarScript()
 	local script = Instance.new('LocalScript', Bar)
 
 	local function send(text)
@@ -2524,4 +2480,4 @@ local function RUTQVUS_fake_script() -- Bar.LocalScript
 	
 	send("Injected BGui.")
 end
-coroutine.wrap(RUTQVUS_fake_script)()
+coroutine.wrap(BarScript)()
