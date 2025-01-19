@@ -1262,7 +1262,7 @@ local function FlingButton()
 			body.Mode = Enum.PositionAlignmentMode.TwoAttachment
 			character.Humanoid:ChangeState(Enum.HumanoidStateType.StrafingNoPhysics)
 			oldcf = character.HumanoidRootPart.CFrame
-			character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(0, 40000000, 0)) * CFrame.fromEulerAnglesXYZ(math.rad(180), 0, 0)
+			character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(40000000, 40000000, 40000000)) * CFrame.fromEulerAnglesXYZ(math.rad(180), 0, 0)
 			character.HumanoidRootPart.Velocity = Vector3.new(0, 1000000, 0)
 	
 			task.wait(5)
