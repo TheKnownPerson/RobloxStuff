@@ -107,6 +107,7 @@ local Houseicon = Instance.new("ImageButton")
 local Credits = Instance.new("ImageButton")
 
 BGui.Name = "BGui"
+BGui.Enabled = true
 BGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 BGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
@@ -362,7 +363,7 @@ Invisibledesc.TextWrapped = true
 UICorner_12.CornerRadius = UDim.new(0, 15)
 UICorner_12.Parent = Invisibledesc
 
-FeatureDesc.Name = "FeatureDesc"
+FeatureDesc.Name = "NoclipDesc"
 FeatureDesc.Parent = Description_2
 FeatureDesc.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
 FeatureDesc.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -371,7 +372,7 @@ FeatureDesc.Position = UDim2.new(0.508318603, 0, 0.470396221, 0)
 FeatureDesc.Size = UDim2.new(0, 81, 0, 28)
 FeatureDesc.ZIndex = 2
 FeatureDesc.Font = Enum.Font.FredokaOne
-FeatureDesc.Text = "Desc"
+FeatureDesc.Text = "Noclip"
 FeatureDesc.TextColor3 = Color3.fromRGB(255, 255, 255)
 FeatureDesc.TextScaled = true
 FeatureDesc.TextSize = 14.000
@@ -413,7 +414,7 @@ Invisibility.ImageTransparency = 1.000
 UICorner_15.CornerRadius = UDim.new(0, 15)
 UICorner_15.Parent = Invisibility
 
-Feature.Name = "Feature"
+Feature.Name = "NoclipButton"
 Feature.Parent = Features2
 Feature.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 Feature.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -917,7 +918,7 @@ Credits.Image = "rbxassetid://112599923040423"
 Credits.ScaleType = Enum.ScaleType.Fit
 
 local function ChooseWindow()
-	local script = Instance.new('LocalScript', Choose)
+	local script = Instance.new('Script', Choose)
 
 	frame = script.Parent.Parent
 	frame.Draggable = true
@@ -926,7 +927,7 @@ local function ChooseWindow()
 end
 coroutine.wrap(ChooseWindow)()
 local function YesButton()
-	local script = Instance.new('LocalScript', Yes)
+	local script = Instance.new('Script', Yes)
 
 	local player = game.Players.LocalPlayer
 	
@@ -952,7 +953,7 @@ local function YesButton()
 end
 coroutine.wrap(YesButton)()
 local function NoButton()
-	local script = Instance.new('LocalScript', No)
+	local script = Instance.new('Script', No)
 
 	local iconsfolder = script.Parent.Parent.Parent.Parent.Parent.Icons:GetChildren()
 	script.Parent.MouseButton1Click:Connect(function()
@@ -977,7 +978,7 @@ local function NoButton()
 end
 coroutine.wrap(NoButton)()
 local function WindowWindow()
-	local script = Instance.new('LocalScript', Window)
+	local script = Instance.new('Script', Window)
 
 	frame = script.Parent.Parent
 	frame.Draggable = true
@@ -986,7 +987,7 @@ local function WindowWindow()
 end
 coroutine.wrap(WindowWindow)()
 local function FlyButton()
-	local script = Instance.new('LocalScript', Fly)
+	local script = Instance.new('Script', Fly)
 
 	local player = game.Players.LocalPlayer
 	local userinput = game:GetService("UserInputService")
@@ -1133,11 +1134,19 @@ local function FlyButton()
 			end
 		end
 	end)
-	
+	while true do 
+		task.wait(0.5)
+		if not game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("BGui") then
+			if flying == true then
+				stopFlying()
+				flying = false
+			end
+		end
+	end
 end
 coroutine.wrap(FlyButton)()
 local function SpeedButton()
-	local script = Instance.new('LocalScript', Speedboost)
+	local script = Instance.new('Script', Speedboost)
 
 	local walkspeed = 100
 	local player = game.Players.LocalPlayer
@@ -1191,12 +1200,24 @@ local function SpeedButton()
 			end
 		end
 	end)
-	
+	while true do 
+		task.wait(0.5)
+		if not game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("BGui") then
+			if isSpeedEnabled then
+				if character and character:FindFirstChild("Humanoid") then
+					character.Humanoid.WalkSpeed = oldspeed
+				end
+			end
+			
+			isSpeedEnabled = false
+			speed = oldspeed
+		end
+	end
+
 end
 coroutine.wrap(SpeedButton)()
 local function FlingButton()
-	local script = Instance.new('LocalScript', Flinging)
-
+	local script = Instance.new('Script', Flinging)
 	local player = game.Players.LocalPlayer
 	local moveDirection = Vector3.zero
 	local speed = 25
@@ -1375,25 +1396,32 @@ local function FlingButton()
 			end
 		end
 	end)
-	
+	while true do 
+		task.wait(0.5)
+		if not game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("BGui") then
+			if flingenabled == true then
+			fling(false)
+			flingenabled = false
+			end
+		end
+	end
 end
 coroutine.wrap(FlingButton)()
 local function InvisButton()
-	local script = Instance.new('LocalScript', Invisibility)
-
+	local script = Instance.new('Script', Invisibility)
 	local player = game.Players.LocalPlayer
 	local character = player.Character or player.CharacterAdded:Wait()
 	local camera = workspace.CurrentCamera
-	
 	local moveSpeed = 50
 	local moveDirection = Vector3.zero
 	local invisiblePart = nil
 	local invisibleEnabled = false
+	local oldcf = character:FindFirstChild("HumanoidRootPart") and character.HumanoidRootPart.CFrame or CFrame.new()
 	local isCooldown = false
 	local cooldownTime = 1
 	local keysPressed = {W = false, A = false, S = false, D = false}
-	
-	local function send(text, duration)
+
+	local function sendNotification(text, duration)
 		local StarterGui = game:GetService("StarterGui")
 		StarterGui:SetCore("SendNotification", {
 			Title = "Made by Knownperson_",
@@ -1401,24 +1429,24 @@ local function InvisButton()
 			Duration = duration
 		})
 	end
-	
+
 	local function calculateMoveDirection()
 		local direction = Vector3.zero
 		if keysPressed.W then
-			direction = direction + camera.CFrame.LookVector
+			direction += camera.CFrame.LookVector
 		end
 		if keysPressed.S then
-			direction = direction - camera.CFrame.LookVector
+			direction -= camera.CFrame.LookVector
 		end
 		if keysPressed.A then
-			direction = direction - camera.CFrame.RightVector
+			direction -= camera.CFrame.RightVector
 		end
 		if keysPressed.D then
-			direction = direction + camera.CFrame.RightVector
+			direction += camera.CFrame.RightVector
 		end
 		return direction.Unit * moveSpeed
 	end
-	
+
 	local function createInvisiblePart()
 		local part = Instance.new("Part")
 		part.Anchored = true
@@ -1430,35 +1458,34 @@ local function InvisButton()
 		part.Parent = workspace
 		return part
 	end
-	
+
 	script.Parent.MouseButton1Click:Connect(function()
 		if isCooldown then
-			send("Invisible: On cooldown!", 1)		
+			sendNotification("Invisible: On cooldown!", 1)
 			return
 		end
-	
+
+		character = player.Character or player.CharacterAdded:Wait()
 		local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
 		if not humanoidRootPart then
-			error("HumanoidRootPart not found in character!")
+			warn("HumanoidRootPart not found! Ensure the character is fully loaded.")
 			return
 		end
-	
+
 		isCooldown = true
 		task.delay(cooldownTime, function()
 			isCooldown = false
 		end)
-	
-		if not invisibleEnabled and 
-			script.Parent.Parent.Parent.Features.Fly.BackgroundColor3 == Color3.new(1, 0, 0) and 
-			script.Parent.Parent.Parent.Features.Flinging.BackgroundColor3 == Color3.new(1, 0, 0) then
-	
-			send("Activated ".. script.Parent.Name, 5)
+
+		if not invisibleEnabled and script.Parent.Parent.Parent.Features.Fly.BackgroundColor3 == Color3.new(1, 0, 0)
+			and script.Parent.Parent.Parent.Features.Flinging.BackgroundColor3 == Color3.new(1, 0, 0) then
+			sendNotification("Activated " .. script.Parent.Name, 5)
 			script.Parent.BackgroundColor3 = Color3.new(0, 1, 0)
 			invisibleEnabled = true
-	
+
 			invisiblePart = createInvisiblePart()
 			invisiblePart.CFrame = humanoidRootPart.CFrame
-	
+
 			task.spawn(function()
 				while invisibleEnabled and invisiblePart do
 					for i = 0, 1, 0.01 do
@@ -1471,7 +1498,7 @@ local function InvisButton()
 					end
 				end
 			end)
-	
+
 			camera.CameraSubject = invisiblePart
 			humanoidRootPart.CFrame = CFrame.new(humanoidRootPart.Position.X, -10, humanoidRootPart.Position.Z)
 			if character:FindFirstChildOfClass("Humanoid") then
@@ -1479,17 +1506,20 @@ local function InvisButton()
 			end
 			task.wait(0.5)
 			humanoidRootPart.Anchored = true
-	
-			game:GetService("RunService").Heartbeat:Connect(function()
+
+			local runServiceConnection
+			runServiceConnection = game:GetService("RunService").Heartbeat:Connect(function()
 				if invisibleEnabled and invisiblePart then
 					moveDirection = calculateMoveDirection()
 					if moveDirection.Magnitude > 0 then
 						invisiblePart.CFrame = invisiblePart.CFrame + moveDirection * game:GetService("RunService").Heartbeat:Wait()
 					end
 					invisiblePart.CFrame = CFrame.new(invisiblePart.Position, invisiblePart.Position + camera.CFrame.LookVector)
+				else
+					runServiceConnection:Disconnect()
 				end
 			end)
-	
+
 			local userInputService = game:GetService("UserInputService")
 			userInputService.InputBegan:Connect(function(input, gameProcessed)
 				if gameProcessed then return end
@@ -1498,8 +1528,8 @@ local function InvisButton()
 				if input.KeyCode == Enum.KeyCode.S then keysPressed.S = true end
 				if input.KeyCode == Enum.KeyCode.D then keysPressed.D = true end
 			end)
-	
-			userInputService.InputEnded:Connect(function(input, gameProcessed)
+
+			userInputService.InputEnded:Connect(function(input)
 				if input.KeyCode == Enum.KeyCode.W then keysPressed.W = false end
 				if input.KeyCode == Enum.KeyCode.A then keysPressed.A = false end
 				if input.KeyCode == Enum.KeyCode.S then keysPressed.S = false end
@@ -1509,39 +1539,131 @@ local function InvisButton()
 			if script.Parent.Parent.Parent.Features.Fly.BackgroundColor3 == Color3.new(1, 0, 0) and 
 				script.Parent.Parent.Parent.Features.Flinging.BackgroundColor3 == Color3.new(1, 0, 0) then
 				script.Parent.BackgroundColor3 = Color3.new(1, 0, 0)
-				send("Deactivated ".. script.Parent.Name, 5)
+				sendNotification("Deactivated " .. script.Parent.Name, 5)
 				invisibleEnabled = false
 				if character:FindFirstChildOfClass("Humanoid") then
 					character:FindFirstChildOfClass("Humanoid").PlatformStand = false
 				end
 				humanoidRootPart.Anchored = false
-				humanoidRootPart.CFrame = invisiblePart.CFrame
 				if invisiblePart then
+					humanoidRootPart.CFrame = invisiblePart.CFrame
 					invisiblePart:Destroy()
 					invisiblePart = nil
 				end
 				camera.CameraSubject = character:FindFirstChild("Humanoid")
 			else
-				send("Disable Fly or Fling!", 1)
+				sendNotification("Disable Fly or Fling!", 1)
 			end
 		end
 	end)
+
+	while true do
+		task.wait(0.5)
+		if not game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("BGui") then
+			character = player.Character or player.CharacterAdded:Wait()
+			local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+			if invisiblePart ~= nil or invisibleEnabled == true then
+				invisibleEnabled = false
+				if invisiblePart then
+					invisiblePart:Destroy()
+					invisiblePart = nil
+				end
+				if humanoidRootPart then
+					humanoidRootPart.CFrame = oldcf
+					camera.CameraSubject = character:FindFirstChild("Humanoid")
+				end
+			end
+		end
+	end
 end
 coroutine.wrap(InvisButton)()
-local function FeautreTemp()
-	local script = Instance.new('LocalScript', Feature)
+local function NoClipButton()
+	local script = Instance.new('Script', Feature)
+	local noClipEnabled = false
+	local player = game.Players.LocalPlayer
+	local character = player.Character or player.CharacterAdded:Wait()
+	local originalCanCollideState = {}
+
+	local function isFloor(part)
+		return part and part.Position.Y < character.HumanoidRootPart.Position.Y - 2
+	end
+	local function send(text, duration)
+		local screengui = game:GetService("StarterGui")
+		screengui:SetCore("SendNotification", {Title = "Made by Knownperson_", Text = text, Duration = duration})
+	end
+	
+	local function toggleNoClip()
+		noClipEnabled = not noClipEnabled
+
+		-- Loop through all parts of the character
+		for _, part in pairs(character:GetChildren()) do
+			if part:IsA("BasePart") then
+				if part:IsA("SpawnLocation") then
+					continue
+				end
+				if not originalCanCollideState[part] then
+					originalCanCollideState[part] = part.CanCollide
+				end
+
+				if noClipEnabled then
+					part.CanCollide = false
+				else
+					part.CanCollide = originalCanCollideState[part]
+				end
+			end
+		end
+		
+		if noClipEnabled then
+			script.Parent.BackgroundColor3 = Color3.new(0, 1, 0)
+			send("Activated Noclip", 5)
+		else
+			script.Parent.BackgroundColor3 = Color3.new(1, 0, 0)
+			send("Deactivated Noclip", 5)
+		end
+	end
 
 	script.Parent.MouseButton1Click:Connect(function()
-		if script.Parent.BackgroundColor3 ~= Color3.new(0,1,0) then
-			script.Parent.BackgroundColor3 = Color3.new(0,1,0)
-		else
-			script.Parent.BackgroundColor3 = Color3.new(1,0,0)
+		toggleNoClip()
+	end)
+
+	coroutine.wrap(function()
+		while true do
+			task.wait(0.1)
+			if noClipEnabled and character then
+				for _, part in pairs(character:GetDescendants()) do
+					if part:IsA("BasePart") then
+						part.CanCollide = false
+					end
+				end
+			end
+		end
+	end)()
+
+	player.CharacterAdded:Connect(function(newCharacter)
+		character = newCharacter
+		noClipEnabled = false
+
+		for _, part in pairs(character:GetDescendants()) do
+			if part:IsA("BasePart") and originalCanCollideState[part] then
+				part.CanCollide = originalCanCollideState[part]
+			end
 		end
 	end)
+	
+	while true do
+		task.wait(0.5)
+		if not game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("BGui") then
+			if noClipEnabled == true then
+				noClipEnabled = false
+				toggleNoClip()
+			end
+		end
+	end
 end
-coroutine.wrap(FeautreTemp)()
+
+coroutine.wrap(NoClipButton)()
 local function ClickToTPButton()
-	local script = Instance.new('LocalScript', ClickToTP)
+	local script = Instance.new('Script', ClickToTP)
 
 	local enabled = false
 	local player = game.Players.LocalPlayer
@@ -1581,11 +1703,18 @@ local function ClickToTPButton()
 			clickToTp(mousePosition)
 		end
 	end)
-	
+	while true do 
+		task.wait(0.5)
+		if not game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("BGui") then
+			if enabled == true then
+				enabled = false
+			end
+		end
+	end
 end
 coroutine.wrap(ClickToTPButton)()
 local function FeatureTemp2()
-	local script = Instance.new('LocalScript', Feature_2)
+	local script = Instance.new('Script', Feature_2)
 
 	script.Parent.MouseButton1Click:Connect(function()
 		if script.Parent.BackgroundColor3 ~= Color3.new(0,1,0) then
@@ -1597,7 +1726,7 @@ local function FeatureTemp2()
 end
 coroutine.wrap(FeatureTemp2)()
 local function FeatureTemp3()
-	local script = Instance.new('LocalScript', Feature_3)
+	local script = Instance.new('Script', Feature_3)
 
 	script.Parent.MouseButton1Click:Connect(function()
 		if script.Parent.BackgroundColor3 ~= Color3.new(0,1,0) then
@@ -1609,7 +1738,7 @@ local function FeatureTemp3()
 end
 coroutine.wrap(FeatureTemp3)()
 local function FeatureTemp4()
-	local script = Instance.new('LocalScript', Feature_4)
+	local script = Instance.new('Script', Feature_4)
 
 	script.Parent.MouseButton1Click:Connect(function()
 		if script.Parent.BackgroundColor3 ~= Color3.new(0,1,0) then
@@ -1621,7 +1750,7 @@ local function FeatureTemp4()
 end
 coroutine.wrap(FeatureTemp4)()
 local function EspLoaderButtonScript()
-	local script = Instance.new('LocalScript', LoadESP)
+	local script = Instance.new('Script', LoadESP)
 
 	local function loadesp()
 	local ESP = Instance.new("ScreenGui")
@@ -2006,47 +2135,70 @@ local function EspLoaderButtonScript()
 			personFrames[person] = { Frame = frame, Label = name, HealthBar = healthBar }
 		end
 		
-		local function update()
-			for person, components in pairs(personFrames) do
-				local frame = components.Frame
-				local name = components.Label
-				local healthBar = components.HealthBar
-				if person:IsA("Model") and person:FindFirstChild("HumanoidRootPart") and person:FindFirstChildOfClass("Humanoid") then
-					local player = game.Players:GetPlayerFromCharacter(person)
-					if player then
-						local humanoidRootPart = person:FindFirstChild("HumanoidRootPart")
-						local humanoid = person:FindFirstChildOfClass("Humanoid")
-						local screenPosition, isOnScreen = camera:WorldToViewportPoint(humanoidRootPart.Position)
-	
-						if isOnScreen and humanoid.Health > 0 then
-							if boxenabled then
-								frame.Position = UDim2.new(0, screenPosition.X + xOffset, 0, screenPosition.Y + yOffset)
-								frame.Visible = true
+			local function update()
+				for person, components in pairs(personFrames) do
+					local frame = components.Frame
+					local name = components.Label
+					local healthBar = components.HealthBar
+					if person:IsA("Model") and person:FindFirstChild("HumanoidRootPart") and person:FindFirstChildOfClass("Humanoid") then
+						local player = game.Players:GetPlayerFromCharacter(person)
+						if player then
+							local humanoidRootPart = person:FindFirstChild("HumanoidRootPart")
+							local humanoid = person:FindFirstChildOfClass("Humanoid")
+							local screenPosition, isOnScreen = camera:WorldToViewportPoint(humanoidRootPart.Position)
+
+							if isOnScreen and humanoid.Health > 0 then
+								if boxenabled then
+									frame.Position = UDim2.new(0, screenPosition.X + xOffset, 0, screenPosition.Y + yOffset)
+									frame.Visible = true
+								else
+									frame.Visible = false
+								end
+
+								if nameenabled then
+									name.Position = UDim2.new(0, screenPosition.X + 80, 0, screenPosition.Y - 50)
+									name.Text = player.Name
+									name.Visible = true
+								else
+									name.Visible = false
+								end
+
+								if healthenabled then
+									local healthPercent = humanoid.Health / humanoid.MaxHealth
+									local healthBarWidth = math.max(healthPercent * 100, 1)
+
+									healthBar.Size = UDim2.new(0, healthBarWidth, 0, 5)
+									healthBar.BackgroundColor3 = Color3.fromRGB(
+										255 * (1 - healthPercent),
+										255 * healthPercent,
+										0
+									)
+									healthBar.Position = UDim2.new(0, screenPosition.X + 80, 0, screenPosition.Y - 70)
+									healthBar.Visible = true
+								else
+									healthBar.Visible = false
+								end
+								
+								while true do 
+									task.wait(0.5)
+
+									local espGui = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("BGui"):FindFirstChild("ESP")
+
+									if not espGui then
+										if boxenabled == true or nameenabled == true or healthenabled == true then
+										boxenabled = false
+										nameenabled = false
+										healthenabled = false
+										frame.Visible = false
+										name.Visible = false
+										healthBar.Visible = false
+										print("ESP is not available. Disabling visibility.")
+										end
+									end
+								end
 							else
 								frame.Visible = false
-							end
-	
-							if nameenabled then
-								name.Position = UDim2.new(0, screenPosition.X + 80, 0, screenPosition.Y - 50)
-								name.Text = player.Name
-								name.Visible = true
-							else
 								name.Visible = false
-							end
-	
-							if healthenabled then
-								local healthPercent = humanoid.Health / humanoid.MaxHealth
-								local healthBarWidth = math.max(healthPercent * 100, 1)
-	
-								healthBar.Size = UDim2.new(0, healthBarWidth, 0, 5)
-								healthBar.BackgroundColor3 = Color3.fromRGB(
-									255 * (1 - healthPercent),
-									255 * healthPercent,
-									0
-								)
-								healthBar.Position = UDim2.new(0, screenPosition.X + 80, 0, screenPosition.Y - 70)
-								healthBar.Visible = true
-							else
 								healthBar.Visible = false
 							end
 						else
@@ -2059,14 +2211,9 @@ local function EspLoaderButtonScript()
 						name.Visible = false
 						healthBar.Visible = false
 					end
-				else
-					frame.Visible = false
-					name.Visible = false
-					healthBar.Visible = false
 				end
 			end
-		end
-	
+
 		local function track(person)
 			if person:IsA("Model") and person:FindFirstChild("HumanoidRootPart") then
 				if person == player.Character then
@@ -2289,6 +2436,17 @@ local function EspLoaderButtonScript()
 				end
 			end
 		end)
+		
+		while true do 
+			task.wait(0.5)
+			if not game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("BGui"):FindFirstChild("ESP") then
+				if aimbot == true or isLeftMouseDown == true then
+						aimbot = false
+						print("false.")
+						isLeftMouseDown = false
+				end
+			end
+		end
 	
 		ubs()
 	end
@@ -2354,7 +2512,7 @@ local function EspLoaderButtonScript()
 end
 coroutine.wrap(EspLoaderButtonScript)()
 local function MinimizeButton()
-	local script = Instance.new('LocalScript', minimize)
+	local script = Instance.new('Script', minimize)
 
 	local Frame = script.Parent.Parent.Window
 	local houseicon = script.Parent.Parent.Icons.Houseicon
@@ -2392,7 +2550,7 @@ local function MinimizeButton()
 end
 coroutine.wrap(MinimizeButton)()
 local function XButtonDestroy()
-	local script = Instance.new('LocalScript', X)
+	local script = Instance.new('Script', X)
 
 	script.Parent.MouseButton1Click:Connect(function()
 	script.Parent.Visible = false
@@ -2405,7 +2563,7 @@ local function XButtonDestroy()
 end
 coroutine.wrap(XButtonDestroy)()
 local function HouseIconButton()
-	local script = Instance.new('LocalScript', Houseicon)
+	local script = Instance.new('Script', Houseicon)
 
 	script.Parent.MouseButton1Click:Connect(function()
 		if script.Parent.ImageColor3 == Color3.new(1,1,1) then
@@ -2436,7 +2594,7 @@ local function HouseIconButton()
 end
 coroutine.wrap(HouseIconButton)()
 local function CreditsButton()
-	local script = Instance.new('LocalScript', Credits)
+	local script = Instance.new('Script', Credits)
 
 	script.Parent.MouseButton1Click:Connect(function()
 		if script.Parent.ImageColor3 == Color3.new(1, 1, 1) then
@@ -2467,7 +2625,7 @@ local function CreditsButton()
 end
 coroutine.wrap(CreditsButton)()
 local function BarScript()
-	local script = Instance.new('LocalScript', Bar)
+	local script = Instance.new('Script', Bar)
 
 	local function send(text)
 	local StarterGui = game:GetService("StarterGui")
