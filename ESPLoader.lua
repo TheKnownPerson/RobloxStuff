@@ -930,13 +930,13 @@ local function YesButton()
 	local script = Instance.new('Script', Yes)
 
 	local player = game.Players.LocalPlayer
-	
+
 	local function onCharacterAdded(character)
-	
+
 		local humanoid = character:FindFirstChildOfClass("Humanoid")
 		if humanoid then
 			local oldspeed = humanoid.WalkSpeed
-			
+
 			script.Parent.MouseButton1Click:Connect(function()
 				script.Parent.Parent.Parent.Parent.Parent.Parent:Destroy()
 				if humanoid then
@@ -945,7 +945,7 @@ local function YesButton()
 			end)
 		end
 	end
-	
+
 	player.CharacterAdded:Connect(onCharacterAdded)
 	if player.Character then
 		onCharacterAdded(player.Character)
@@ -959,7 +959,7 @@ local function NoButton()
 	script.Parent.MouseButton1Click:Connect(function()
 		script.Parent.Parent.Parent.Parent.Visible = false
 		if script.Parent.Parent.Parent.Parent.Parent.Icons.Houseicon.ImageColor3 ~= Color3.new(1,1,1) then
-		script.Parent.Parent.Parent.Parent.Parent.Window.Visible = true
+			script.Parent.Parent.Parent.Parent.Parent.Window.Visible = true
 			script.Parent.Parent.Parent.Parent.Parent.Creds.Visible = false
 		else
 			script.Parent.Parent.Parent.Parent.Parent.Creds.Visible = true
@@ -999,7 +999,7 @@ local function FlyButton()
 	local bodyGyro
 	local camera = workspace.CurrentCamera
 	local character = player.Character or player.CharacterAdded:Wait()
-	
+
 	local function stopFlying()
 		flying = false
 		if character and character:FindFirstChildOfClass("Humanoid") then
@@ -1014,31 +1014,31 @@ local function FlyButton()
 			bodyGyro = nil
 		end
 	end
-	
+
 	local function startFlying()
 		if not character or not character:FindFirstChild("HumanoidRootPart") then
 			return
 		end
-	
+
 		local root = character.HumanoidRootPart
 		flying = true
-	
+
 		if character:FindFirstChildOfClass("Humanoid") then
 			character:FindFirstChildOfClass("Humanoid").PlatformStand = true
 		end
-	
+
 		bodyVelocity = Instance.new("BodyVelocity")
 		bodyVelocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
 		bodyVelocity.Velocity = Vector3.zero
 		bodyVelocity.P = 10000
 		bodyVelocity.Parent = root
-	
+
 		bodyGyro = Instance.new("BodyGyro")
 		bodyGyro.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
 		bodyGyro.P = 9e4
 		bodyGyro.Parent = root
 		bodyGyro.CFrame = root.CFrame
-	
+
 		task.spawn(function()
 			repeat
 				task.wait()
@@ -1071,7 +1071,7 @@ local function FlyButton()
 			stopFlying()
 		end)
 	end
-	
+
 	local function send(text)
 		local StarterGui = game:GetService("StarterGui")
 		StarterGui:SetCore("SendNotification", {
@@ -1080,12 +1080,12 @@ local function FlyButton()
 			Duration = 5
 		})
 	end
-	
+
 	player.CharacterAdded:Connect(function(newCharacter)
 		character = newCharacter
 		stopFlying()
 	end)
-	
+
 	script.Parent.MouseButton1Click:Connect(function()
 		if script.Parent.BackgroundColor3 ~= Color3.new(0, 1, 0) then
 			if script.Parent.Parent.Parent.Features2.Invisibility.BackgroundColor3 ~= Color3.new(0,1,0) and script.Parent.Parent.Parent.Features.Flinging.BackgroundColor3 ~= Color3.new(0,1,0) then
@@ -1105,7 +1105,7 @@ local function FlyButton()
 			end
 		end
 	end)
-	
+
 	runService.RenderStepped:Connect(function()
 		if flying and character and character:FindFirstChild("HumanoidRootPart") then
 			local root = character.HumanoidRootPart
@@ -1154,9 +1154,9 @@ local function SpeedButton()
 	local isSpeedEnabled = false
 	local oldspeed
 	local character = player.Character or player.CharacterAdded:Wait()
-	
+
 	oldspeed = character.Humanoid.WalkSpeed
-	
+
 	local function send(text)
 		local StarterGui = game:GetService("StarterGui")
 		StarterGui:SetCore("SendNotification", {
@@ -1165,18 +1165,18 @@ local function SpeedButton()
 			Duration = 5
 		})
 	end
-	
+
 	player.CharacterAdded:Connect(function(newCharacter)
 		character = newCharacter
 		if character and character:FindFirstChild("Humanoid") then
 			oldspeed = character.Humanoid.WalkSpeed
 		end
 	end)
-	
+
 	script.Parent.MouseButton1Click:Connect(function()
 		isSpeedEnabled = not isSpeedEnabled
 		script.Parent.BackgroundColor3 = isSpeedEnabled and Color3.new(0, 1, 0) or Color3.new(1, 0, 0)
-	
+
 		if isSpeedEnabled then
 			send("Activated " .. script.Parent.Name)
 			speed = walkspeed
@@ -1191,7 +1191,7 @@ local function SpeedButton()
 			end
 		end
 	end)
-	
+
 	game:GetService("RunService").Heartbeat:Connect(function()
 		if isSpeedEnabled == true and character and character:FindFirstChild("Humanoid") then
 			local humanoid = character.Humanoid
@@ -1208,7 +1208,7 @@ local function SpeedButton()
 					character.Humanoid.WalkSpeed = oldspeed
 				end
 			end
-			
+
 			isSpeedEnabled = false
 			speed = oldspeed
 		end
@@ -1231,7 +1231,7 @@ local function FlingButton()
 	player.CharacterAdded:Connect(function(newCharacter)
 		character = newCharacter
 	end)
-	
+
 	local oldcf = character:FindFirstChild("HumanoidRootPart") and character.HumanoidRootPart.CFrame or nil
 	local function send(text)
 		local StarterGui = game:GetService("StarterGui")
@@ -1244,123 +1244,123 @@ local function FlingButton()
 	local function fling(enabled)
 		if enabled and character then
 			if script.Parent.Parent.Parent.Features2.Invisibility.BackgroundColor3 ~= Color3.new(0,1,0)  and script.Parent.Parent.Parent.Features.Fly.BackgroundColor3 ~= Color3.new(0,1,0) then
-			send("Injecting...")
-			fakepart = Instance.new("Part", workspace)
-			fakepart.Name = "FakeGUIPart"
-			local att1 = Instance.new("Attachment", fakepart)
-			local att2 = Instance.new("Attachment", character.HumanoidRootPart)
-			local body = Instance.new("AlignPosition", fakepart)
-	
-			body.Attachment0 = att2
-			body.Attachment1 = att1
-			body.RigidityEnabled = true
-			body.Responsiveness = math.huge
-			body.MaxForce = math.huge
-			body.MaxVelocity = math.huge
-			body.MaxAxesForce = Vector3.new(math.huge, math.huge, math.huge)
-			body.Visible = true
-			body.Mode = Enum.PositionAlignmentMode.TwoAttachment
-			character.Humanoid:ChangeState(Enum.HumanoidStateType.StrafingNoPhysics)
-			oldcf = character.HumanoidRootPart.CFrame
-			character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(40000000, 40000000, 40000000)) * CFrame.fromEulerAnglesXYZ(math.rad(180), 0, 0)
-			character.HumanoidRootPart.Velocity = Vector3.new(0, 1000000, 0)
-	
-			task.wait(5)
-			send("Injected!")
-	
-			character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
-			character.HumanoidRootPart.CFrame = oldcf
-	
-			task.wait(0.2)
-	
-			fakepart.Anchored = true
-			fakepart.Size = Vector3.new(5, 5, 5)
-			fakepart.Position = character.HumanoidRootPart.Position
-			fakepart.CanCollide = false
-			fakepart.Transparency = 0.5
-			fakepart.Material = Enum.Material.ForceField
-			workspace.CurrentCamera.CameraSubject = fakepart
-	
-			spawn(function()
-				while flingenabled do
-					character.HumanoidRootPart.AssemblyAngularVelocity = Vector3.new(math.random(-500, 50), math.random(-500, 500) * power, math.random(-5, 5))
-					task.wait(math.random(0, attack) / 50)
-				end
-			end)
-	
-			local w = false
-			local a = false
-			local s = false
-			local d = false
-			mouse.KeyDown:Connect(function(key)
-				if key == "w" then
-					w = true
-				elseif key == "a" then
-					a = true
-				elseif key == "s" then
-					s = true
-				elseif key == "d" then
-					d = true
-				end
-			end)
-	
-			mouse.KeyUp:Connect(function(key)
-				if key == "w" then
-					w = false
-				elseif key == "a" then
-					a = false
-				elseif key == "s" then
-					s = false
-				elseif key == "d" then
-					d = false
-				end
-			end)
-	
-			game:GetService("RunService").Heartbeat:Connect(function()
-				if w and flingenabled == true then
-					fakepart.Position = fakepart.Position + workspace.CurrentCamera.CFrame.LookVector * 2
-				end
-				if a and flingenabled == true then
-					fakepart.Position = fakepart.Position - workspace.CurrentCamera.CFrame.RightVector * 2
-				end
-				if s and flingenabled == true then
-					fakepart.Position = fakepart.Position - workspace.CurrentCamera.CFrame.LookVector * 2
-				end
-				if d and flingenabled == true then
-					fakepart.Position = fakepart.Position + workspace.CurrentCamera.CFrame.RightVector * 2
-				end
-			end)
-	
-			spawn(function()
+				send("Injecting...")
+				fakepart = Instance.new("Part", workspace)
+				fakepart.Name = "FakeGUIPart"
+				local att1 = Instance.new("Attachment", fakepart)
+				local att2 = Instance.new("Attachment", character.HumanoidRootPart)
+				local body = Instance.new("AlignPosition", fakepart)
+
+				body.Attachment0 = att2
+				body.Attachment1 = att1
+				body.RigidityEnabled = true
+				body.Responsiveness = math.huge
+				body.MaxForce = math.huge
+				body.MaxVelocity = math.huge
+				body.MaxAxesForce = Vector3.new(math.huge, math.huge, math.huge)
+				body.Visible = true
+				body.Mode = Enum.PositionAlignmentMode.TwoAttachment
+				character.Humanoid:ChangeState(Enum.HumanoidStateType.StrafingNoPhysics)
+				oldcf = character.HumanoidRootPart.CFrame
+				character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(40000000, 40000000, 40000000)) * CFrame.fromEulerAnglesXYZ(math.rad(180), 0, 0)
+				character.HumanoidRootPart.Velocity = Vector3.new(0, 1000000, 0)
+
+				task.wait(5)
+				send("Injected!")
+
+				character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+				character.HumanoidRootPart.CFrame = oldcf
+
+				task.wait(0.2)
+
+				fakepart.Anchored = true
+				fakepart.Size = Vector3.new(5, 5, 5)
+				fakepart.Position = character.HumanoidRootPart.Position
+				fakepart.CanCollide = false
+				fakepart.Transparency = 0.5
+				fakepart.Material = Enum.Material.ForceField
+				workspace.CurrentCamera.CameraSubject = fakepart
+
+				spawn(function()
+					while flingenabled do
+						character.HumanoidRootPart.AssemblyAngularVelocity = Vector3.new(math.random(-500, 50), math.random(-500, 500) * power, math.random(-5, 5))
+						task.wait(math.random(0, attack) / 50)
+					end
+				end)
+
+				local w = false
+				local a = false
+				local s = false
+				local d = false
+				mouse.KeyDown:Connect(function(key)
+					if key == "w" then
+						w = true
+					elseif key == "a" then
+						a = true
+					elseif key == "s" then
+						s = true
+					elseif key == "d" then
+						d = true
+					end
+				end)
+
+				mouse.KeyUp:Connect(function(key)
+					if key == "w" then
+						w = false
+					elseif key == "a" then
+						a = false
+					elseif key == "s" then
+						s = false
+					elseif key == "d" then
+						d = false
+					end
+				end)
+
+				game:GetService("RunService").Heartbeat:Connect(function()
+					if w and flingenabled == true then
+						fakepart.Position = fakepart.Position + workspace.CurrentCamera.CFrame.LookVector * 2
+					end
+					if a and flingenabled == true then
+						fakepart.Position = fakepart.Position - workspace.CurrentCamera.CFrame.RightVector * 2
+					end
+					if s and flingenabled == true then
+						fakepart.Position = fakepart.Position - workspace.CurrentCamera.CFrame.LookVector * 2
+					end
+					if d and flingenabled == true then
+						fakepart.Position = fakepart.Position + workspace.CurrentCamera.CFrame.RightVector * 2
+					end
+				end)
+
+				spawn(function()
+					while flingenabled do
+						fakepart.Rotation = character.HumanoidRootPart.Rotation
+						character.HumanoidRootPart.CFrame = fakepart.CFrame
+						task.wait()
+					end
+				end)
+
+				spawn(function()
+					while flingenabled do
+						character.Humanoid:ChangeState(Enum.HumanoidStateType.Swimming)
+						task.wait(0.5)
+						character.Humanoid:ChangeState(Enum.HumanoidStateType.GettingUp)
+						task.wait(0.5)
+					end
+				end)
+
 				while flingenabled do
 					fakepart.Rotation = character.HumanoidRootPart.Rotation
-					character.HumanoidRootPart.CFrame = fakepart.CFrame
+					character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
+
+					if math.random(0, 1) == 1 then
+						character.Humanoid.Jump = true
+					else
+						character.Humanoid.Jump = false
+					end
+
+					character.HumanoidRootPart.Velocity = Vector3.new(math.random(-250, 250), math.random(-500, 500), math.random(-250, 250))
 					task.wait()
 				end
-			end)
-	
-			spawn(function()
-				while flingenabled do
-					character.Humanoid:ChangeState(Enum.HumanoidStateType.Swimming)
-					task.wait(0.5)
-					character.Humanoid:ChangeState(Enum.HumanoidStateType.GettingUp)
-					task.wait(0.5)
-				end
-			end)
-	
-			while flingenabled do
-				fakepart.Rotation = character.HumanoidRootPart.Rotation
-				character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
-	
-				if math.random(0, 1) == 1 then
-					character.Humanoid.Jump = true
-				else
-					character.Humanoid.Jump = false
-				end
-				
-				character.HumanoidRootPart.Velocity = Vector3.new(math.random(-250, 250), math.random(-500, 500), math.random(-250, 250))
-				task.wait()
-			end
 			else
 				script.Parent.BackgroundColor3 = Color3.new(1,0,0)
 				flingenabled = false
@@ -1376,7 +1376,7 @@ local function FlingButton()
 			end
 		end
 	end
-	
+
 	script.Parent.MouseButton1Click:Connect(function()
 		if script.Parent.BackgroundColor3 ~= Color3.new(0, 1, 0) then
 			if script.Parent.Parent.Parent.Features2.Invisibility.BackgroundColor3 ~= Color3.new(0,1,0) or script.Parent.Parent.Parent.Features.Fly.BackgroundColor3 ~= Color3.new(0,1,0) then
@@ -1400,8 +1400,8 @@ local function FlingButton()
 		task.wait(0.5)
 		if not game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("BGui") then
 			if flingenabled == true then
-			fling(false)
-			flingenabled = false
+				fling(false)
+				flingenabled = false
 			end
 		end
 	end
@@ -1591,7 +1591,7 @@ local function NoClipButton()
 		local screengui = game:GetService("StarterGui")
 		screengui:SetCore("SendNotification", {Title = "Made by Knownperson_", Text = text, Duration = duration})
 	end
-	
+
 	local function toggleNoClip()
 		noClipEnabled = not noClipEnabled
 
@@ -1612,7 +1612,7 @@ local function NoClipButton()
 				end
 			end
 		end
-		
+
 		if noClipEnabled then
 			script.Parent.BackgroundColor3 = Color3.new(0, 1, 0)
 			send("Activated Noclip", 5)
@@ -1649,7 +1649,7 @@ local function NoClipButton()
 			end
 		end
 	end)
-	
+
 	while true do
 		task.wait(0.5)
 		if not game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("BGui") then
@@ -1668,13 +1668,13 @@ local function ClickToTPButton()
 	local enabled = false
 	local player = game.Players.LocalPlayer
 	local userInputService = game:GetService("UserInputService")
-	
+
 	local function clickToTp(mousePosition)
 		if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
 			player.Character.HumanoidRootPart.CFrame = CFrame.new(mousePosition)
 		end
 	end
-	
+
 	local function send(text)
 		local StarterGui = game:GetService("StarterGui")
 		StarterGui:SetCore("SendNotification", {
@@ -1683,7 +1683,7 @@ local function ClickToTPButton()
 			Duration = 5
 		})
 	end
-	
+
 	script.Parent.MouseButton1Click:Connect(function()
 		if script.Parent.BackgroundColor3 ~= Color3.new(0, 1, 0) then
 			script.Parent.BackgroundColor3 = Color3.new(0, 1, 0)
@@ -1695,7 +1695,7 @@ local function ClickToTPButton()
 			enabled = false
 		end
 	end)
-	
+
 	userInputService.InputBegan:Connect(function(input, gameProcessed)
 		if enabled and input.UserInputType == Enum.UserInputType.MouseButton1 and not gameProcessed then
 			local mouse = player:GetMouse()
@@ -1753,389 +1753,420 @@ local function EspLoaderButtonScript()
 	local script = Instance.new('Script', LoadESP)
 
 	local function loadesp()
-	local ESP = Instance.new("ScreenGui")
-	local ESP_2 = Instance.new("Folder")
-	local Bar = Instance.new("Frame")
-	local Name = Instance.new("TextLabel")
-	local X = Instance.new("TextButton")
-	local minimize = Instance.new("TextButton")
-	local Window = Instance.new("Frame")
-	local UICorner = Instance.new("UICorner")
-	local Nogap = Instance.new("Frame")
-	local Buttons = Instance.new("Folder")
-	local Visuals = Instance.new("Folder")
-	local Description = Instance.new("Folder")
-	local Boxeslabel = Instance.new("TextLabel")
-	local UICorner_2 = Instance.new("UICorner")
-	local Nameslabel = Instance.new("TextLabel")
-	local UICorner_3 = Instance.new("UICorner")
-	local Healthbar = Instance.new("TextLabel")
-	local UICorner_4 = Instance.new("UICorner")
-	local BoxesBox = Instance.new("ImageButton")
-	local UICorner_5 = Instance.new("UICorner")
-	local Namesbox = Instance.new("ImageButton")
-	local UICorner_6 = Instance.new("UICorner")
-	local Healthbars = Instance.new("ImageButton")
-	local UICorner_7 = Instance.new("UICorner")
-	local Features = Instance.new("Folder")
-	local Description_2 = Instance.new("Folder")
-	local Nameslabel_2 = Instance.new("TextLabel")
-	local UICorner_8 = Instance.new("UICorner")
-	local AimBot = Instance.new("ImageButton")
-	local UICorner_9 = Instance.new("UICorner")
-	local Choose = Instance.new("Frame")
-	local UICorner_10 = Instance.new("UICorner")
-	local Nogap_2 = Instance.new("Frame")
-	local Buttons_2 = Instance.new("Folder")
-	local Choices = Instance.new("Folder")
-	local Yes = Instance.new("TextButton")
-	local UICorner_11 = Instance.new("UICorner")
-	local No = Instance.new("TextButton")
-	local UICorner_12 = Instance.new("UICorner")
-	local Question = Instance.new("TextLabel")
-	local UICorner_13 = Instance.new("UICorner")
-	
-	ESP.Name = "ESP"
-	ESP.Parent = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("BGui")
-	ESP.Enabled = true
-	ESP.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-	
-	ESP_2.Name = "ESP"
-	ESP_2.Parent = ESP
-	
-	Bar.Name = "Bar"
-	Bar.Parent = ESP_2
-	Bar.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
-	Bar.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Bar.BorderSizePixel = 0
-	Bar.Position = UDim2.new(0.54289788, 0, 0.634975374, 0)
-	Bar.Size = UDim2.new(0, 452, 0, 17)
-	
-	Name.Name = "Name"
-	Name.Parent = Bar
-	Name.BackgroundColor3 = Color3.fromRGB(195, 195, 195)
-	Name.BackgroundTransparency = 1.000
-	Name.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Name.BorderSizePixel = 0
-	Name.Position = UDim2.new(0.420375377, 0, 0, 0)
-	Name.Size = UDim2.new(0, 71, 0, 18)
-	Name.Font = Enum.Font.FredokaOne
-	Name.Text = "B's ESP"
-	Name.TextColor3 = Color3.fromRGB(195, 195, 195)
-	Name.TextScaled = true
-	Name.TextSize = 14.000
-	Name.TextWrapped = true
-	
-	X.Name = "X"
-	X.Parent = Bar
-	X.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-	X.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	X.BorderSizePixel = 0
-	X.Position = UDim2.new(0.959940732, 0, 0.117647059, 0)
-	X.Size = UDim2.new(0, 12, 0, 12)
-	X.Font = Enum.Font.SourceSans
-	X.TextColor3 = Color3.fromRGB(0, 0, 0)
-	X.TextSize = 14.000
-	X.TextTransparency = 1.000
-	
-	minimize.Name = "minimize"
-	minimize.Parent = Bar
-	minimize.BackgroundColor3 = Color3.fromRGB(255, 255, 0)
-	minimize.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	minimize.BorderSizePixel = 0
-	minimize.Position = UDim2.new(0.916637123, 0, 0.117999807, 0)
-	minimize.Size = UDim2.new(0, 12, 0, 12)
-	minimize.Font = Enum.Font.SourceSans
-	minimize.TextColor3 = Color3.fromRGB(0, 0, 0)
-	minimize.TextSize = 14.000
-	minimize.TextTransparency = 1.000
-	
-	Window.Name = "Window"
-	Window.Parent = Bar
-	Window.Active = true
-	Window.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
-	Window.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Window.BorderSizePixel = 0
-	Window.Position = UDim2.new(-0.000149773157, 0, 1, 0)
-	Window.Size = UDim2.new(0, 452, 0, 159)
-	
-	UICorner.CornerRadius = UDim.new(0, 15)
-	UICorner.Parent = Window
-	
-	Nogap.Name = "Nogap"
-	Nogap.Parent = Window
-	Nogap.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
-	Nogap.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Nogap.BorderSizePixel = 0
-	Nogap.Size = UDim2.new(0, 452, 0, 19)
-	
-	Buttons.Name = "Buttons"
-	Buttons.Parent = Window
-	
-	Visuals.Name = "Visuals"
-	Visuals.Parent = Buttons
-	
-	Description.Name = "Description"
-	Description.Parent = Visuals
-	
-	Boxeslabel.Name = "Boxeslabel"
-	Boxeslabel.Parent = Description
-	Boxeslabel.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
-	Boxeslabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Boxeslabel.BorderSizePixel = 0
-	Boxeslabel.Position = UDim2.new(0.257662624, 0, 0.550980091, 0)
-	Boxeslabel.Size = UDim2.new(0, 81, 0, 59)
-	Boxeslabel.Font = Enum.Font.FredokaOne
-	Boxeslabel.Text = "Boxes"
-	Boxeslabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-	Boxeslabel.TextScaled = true
-	Boxeslabel.TextSize = 14.000
-	Boxeslabel.TextWrapped = true
-	
-	UICorner_2.CornerRadius = UDim.new(0, 15)
-	UICorner_2.Parent = Boxeslabel
-	
-	Nameslabel.Name = "Nameslabel"
-	Nameslabel.Parent = Description
-	Nameslabel.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
-	Nameslabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Nameslabel.BorderSizePixel = 0
-	Nameslabel.Position = UDim2.new(0.253662705, 0, 0.114809431, 0)
-	Nameslabel.Size = UDim2.new(0, 81, 0, 59)
-	Nameslabel.Font = Enum.Font.FredokaOne
-	Nameslabel.Text = "Names"
-	Nameslabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-	Nameslabel.TextScaled = true
-	Nameslabel.TextSize = 14.000
-	Nameslabel.TextWrapped = true
-	
-	UICorner_3.CornerRadius = UDim.new(0, 15)
-	UICorner_3.Parent = Nameslabel
-	
-	Healthbar.Name = "Healthbar"
-	Healthbar.Parent = Description
-	Healthbar.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
-	Healthbar.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Healthbar.BorderSizePixel = 0
-	Healthbar.Position = UDim2.new(0.735538721, 0, 0.525822878, 0)
-	Healthbar.Size = UDim2.new(0, 81, 0, 59)
-	Healthbar.Font = Enum.Font.FredokaOne
-	Healthbar.Text = "Healthbars"
-	Healthbar.TextColor3 = Color3.fromRGB(255, 255, 255)
-	Healthbar.TextScaled = true
-	Healthbar.TextSize = 14.000
-	Healthbar.TextWrapped = true
-	
-	UICorner_4.CornerRadius = UDim.new(0, 15)
-	UICorner_4.Parent = Healthbar
-	
-	BoxesBox.Name = "BoxesBox"
-	BoxesBox.Parent = Visuals
-	BoxesBox.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-	BoxesBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	BoxesBox.BorderSizePixel = 0
-	BoxesBox.Position = UDim2.new(0.0970873758, 0, 0.548845947, 0)
-	BoxesBox.Size = UDim2.new(0, 60, 0, 60)
-	BoxesBox.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
-	BoxesBox.ImageColor3 = Color3.fromRGB(255, 0, 0)
-	BoxesBox.ImageTransparency = 1.000
-	
-	UICorner_5.CornerRadius = UDim.new(0, 15)
-	UICorner_5.Parent = BoxesBox
-	
-	Namesbox.Name = "Namesbox"
-	Namesbox.Parent = Visuals
-	Namesbox.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-	Namesbox.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Namesbox.BorderSizePixel = 0
-	Namesbox.Position = UDim2.new(0.0970873758, 0, 0.114699647, 0)
-	Namesbox.Size = UDim2.new(0, 60, 0, 60)
-	Namesbox.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
-	Namesbox.ImageColor3 = Color3.fromRGB(255, 0, 0)
-	Namesbox.ImageTransparency = 1.000
-	
-	UICorner_6.CornerRadius = UDim.new(0, 15)
-	UICorner_6.Parent = Namesbox
-	
-	Healthbars.Name = "Healthbars"
-	Healthbars.Parent = Visuals
-	Healthbars.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-	Healthbars.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Healthbars.BorderSizePixel = 0
-	Healthbars.Position = UDim2.new(0.57496345, 0, 0.523688734, 0)
-	Healthbars.Size = UDim2.new(0, 60, 0, 60)
-	Healthbars.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
-	Healthbars.ImageColor3 = Color3.fromRGB(255, 0, 0)
-	Healthbars.ImageTransparency = 1.000
-	
-	UICorner_7.CornerRadius = UDim.new(0, 15)
-	UICorner_7.Parent = Healthbars
-	
-	Features.Name = "Features"
-	Features.Parent = Buttons
-	
-	Description_2.Name = "Description"
-	Description_2.Parent = Features
-	
-	Nameslabel_2.Name = "Nameslabel"
-	Nameslabel_2.Parent = Description_2
-	Nameslabel_2.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
-	Nameslabel_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Nameslabel_2.BorderSizePixel = 0
-	Nameslabel_2.Position = UDim2.new(0.731538773, 0, 0.089652203, 0)
-	Nameslabel_2.Size = UDim2.new(0, 81, 0, 59)
-	Nameslabel_2.Font = Enum.Font.FredokaOne
-	Nameslabel_2.Text = "Aimbot"
-	Nameslabel_2.TextColor3 = Color3.fromRGB(255, 255, 255)
-	Nameslabel_2.TextScaled = true
-	Nameslabel_2.TextSize = 14.000
-	Nameslabel_2.TextWrapped = true
-	
-	UICorner_8.CornerRadius = UDim.new(0, 15)
-	UICorner_8.Parent = Nameslabel_2
-	
-	AimBot.Name = "AimBot"
-	AimBot.Parent = Features
-	AimBot.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-	AimBot.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	AimBot.BorderSizePixel = 0
-	AimBot.Position = UDim2.new(0.57496345, 0, 0.0895424113, 0)
-	AimBot.Size = UDim2.new(0, 60, 0, 60)
-	AimBot.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
-	AimBot.ImageColor3 = Color3.fromRGB(255, 0, 0)
-	AimBot.ImageTransparency = 1.000
-	
-	UICorner_9.CornerRadius = UDim.new(0, 15)
-	UICorner_9.Parent = AimBot
-	
-	Choose.Name = "Choose"
-	Choose.Parent = Bar
-	Choose.Active = true
-	Choose.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
-	Choose.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Choose.BorderSizePixel = 0
-	Choose.Position = UDim2.new(-0.000149773157, 0, 1, 0)
-	Choose.Size = UDim2.new(0, 452, 0, 159)
-	Choose.Visible = false
-	
-	UICorner_10.CornerRadius = UDim.new(0, 15)
-	UICorner_10.Parent = Choose
-	
-	Nogap_2.Name = "Nogap"
-	Nogap_2.Parent = Choose
-	Nogap_2.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
-	Nogap_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Nogap_2.BorderSizePixel = 0
-	Nogap_2.Size = UDim2.new(0, 452, 0, 19)
-	
-	Buttons_2.Name = "Buttons"
-	Buttons_2.Parent = Choose
-	
-	Choices.Name = "Choices"
-	Choices.Parent = Buttons_2
-	
-	Yes.Name = "Yes"
-	Yes.Parent = Choices
-	Yes.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
-	Yes.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Yes.BorderSizePixel = 0
-	Yes.Position = UDim2.new(0.577000022, 0, 0.555000007, 0)
-	Yes.Size = UDim2.new(0, 81, 0, 59)
-	Yes.Font = Enum.Font.FredokaOne
-	Yes.Text = "Yes"
-	Yes.TextColor3 = Color3.fromRGB(212, 255, 215)
-	Yes.TextScaled = true
-	Yes.TextSize = 14.000
-	Yes.TextWrapped = true
-	
-	UICorner_11.CornerRadius = UDim.new(0, 15)
-	UICorner_11.Parent = Yes
-	
-	No.Name = "No"
-	No.Parent = Choices
-	No.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
-	No.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	No.BorderSizePixel = 0
-	No.Position = UDim2.new(0.239999995, 0, 0.555000007, 0)
-	No.Size = UDim2.new(0, 81, 0, 59)
-	No.Font = Enum.Font.FredokaOne
-	No.Text = "No"
-	No.TextColor3 = Color3.fromRGB(255, 219, 219)
-	No.TextScaled = true
-	No.TextSize = 14.000
-	No.TextWrapped = true
-	
-	UICorner_12.CornerRadius = UDim.new(0, 15)
-	UICorner_12.Parent = No
-	
-	Question.Name = "Question"
-	Question.Parent = Choices
-	Question.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
-	Question.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Question.BorderSizePixel = 0
-	Question.Position = UDim2.new(0.201327428, 0, 0.08176101, 0)
-	Question.Size = UDim2.new(0, 270, 0, 69)
-	Question.Font = Enum.Font.FredokaOne
-	Question.Text = "Would you like to destroy the UI?"
-	Question.TextColor3 = Color3.fromRGB(255, 255, 255)
-	Question.TextScaled = true
-	Question.TextSize = 14.000
-	Question.TextWrapped = true
-	
-	UICorner_13.CornerRadius = UDim.new(0, 15)
-	UICorner_13.Parent = Question
-	
-	local function ESPloader()
-		local scr = Instance.new('Script', ESP_2)
-	
-		local player = game.Players.LocalPlayer
-		local camera = workspace.CurrentCamera
-		local ESP = scr.Parent
-		local xOffset = 0
-		local yOffset = -50
-		
-		local trackedPersons = {}
-		local personFrames = {}
-		
-		local boxenabled = false
-		local nameenabled = false
-		local healthenabled = false
-		
-		local function trackingstuff(person)
-			local frame = Instance.new("ImageLabel")
-			frame.Size = UDim2.new(0, 50, 0, 50)
-			frame.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-			frame.BackgroundTransparency = 1
-			frame.Image = "rbxassetid://86342051669642"
-			frame.ImageColor3 = Color3.fromRGB(130, 0, 0)
-			frame.AnchorPoint = Vector2.new(0.5, 0.5)
-			frame.Visible = false
-			frame.Parent = ESP
-		
-			local name = Instance.new("TextLabel")
-			name.Font = Enum.Font.Michroma
-			name.TextScaled = true
-			name.TextStrokeColor3 = Color3.fromRGB(74, 0, 0)
-			name.TextStrokeTransparency = 0
-			name.TextColor3 = Color3.new(1, 0, 0)
-			name.Size = UDim2.new(0, 100, 0, 30)
-			name.BackgroundTransparency = 1
-			name.Visible = false
-			name.AnchorPoint = Vector2.new(0.5, 0.5)
-			name.Parent = ESP
-		
-			local healthBar = Instance.new("Frame")
-			healthBar.Size = UDim2.new(0, 100, 0, 5)
-			healthBar.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-			healthBar.BorderSizePixel = 0
-			healthBar.AnchorPoint = Vector2.new(0.5, 0.5)
-			healthBar.Visible = false
-			healthBar.Parent = ESP
-		
-			personFrames[person] = { Frame = frame, Label = name, HealthBar = healthBar }
-		end
-		
+		local ESP = Instance.new("ScreenGui")
+		local ESP_2 = Instance.new("Folder")
+		local Bar = Instance.new("Frame")
+		local Name = Instance.new("TextLabel")
+		local X = Instance.new("TextButton")
+		local minimize = Instance.new("TextButton")
+		local Window = Instance.new("Frame")
+		local UICorner = Instance.new("UICorner")
+		local Nogap = Instance.new("Frame")
+		local Buttons = Instance.new("Folder")
+		local Visuals = Instance.new("Folder")
+		local Description = Instance.new("Folder")
+		local Boxeslabel = Instance.new("TextLabel")
+		local UICorner_2 = Instance.new("UICorner")
+		local Nameslabel = Instance.new("TextLabel")
+		local UICorner_3 = Instance.new("UICorner")
+		local Healthbar = Instance.new("TextLabel")
+		local UICorner_4 = Instance.new("UICorner")
+		local BoxesBox = Instance.new("ImageButton")
+		local UICorner_5 = Instance.new("UICorner")
+		local Namesbox = Instance.new("ImageButton")
+		local UICorner_6 = Instance.new("UICorner")
+		local Healthbars = Instance.new("ImageButton")
+		local UICorner_7 = Instance.new("UICorner")
+		local Features = Instance.new("Folder")
+		local Description_2 = Instance.new("Folder")
+		local Nameslabel_2 = Instance.new("TextLabel")
+		local UICorner_8 = Instance.new("UICorner")
+		local AimBot = Instance.new("ImageButton")
+		local UICorner_9 = Instance.new("UICorner")
+		local Choose = Instance.new("Frame")
+		local UICorner_10 = Instance.new("UICorner")
+		local Nogap_2 = Instance.new("Frame")
+		local Buttons_2 = Instance.new("Folder")
+		local Choices = Instance.new("Folder")
+		local Yes = Instance.new("TextButton")
+		local UICorner_11 = Instance.new("UICorner")
+		local No = Instance.new("TextButton")
+		local UICorner_12 = Instance.new("UICorner")
+		local Question = Instance.new("TextLabel")
+		local UICorner_13 = Instance.new("UICorner")
+
+		ESP.Name = "ESP"
+		ESP.Parent = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("BGui")
+		ESP.Enabled = true
+		ESP.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+		ESP_2.Name = "ESP"
+		ESP_2.Parent = ESP
+
+		Bar.Name = "Bar"
+		Bar.Parent = ESP_2
+		Bar.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+		Bar.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Bar.BorderSizePixel = 0
+		Bar.Position = UDim2.new(0.54289788, 0, 0.634975374, 0)
+		Bar.Size = UDim2.new(0, 452, 0, 17)
+
+		Name.Name = "Name"
+		Name.Parent = Bar
+		Name.BackgroundColor3 = Color3.fromRGB(195, 195, 195)
+		Name.BackgroundTransparency = 1.000
+		Name.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Name.BorderSizePixel = 0
+		Name.Position = UDim2.new(0.420375377, 0, 0, 0)
+		Name.Size = UDim2.new(0, 71, 0, 18)
+		Name.Font = Enum.Font.FredokaOne
+		Name.Text = "B's ESP"
+		Name.TextColor3 = Color3.fromRGB(195, 195, 195)
+		Name.TextScaled = true
+		Name.TextSize = 14.000
+		Name.TextWrapped = true
+
+		X.Name = "X"
+		X.Parent = Bar
+		X.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+		X.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		X.BorderSizePixel = 0
+		X.Position = UDim2.new(0.959940732, 0, 0.117647059, 0)
+		X.Size = UDim2.new(0, 12, 0, 12)
+		X.Font = Enum.Font.SourceSans
+		X.TextColor3 = Color3.fromRGB(0, 0, 0)
+		X.TextSize = 14.000
+		X.TextTransparency = 1.000
+
+		minimize.Name = "minimize"
+		minimize.Parent = Bar
+		minimize.BackgroundColor3 = Color3.fromRGB(255, 255, 0)
+		minimize.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		minimize.BorderSizePixel = 0
+		minimize.Position = UDim2.new(0.916637123, 0, 0.117999807, 0)
+		minimize.Size = UDim2.new(0, 12, 0, 12)
+		minimize.Font = Enum.Font.SourceSans
+		minimize.TextColor3 = Color3.fromRGB(0, 0, 0)
+		minimize.TextSize = 14.000
+		minimize.TextTransparency = 1.000
+
+		Window.Name = "Window"
+		Window.Parent = Bar
+		Window.Active = true
+		Window.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
+		Window.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Window.BorderSizePixel = 0
+		Window.Position = UDim2.new(-0.000149773157, 0, 1, 0)
+		Window.Size = UDim2.new(0, 452, 0, 159)
+
+		UICorner.CornerRadius = UDim.new(0, 15)
+		UICorner.Parent = Window
+
+		Nogap.Name = "Nogap"
+		Nogap.Parent = Window
+		Nogap.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
+		Nogap.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Nogap.BorderSizePixel = 0
+		Nogap.Size = UDim2.new(0, 452, 0, 19)
+
+		Buttons.Name = "Buttons"
+		Buttons.Parent = Window
+
+		Visuals.Name = "Visuals"
+		Visuals.Parent = Buttons
+
+		Description.Name = "Description"
+		Description.Parent = Visuals
+
+		Boxeslabel.Name = "Boxeslabel"
+		Boxeslabel.Parent = Description
+		Boxeslabel.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
+		Boxeslabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Boxeslabel.BorderSizePixel = 0
+		Boxeslabel.Position = UDim2.new(0.257662624, 0, 0.550980091, 0)
+		Boxeslabel.Size = UDim2.new(0, 81, 0, 59)
+		Boxeslabel.Font = Enum.Font.FredokaOne
+		Boxeslabel.Text = "Boxes"
+		Boxeslabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+		Boxeslabel.TextScaled = true
+		Boxeslabel.TextSize = 14.000
+		Boxeslabel.TextWrapped = true
+
+		UICorner_2.CornerRadius = UDim.new(0, 15)
+		UICorner_2.Parent = Boxeslabel
+
+		Nameslabel.Name = "Nameslabel"
+		Nameslabel.Parent = Description
+		Nameslabel.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
+		Nameslabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Nameslabel.BorderSizePixel = 0
+		Nameslabel.Position = UDim2.new(0.253662705, 0, 0.114809431, 0)
+		Nameslabel.Size = UDim2.new(0, 81, 0, 59)
+		Nameslabel.Font = Enum.Font.FredokaOne
+		Nameslabel.Text = "Names"
+		Nameslabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+		Nameslabel.TextScaled = true
+		Nameslabel.TextSize = 14.000
+		Nameslabel.TextWrapped = true
+
+		UICorner_3.CornerRadius = UDim.new(0, 15)
+		UICorner_3.Parent = Nameslabel
+
+		Healthbar.Name = "Healthbar"
+		Healthbar.Parent = Description
+		Healthbar.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
+		Healthbar.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Healthbar.BorderSizePixel = 0
+		Healthbar.Position = UDim2.new(0.735538721, 0, 0.525822878, 0)
+		Healthbar.Size = UDim2.new(0, 81, 0, 59)
+		Healthbar.Font = Enum.Font.FredokaOne
+		Healthbar.Text = "Healthbars"
+		Healthbar.TextColor3 = Color3.fromRGB(255, 255, 255)
+		Healthbar.TextScaled = true
+		Healthbar.TextSize = 14.000
+		Healthbar.TextWrapped = true
+
+		UICorner_4.CornerRadius = UDim.new(0, 15)
+		UICorner_4.Parent = Healthbar
+
+		BoxesBox.Name = "BoxesBox"
+		BoxesBox.Parent = Visuals
+		BoxesBox.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+		BoxesBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		BoxesBox.BorderSizePixel = 0
+		BoxesBox.Position = UDim2.new(0.0970873758, 0, 0.548845947, 0)
+		BoxesBox.Size = UDim2.new(0, 60, 0, 60)
+		BoxesBox.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+		BoxesBox.ImageColor3 = Color3.fromRGB(255, 0, 0)
+		BoxesBox.ImageTransparency = 1.000
+
+		UICorner_5.CornerRadius = UDim.new(0, 15)
+		UICorner_5.Parent = BoxesBox
+
+		Namesbox.Name = "Namesbox"
+		Namesbox.Parent = Visuals
+		Namesbox.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+		Namesbox.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Namesbox.BorderSizePixel = 0
+		Namesbox.Position = UDim2.new(0.0970873758, 0, 0.114699647, 0)
+		Namesbox.Size = UDim2.new(0, 60, 0, 60)
+		Namesbox.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+		Namesbox.ImageColor3 = Color3.fromRGB(255, 0, 0)
+		Namesbox.ImageTransparency = 1.000
+
+		UICorner_6.CornerRadius = UDim.new(0, 15)
+		UICorner_6.Parent = Namesbox
+
+		Healthbars.Name = "Healthbars"
+		Healthbars.Parent = Visuals
+		Healthbars.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+		Healthbars.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Healthbars.BorderSizePixel = 0
+		Healthbars.Position = UDim2.new(0.57496345, 0, 0.523688734, 0)
+		Healthbars.Size = UDim2.new(0, 60, 0, 60)
+		Healthbars.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+		Healthbars.ImageColor3 = Color3.fromRGB(255, 0, 0)
+		Healthbars.ImageTransparency = 1.000
+
+		UICorner_7.CornerRadius = UDim.new(0, 15)
+		UICorner_7.Parent = Healthbars
+
+		Features.Name = "Features"
+		Features.Parent = Buttons
+
+		Description_2.Name = "Description"
+		Description_2.Parent = Features
+
+		Nameslabel_2.Name = "Nameslabel"
+		Nameslabel_2.Parent = Description_2
+		Nameslabel_2.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
+		Nameslabel_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Nameslabel_2.BorderSizePixel = 0
+		Nameslabel_2.Position = UDim2.new(0.731538773, 0, 0.089652203, 0)
+		Nameslabel_2.Size = UDim2.new(0, 81, 0, 59)
+		Nameslabel_2.Font = Enum.Font.FredokaOne
+		Nameslabel_2.Text = "Aimbot"
+		Nameslabel_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+		Nameslabel_2.TextScaled = true
+		Nameslabel_2.TextSize = 14.000
+		Nameslabel_2.TextWrapped = true
+
+		UICorner_8.CornerRadius = UDim.new(0, 15)
+		UICorner_8.Parent = Nameslabel_2
+
+		AimBot.Name = "AimBot"
+		AimBot.Parent = Features
+		AimBot.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+		AimBot.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		AimBot.BorderSizePixel = 0
+		AimBot.Position = UDim2.new(0.57496345, 0, 0.0895424113, 0)
+		AimBot.Size = UDim2.new(0, 60, 0, 60)
+		AimBot.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+		AimBot.ImageColor3 = Color3.fromRGB(255, 0, 0)
+		AimBot.ImageTransparency = 1.000
+
+		UICorner_9.CornerRadius = UDim.new(0, 15)
+		UICorner_9.Parent = AimBot
+
+		Choose.Name = "Choose"
+		Choose.Parent = Bar
+		Choose.Active = true
+		Choose.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
+		Choose.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Choose.BorderSizePixel = 0
+		Choose.Position = UDim2.new(-0.000149773157, 0, 1, 0)
+		Choose.Size = UDim2.new(0, 452, 0, 159)
+		Choose.Visible = false
+
+		UICorner_10.CornerRadius = UDim.new(0, 15)
+		UICorner_10.Parent = Choose
+
+		Nogap_2.Name = "Nogap"
+		Nogap_2.Parent = Choose
+		Nogap_2.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
+		Nogap_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Nogap_2.BorderSizePixel = 0
+		Nogap_2.Size = UDim2.new(0, 452, 0, 19)
+
+		Buttons_2.Name = "Buttons"
+		Buttons_2.Parent = Choose
+
+		Choices.Name = "Choices"
+		Choices.Parent = Buttons_2
+
+		Yes.Name = "Yes"
+		Yes.Parent = Choices
+		Yes.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
+		Yes.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Yes.BorderSizePixel = 0
+		Yes.Position = UDim2.new(0.577000022, 0, 0.555000007, 0)
+		Yes.Size = UDim2.new(0, 81, 0, 59)
+		Yes.Font = Enum.Font.FredokaOne
+		Yes.Text = "Yes"
+		Yes.TextColor3 = Color3.fromRGB(212, 255, 215)
+		Yes.TextScaled = true
+		Yes.TextSize = 14.000
+		Yes.TextWrapped = true
+
+		UICorner_11.CornerRadius = UDim.new(0, 15)
+		UICorner_11.Parent = Yes
+
+		No.Name = "No"
+		No.Parent = Choices
+		No.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
+		No.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		No.BorderSizePixel = 0
+		No.Position = UDim2.new(0.239999995, 0, 0.555000007, 0)
+		No.Size = UDim2.new(0, 81, 0, 59)
+		No.Font = Enum.Font.FredokaOne
+		No.Text = "No"
+		No.TextColor3 = Color3.fromRGB(255, 219, 219)
+		No.TextScaled = true
+		No.TextSize = 14.000
+		No.TextWrapped = true
+
+		UICorner_12.CornerRadius = UDim.new(0, 15)
+		UICorner_12.Parent = No
+
+		Question.Name = "Question"
+		Question.Parent = Choices
+		Question.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
+		Question.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Question.BorderSizePixel = 0
+		Question.Position = UDim2.new(0.201327428, 0, 0.08176101, 0)
+		Question.Size = UDim2.new(0, 270, 0, 69)
+		Question.Font = Enum.Font.FredokaOne
+		Question.Text = "Would you like to destroy the UI?"
+		Question.TextColor3 = Color3.fromRGB(255, 255, 255)
+		Question.TextScaled = true
+		Question.TextSize = 14.000
+		Question.TextWrapped = true
+
+		UICorner_13.CornerRadius = UDim.new(0, 15)
+		UICorner_13.Parent = Question
+
+		local function ESPloader()
+			local scr = Instance.new('Script', ESP_2)
+
+			local player = game.Players.LocalPlayer
+			local camera = workspace.CurrentCamera
+			local ESP = scr.Parent
+			local xOffset = 0
+			local yOffset = -50
+
+			local trackedPersons = {}
+			local personFrames = {}
+
+			local boxenabled = false
+			local nameenabled = false
+			local healthenabled = false
+
+			-- Limit for the number of players to track (e.g., 4 players)
+			local MAX_TRACKED_PLAYERS = 4
+
+			-- Function to create ESP elements for a player
+			local function trackingstuff(person)
+				local frame = Instance.new("ImageLabel")
+				frame.Size = UDim2.new(0, 50, 0, 50)
+				frame.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+				frame.BackgroundTransparency = 1
+				frame.Image = "rbxassetid://86342051669642"
+				frame.ImageColor3 = Color3.fromRGB(130, 0, 0)
+				frame.AnchorPoint = Vector2.new(0.5, 0.5)
+				frame.Visible = false
+				frame.Parent = ESP
+
+				local name = Instance.new("TextLabel")
+				name.Font = Enum.Font.Michroma
+				name.TextScaled = true
+				name.TextStrokeColor3 = Color3.fromRGB(74, 0, 0)
+				name.TextStrokeTransparency = 0
+				name.TextColor3 = Color3.new(1, 0, 0)
+				name.Size = UDim2.new(0, 100, 0, 30)
+				name.BackgroundTransparency = 1
+				name.Visible = false
+				name.AnchorPoint = Vector2.new(0.5, 0.5)
+				name.Parent = ESP
+
+				local healthBar = Instance.new("Frame")
+				healthBar.Size = UDim2.new(0, 100, 0, 5)
+				healthBar.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+				healthBar.BorderSizePixel = 0
+				healthBar.AnchorPoint = Vector2.new(0.5, 0.5)
+				healthBar.Visible = false
+				healthBar.Parent = ESP
+
+				personFrames[person] = { Frame = frame, Label = name, HealthBar = healthBar }
+			end
+
+			-- Function to update all ESP elements for tracked players
+
+			-- Function to start tracking a player
+			local function track(person)
+				if person:IsA("Model") and person:FindFirstChild("HumanoidRootPart") then
+					if person == player.Character then
+						return
+					end
+					trackedPersons[person] = true
+					trackingstuff(person)
+				end
+			end
+
+			-- Function to stop tracking a player
+			local function untrack(person)
+				if personFrames[person] then
+					personFrames[person].Frame:Destroy()
+					personFrames[person].Label:Destroy()
+					personFrames[person].HealthBar:Destroy()
+					personFrames[person] = nil
+				end
+				trackedPersons[person] = nil
+			end
 			local function update()
+				-- List of players currently being tracked
+				local playersInRange = {}
+
+				-- Loop through all tracked players and update their ESP
 				for person, components in pairs(personFrames) do
 					local frame = components.Frame
 					local name = components.Label
@@ -2148,6 +2179,10 @@ local function EspLoaderButtonScript()
 							local screenPosition, isOnScreen = camera:WorldToViewportPoint(humanoidRootPart.Position)
 
 							if isOnScreen and humanoid.Health > 0 then
+								-- Add to players in range
+								table.insert(playersInRange, { player = player, distance = (camera.CFrame.Position - humanoidRootPart.Position).magnitude })
+
+								-- Update ESP visibility based on toggled options
 								if boxenabled then
 									frame.Position = UDim2.new(0, screenPosition.X + xOffset, 0, screenPosition.Y + yOffset)
 									frame.Visible = true
@@ -2178,311 +2213,293 @@ local function EspLoaderButtonScript()
 								else
 									healthBar.Visible = false
 								end
-								
-								while true do 
-									task.wait(0.5)
-
-									local espGui = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("BGui"):FindFirstChild("ESP")
-
-									if not espGui then
-										if boxenabled == true or nameenabled == true or healthenabled == true then
-										boxenabled = false
-										nameenabled = false
-										healthenabled = false
-										frame.Visible = false
-										name.Visible = false
-										healthBar.Visible = false
-										print("ESP is not available. Disabling visibility.")
-										end
-									end
-								end
 							else
+								-- Hide ESP if off-screen or no health
 								frame.Visible = false
 								name.Visible = false
 								healthBar.Visible = false
 							end
 						else
+							-- Remove ESP if player is no longer valid
 							frame.Visible = false
 							name.Visible = false
 							healthBar.Visible = false
 						end
 					else
+						-- Remove ESP if no humanoid or humanoidRootPart
 						frame.Visible = false
 						name.Visible = false
 						healthBar.Visible = false
 					end
 				end
-			end
 
-		local function track(person)
-			if person:IsA("Model") and person:FindFirstChild("HumanoidRootPart") then
-				if person == player.Character then
-					return
-				end
-				trackedPersons[person] = true
-				trackingstuff(person)
-			end
-		end
-		
-		local function untrack(person)
-			if personFrames[person] then
-				personFrames[person].Frame:Destroy()
-				personFrames[person].Label:Destroy()
-				personFrames[person].HealthBar:Destroy()
-				personFrames[person] = nil
-			end
-			trackedPersons[person] = nil
-		end
-		
-		ESP.Bar.Window.Buttons.Visuals.BoxesBox.MouseButton1Click:Connect(function()
-			boxenabled = not boxenabled
-			ESP.Bar.Window.Buttons.Visuals.BoxesBox.BackgroundColor3 = boxenabled and Color3.new(0, 1, 0) or Color3.new(1, 0, 0)
-		end)
-		
-		ESP.Bar.Window.Buttons.Visuals.Namesbox.MouseButton1Click:Connect(function()
-			nameenabled = not nameenabled
-			ESP.Bar.Window.Buttons.Visuals.Namesbox.BackgroundColor3 = nameenabled and Color3.new(0, 1, 0) or Color3.new(1, 0, 0)
-		end)
-		
-		ESP.Bar.Window.Buttons.Visuals.Healthbars.MouseButton1Click:Connect(function()
-			healthenabled = not healthenabled
-			ESP.Bar.Window.Buttons.Visuals.Healthbars.BackgroundColor3 = healthenabled and Color3.new(0, 1, 0) or Color3.new(1, 0, 0)
-		end)
-		
-		for _, targetPlayer in pairs(game.Players:GetPlayers()) do
-			if targetPlayer.Character then
-				track(targetPlayer.Character)
-			end
-		end
-		
-		for _, descendant in pairs(workspace:GetDescendants()) do
-			if descendant:IsA("Model") and descendant:FindFirstChild("HumanoidRootPart") then
-				track(descendant)
-			end
-		end
-		
-		game.Players.PlayerAdded:Connect(function(new)
-			new.CharacterAdded:Connect(function(character)
-				local hrp = character:WaitForChild("HumanoidRootPart", 5)
-				if hrp then
-					track(character)
-				else
-					print("HumanoidRootPart not found for player " .. new.Name)
-				end
-			end)
-		end)
-	
-		game.Players.PlayerRemoving:Connect(function(player)
-			if player.Character then
-				untrack(player.Character)
-			end
-		end)
-		
-		game:GetService("RunService").RenderStepped:Connect(update)
-		
-	end
-	coroutine.wrap(ESPloader)()
-	local function DestroyGUI()
-		local scr = Instance.new('Script', X)
-	
-		scr.Parent.MouseButton1Click:Connect(function()
-		scr.Parent.Visible = false
-		scr.Parent.Parent.minimize.Visible = false
-		scr.Parent.Parent.Choose.Visible = true
-		end)
-	end
-	coroutine.wrap(DestroyGUI)()
-	local function Minimize()
-		local scr = Instance.new('Script', minimize)
-	
-		local Frame = scr.Parent.Parent.Window
-		scr.Parent.MouseButton1Click:Connect(function()
-			if Frame.Visible == true then
-				Frame.Visible = false
-			else
-				Frame.Visible = true
-			end
-		end)
-	end
-	coroutine.wrap(Minimize)()
-	local function WindowLoader()
-		local scr = Instance.new('Script', Window)
-	
-		frame = scr.Parent.Parent
-		frame.Draggable = true
-		frame.Active = true
-		frame.Selectable = true
-	end
-	coroutine.wrap(WindowLoader)()
-	local function BoxLoader()
-		local scr = Instance.new('Script', BoxesBox)
-	
-		scr.Parent.MouseButton1Click:Connect(function()
-			if scr.Parent.BackgroundColor3 ~= Color3.new(0,1,0) then
-				scr.Parent.BackgroundColor3 = Color3.new(0,1,0)
-			else
-				scr.Parent.BackgroundColor3 = Color3.new(1,0,0)
-			end
-		end)
-	end
-	coroutine.wrap(BoxLoader)()
-	local function NamesLoader()
-		local scr = Instance.new('Script', Namesbox)
-	
-		scr.Parent.MouseButton1Click:Connect(function()
-			if scr.Parent.BackgroundColor3 ~= Color3.new(0,1,0) then
-				scr.Parent.BackgroundColor3 = Color3.new(0,1,0)
-			else
-				scr.Parent.BackgroundColor3 = Color3.new(1,0,0)
-			end
-		end)
-	end
-	coroutine.wrap(NamesLoader)()
-	local function HealthbarLoader()
-		local scr = Instance.new('Script', Healthbars)
-	
-		scr.Parent.MouseButton1Click:Connect(function()
-			if scr.Parent.BackgroundColor3 ~= Color3.new(0,1,0) then
-				scr.Parent.BackgroundColor3 = Color3.new(0,1,0)
-			else
-				scr.Parent.BackgroundColor3 = Color3.new(1,0,0)
-			end
-		end)
-	end
-	coroutine.wrap(HealthbarLoader)()
-	local function AimbotLoader()
-		local scr = Instance.new('Script', AimBot)
-		local oldcam 
-		local uiserv = game:GetService("UserInputService")
-		local rs = game:GetService("RunService")
-		local camera = workspace.CurrentCamera
-		local player = game.Players.LocalPlayer
-		local mouse = player:GetMouse()
-	
-		local radius = 25
-		local aimbot = false
-		local isLeftMouseDown = false
-	
-		local toggleButton = scr.Parent
-	
-		local function ubs()
-			toggleButton.BackgroundColor3 = aimbot and Color3.new(0, 1, 0) or Color3.new(1, 0, 0)
-		end
-	
-		local function findvictim()
-			local mousepos = uiserv:GetMouseLocation()
-			local nearestvictim = nil
-			local shtestdis = radius
-			for _, victim in pairs(workspace:GetDescendants()) do
-				if victim:IsA("Model")
-					and victim:FindFirstChild("HumanoidRootPart")
-					and victim:FindFirstChildOfClass("Humanoid")
-					and game.Players:GetPlayerFromCharacter(victim) ~= nil
-					and victim ~= player.Character then
-					local screenpos, screen = camera:WorldToViewportPoint(victim.HumanoidRootPart.Position)
-					if screen then
-						local distance = (Vector2.new(screenpos.X, screenpos.Y) - mousepos).Magnitude
-						if distance < shtestdis then
-							nearestvictim = victim
-							shtestdis = distance
+				-- Sort players by distance (closest first)
+				table.sort(playersInRange, function(a, b)
+					return a.distance < b.distance
+				end)
+
+				-- Track only the closest players (up to MAX_TRACKED_PLAYERS)
+				for _, data in ipairs(playersInRange) do
+					local player = data.player
+					if not trackedPersons[player.Character] then
+						if table.count(trackedPersons) >= MAX_TRACKED_PLAYERS then
+							-- Stop tracking the farthest player (if we exceed the limit)
+							local farthestPlayer = table.remove(trackedPersons, #trackedPersons)
+							untrack(farthestPlayer)
 						end
+						-- Start tracking the player
+						trackedPersons[player.Character] = true
+						trackingstuff(player.Character)
 					end
 				end
 			end
-			return nearestvictim
+			-- Toggle for visual elements (boxes, names, healthbars)
+			ESP.Bar.Window.Buttons.Visuals.BoxesBox.MouseButton1Click:Connect(function()
+				boxenabled = not boxenabled
+				ESP.Bar.Window.Buttons.Visuals.BoxesBox.BackgroundColor3 = boxenabled and Color3.new(0, 1, 0) or Color3.new(1, 0, 0)
+			end)
+
+			ESP.Bar.Window.Buttons.Visuals.Namesbox.MouseButton1Click:Connect(function()
+				nameenabled = not nameenabled
+				ESP.Bar.Window.Buttons.Visuals.Namesbox.BackgroundColor3 = nameenabled and Color3.new(0, 1, 0) or Color3.new(1, 0, 0)
+			end)
+
+			ESP.Bar.Window.Buttons.Visuals.Healthbars.MouseButton1Click:Connect(function()
+				healthenabled = not healthenabled
+				ESP.Bar.Window.Buttons.Visuals.Healthbars.BackgroundColor3 = healthenabled and Color3.new(0, 1, 0) or Color3.new(1, 0, 0)
+			end)
+
+			-- Track all players when the script starts
+			for _, targetPlayer in pairs(game.Players:GetPlayers()) do
+				if targetPlayer.Character then
+					track(targetPlayer.Character)
+				end
+			end
+
+			-- Listen for new players joining the game
+			game.Players.PlayerAdded:Connect(function(new)
+				new.CharacterAdded:Connect(function(character)
+					local hrp = character:WaitForChild("HumanoidRootPart", 5)
+					if hrp then
+						track(character)
+					else
+						print("HumanoidRootPart not found for player " .. new.Name)
+					end
+				end)
+			end)
+
+			-- Listen for players leaving the game
+			game.Players.PlayerRemoving:Connect(function(player)
+				if player.Character then
+					untrack(player.Character)
+				end
+			end)
+
+			-- Call update on every frame
+			game:GetService("RunService").RenderStepped:Connect(update)
 		end
-	
-		local function victim(target)
-			if target and target:FindFirstChild("HumanoidRootPart") then
-				if player.CameraMode == Enum.CameraMode.Classic then
-					player.CameraMode = Enum.CameraMode.LockFirstPerson
-				end
-				local position = target.HumanoidRootPart.Position
-				local camposition = camera.CFrame.Position
-				camera.CFrame = CFrame.lookAt(camposition, position)
-			end
+		coroutine.wrap(ESPloader)()
+		local function DestroyGUI()
+			local scr = Instance.new('Script', X)
+
+			scr.Parent.MouseButton1Click:Connect(function()
+				scr.Parent.Visible = false
+				scr.Parent.Parent.minimize.Visible = false
+				scr.Parent.Parent.Choose.Visible = true
+			end)
 		end
-	
-		toggleButton.MouseButton1Click:Connect(function()
-			aimbot = not aimbot
-			if not aimbot and player.CameraMode ~= Enum.CameraMode.Classic then
-				player.CameraMode = Enum.CameraMode.Classic
+		coroutine.wrap(DestroyGUI)()
+		local function Minimize()
+			local scr = Instance.new('Script', minimize)
+
+			local Frame = scr.Parent.Parent.Window
+			scr.Parent.MouseButton1Click:Connect(function()
+				if Frame.Visible == true then
+					Frame.Visible = false
+				else
+					Frame.Visible = true
+				end
+			end)
+		end
+		coroutine.wrap(Minimize)()
+		local function WindowLoader()
+			local scr = Instance.new('Script', Window)
+
+			frame = scr.Parent.Parent
+			frame.Draggable = true
+			frame.Active = true
+			frame.Selectable = true
+		end
+		coroutine.wrap(WindowLoader)()
+		local function BoxLoader()
+			local scr = Instance.new('Script', BoxesBox)
+
+			scr.Parent.MouseButton1Click:Connect(function()
+				if scr.Parent.BackgroundColor3 ~= Color3.new(0,1,0) then
+					scr.Parent.BackgroundColor3 = Color3.new(0,1,0)
+				else
+					scr.Parent.BackgroundColor3 = Color3.new(1,0,0)
+				end
+			end)
+		end
+		coroutine.wrap(BoxLoader)()
+		local function NamesLoader()
+			local scr = Instance.new('Script', Namesbox)
+
+			scr.Parent.MouseButton1Click:Connect(function()
+				if scr.Parent.BackgroundColor3 ~= Color3.new(0,1,0) then
+					scr.Parent.BackgroundColor3 = Color3.new(0,1,0)
+				else
+					scr.Parent.BackgroundColor3 = Color3.new(1,0,0)
+				end
+			end)
+		end
+		coroutine.wrap(NamesLoader)()
+		local function HealthbarLoader()
+			local scr = Instance.new('Script', Healthbars)
+
+			scr.Parent.MouseButton1Click:Connect(function()
+				if scr.Parent.BackgroundColor3 ~= Color3.new(0,1,0) then
+					scr.Parent.BackgroundColor3 = Color3.new(0,1,0)
+				else
+					scr.Parent.BackgroundColor3 = Color3.new(1,0,0)
+				end
+			end)
+		end
+		coroutine.wrap(HealthbarLoader)()
+		local function AimbotLoader()
+			local scr = Instance.new('Script', AimBot)
+			local oldcam 
+			local uiserv = game:GetService("UserInputService")
+			local rs = game:GetService("RunService")
+			local camera = workspace.CurrentCamera
+			local player = game.Players.LocalPlayer
+			local mouse = player:GetMouse()
+
+			local radius = 25
+			local aimbot = false
+			local isLeftMouseDown = false
+
+			local toggleButton = scr.Parent
+
+			local function ubs()
+				toggleButton.BackgroundColor3 = aimbot and Color3.new(0, 1, 0) or Color3.new(1, 0, 0)
 			end
-			ubs()
-		end)
-	
-		uiserv.InputBegan:Connect(function(input)
-			if input.UserInputType == Enum.UserInputType.MouseButton1 then
-				isLeftMouseDown = true
+
+			local function findvictim()
+				local mousepos = uiserv:GetMouseLocation()
+				local nearestvictim = nil
+				local shtestdis = radius
+				for _, victim in pairs(workspace:GetDescendants()) do
+					if victim:IsA("Model")
+						and victim:FindFirstChild("HumanoidRootPart")
+						and victim:FindFirstChildOfClass("Humanoid")
+						and game.Players:GetPlayerFromCharacter(victim) ~= nil
+						and victim ~= player.Character then
+						local screenpos, screen = camera:WorldToViewportPoint(victim.HumanoidRootPart.Position)
+						if screen then
+							local distance = (Vector2.new(screenpos.X, screenpos.Y) - mousepos).Magnitude
+							if distance < shtestdis then
+								nearestvictim = victim
+								shtestdis = distance
+							end
+						end
+					end
+				end
+				return nearestvictim
 			end
-		end)
-	
-		uiserv.InputEnded:Connect(function(input)
-			if input.UserInputType == Enum.UserInputType.MouseButton1 then
-				isLeftMouseDown = false
-				if player.CameraMode ~= Enum.CameraMode.Classic then
-					task.delay(0.1, function()
-						player.CameraMode = Enum.CameraMode.Classic
-					end)
+
+			local function victim(target)
+				if target and target:FindFirstChild("HumanoidRootPart") then
+					if player.CameraMode == Enum.CameraMode.Classic then
+						player.CameraMode = Enum.CameraMode.LockFirstPerson
+					end
+					local position = target.HumanoidRootPart.Position
+					local camposition = camera.CFrame.Position
+					camera.CFrame = CFrame.lookAt(camposition, position)
 				end
 			end
-		end)
-	
-		rs.RenderStepped:Connect(function()
-			if aimbot and isLeftMouseDown then
-				local nearestvictim = findvictim()
-				if nearestvictim then
-					victim(nearestvictim)
+
+			toggleButton.MouseButton1Click:Connect(function()
+				aimbot = not aimbot
+				if not aimbot and player.CameraMode ~= Enum.CameraMode.Classic then
+					player.CameraMode = Enum.CameraMode.Classic
 				end
-			end
-		end)
-		
-		while true do 
-			task.wait(0.5)
-			if not game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("BGui"):FindFirstChild("ESP") then
-				if aimbot == true or isLeftMouseDown == true then
+				ubs()
+			end)
+
+			uiserv.InputBegan:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+					isLeftMouseDown = true
+				end
+			end)
+
+			uiserv.InputEnded:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+					isLeftMouseDown = false
+					if player.CameraMode ~= Enum.CameraMode.Classic then
+						task.delay(0.1, function()
+							player.CameraMode = Enum.CameraMode.Classic
+						end)
+					end
+				end
+			end)
+
+			rs.RenderStepped:Connect(function()
+				if aimbot and isLeftMouseDown then
+					local nearestvictim = findvictim()
+					if nearestvictim then
+						victim(nearestvictim)
+					end
+				end
+			end)
+
+			while true do 
+				task.wait(0.5)
+				if not game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("BGui"):FindFirstChild("ESP") then
+					if aimbot == true or isLeftMouseDown == true then
 						aimbot = false
 						print("false.")
 						isLeftMouseDown = false
+					end
 				end
 			end
+
+			ubs()
 		end
-	
-		ubs()
-	end
-	coroutine.wrap(AimbotLoader)()
-	local function ChooseFrame()
-		local scr = Instance.new('Script', Choose)
-	
-		frame = scr.Parent.Parent
-		frame.Draggable = true
-		frame.Active = true
-		frame.Selectable = true
-	end
-	coroutine.wrap(ChooseFrame)()
-	local function YesF()
-		local player = game.Players.LocalPlayer
-		local scr = Instance.new('Script', Yes)
-		scr.Parent.MouseButton1Click:Connect(function()
-			player.CameraMode = Enum.CameraMode.Classic
+		coroutine.wrap(AimbotLoader)()
+		local function ChooseFrame()
+			local scr = Instance.new('Script', Choose)
+
+			frame = scr.Parent.Parent
+			frame.Draggable = true
+			frame.Active = true
+			frame.Selectable = true
+		end
+		coroutine.wrap(ChooseFrame)()
+		local function YesF()
+			local player = game.Players.LocalPlayer
+			local scr = Instance.new('Script', Yes)
+			scr.Parent.MouseButton1Click:Connect(function()
+				player.CameraMode = Enum.CameraMode.Classic
 				local function send(text)
 					local Startergui = game:GetService("StarterGui")
 					Startergui:SetCore("SendNotification", { Title = "Made by Knownperson_", Text = text, Duration = 5})
 				end
 				send("Destroyed ESP")
-			scr.Parent.Parent.Parent.Parent.Parent.Parent.Parent:Destroy()
-		end)
-	end
-	coroutine.wrap(YesF)()
-	local function NoF()
-		local scr = Instance.new('Script', No)
-		scr.Parent.MouseButton1Click:Connect(function()
-			scr.Parent.Parent.Parent.Parent.Visible = false
-			scr.Parent.Parent.Parent.Parent.Parent.minimize.Visible = true
-			scr.Parent.Parent.Parent.Parent.Parent.X.Visible = true
-		end)
-	end
-	coroutine.wrap(NoF)()
+				scr.Parent.Parent.Parent.Parent.Parent.Parent.Parent:Destroy()
+			end)
+		end
+		coroutine.wrap(YesF)()
+		local function NoF()
+			local scr = Instance.new('Script', No)
+			scr.Parent.MouseButton1Click:Connect(function()
+				scr.Parent.Parent.Parent.Parent.Visible = false
+				scr.Parent.Parent.Parent.Parent.Parent.minimize.Visible = true
+				scr.Parent.Parent.Parent.Parent.Parent.X.Visible = true
+			end)
+		end
+		coroutine.wrap(NoF)()
 	end
 	local function send(text)
 		local StarterGui = game:GetService("StarterGui")
@@ -2522,11 +2539,11 @@ local function MinimizeButton()
 	script.Parent.MouseButton1Click:Connect(function()
 		for i, icon in ipairs(icons) do
 			if icon:IsA("GuiObject") then
-			if icon.Visible == true then
-				icon.Visible = false
-			else
-				icon.Visible = true
-			end
+				if icon.Visible == true then
+					icon.Visible = false
+				else
+					icon.Visible = true
+				end
 			end
 		end
 		if houseicon.ImageColor3 == Color3.new(1,1,1) then
@@ -2553,12 +2570,12 @@ local function XButtonDestroy()
 	local script = Instance.new('Script', X)
 
 	script.Parent.MouseButton1Click:Connect(function()
-	script.Parent.Visible = false
-	script.Parent.Parent.minimize.Visible = false
-	script.Parent.Parent.Window.Visible = false
-	script.Parent.Parent.Choose.Visible = true
-	script.Parent.Parent.Icons.Houseicon.Visible = false
-	script.Parent.Parent.Icons.Credits.Visible = false
+		script.Parent.Visible = false
+		script.Parent.Parent.minimize.Visible = false
+		script.Parent.Parent.Window.Visible = false
+		script.Parent.Parent.Choose.Visible = true
+		script.Parent.Parent.Icons.Houseicon.Visible = false
+		script.Parent.Parent.Icons.Credits.Visible = false
 	end)
 end
 coroutine.wrap(XButtonDestroy)()
@@ -2628,14 +2645,14 @@ local function BarScript()
 	local script = Instance.new('Script', Bar)
 
 	local function send(text)
-	local StarterGui = game:GetService("StarterGui")
-	StarterGui:SetCore("SendNotification", {
-		Title = "Made by Knownperson_",
-		Text = text,
-		Duration = 5
-	})
+		local StarterGui = game:GetService("StarterGui")
+		StarterGui:SetCore("SendNotification", {
+			Title = "Made by Knownperson_",
+			Text = text,
+			Duration = 5
+		})
 	end
-	
+
 	send("Injected BGui.")
 end
 coroutine.wrap(BarScript)()
