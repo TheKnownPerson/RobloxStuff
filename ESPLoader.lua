@@ -1796,7 +1796,7 @@ local function EspLoaderButtonScript()
 		local UICorner_13 = Instance.new("UICorner")
 
 		ESP.Name = "ESP"
-		ESP.Parent = game:GetService("CoreGui"):FindFirstChild("BGui")
+		ESP.Parent = game:GetService("CoreGui"):WaitForChild("BGui")
 		ESP.Enabled = true
 		ESP.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
@@ -2659,4 +2659,5 @@ local function BarScript()
 
 	send("Injected BGui.")
 end
+coroutine.wrap(BarScript)()
 coroutine.wrap(BarScript)()
