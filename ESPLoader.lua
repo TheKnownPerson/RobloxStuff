@@ -1796,7 +1796,7 @@ local function EspLoaderButtonScript()
 		local UICorner_13 = Instance.new("UICorner")
 
 		ESP.Name = "ESP"
-		ESP.Parent = game:GetService("CoreGui"):WaitForChild("BGui")
+		ESP.Parent = game:GetService("CoreGui"):FindFirstChild("BGui")
 		ESP.Enabled = true
 		ESP.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
@@ -2514,13 +2514,13 @@ local function EspLoaderButtonScript()
 		})
 	end
 	script.Parent.MouseButton1Click:Connect(function()
-		if not game:GetService("CoreGui"):FindFirstChild("ESP") then
+		if not game:GetService("CoreGui"):FindFirstChild("BGui"):FindFirstChild("ESP") then
 			loadesp()
 			script.Parent.Visible = false
 			send("ESP injected!")
 			while true do
 				task.wait(0.5)
-				if not game:GetService("CoreGui"):FindFirstChild("ESP") then
+				if not game:GetService("CoreGui"):FindFirstChild("BGui"):FindFirstChild("ESP") then
 					script.Parent.Visible = true
 				else
 					script.Parent.Visible = false
@@ -2659,5 +2659,4 @@ local function BarScript()
 
 	send("Injected BGui.")
 end
-coroutine.wrap(BarScript)()
 coroutine.wrap(BarScript)()
