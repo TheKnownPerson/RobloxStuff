@@ -108,7 +108,7 @@ local Credits = Instance.new("ImageButton")
 
 BGui.Name = "BGui"
 BGui.Enabled = true
-BGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+BGui.Parent = game:GetService("CoreGui")
 BGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Bar.Name = "Bar"
@@ -1136,7 +1136,7 @@ local function FlyButton()
 	end)
 	while true do 
 		task.wait(0.5)
-		if not game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("BGui") then
+		if not game:GetService("CoreGui") then
 			if flying == true then
 				stopFlying()
 				flying = false
@@ -1202,7 +1202,7 @@ local function SpeedButton()
 	end)
 	while true do 
 		task.wait(0.5)
-		if not game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("BGui") then
+		if not game:GetService("CoreGui") then
 			if isSpeedEnabled then
 				if character and character:FindFirstChild("Humanoid") then
 					character.Humanoid.WalkSpeed = oldspeed
@@ -1398,7 +1398,7 @@ local function FlingButton()
 	end)
 	while true do 
 		task.wait(0.5)
-		if not game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("BGui") then
+		if not game:GetService("CoreGui") then
 			if flingenabled == true then
 				fling(false)
 				flingenabled = false
@@ -1559,7 +1559,7 @@ local function InvisButton()
 
 	while true do
 		task.wait(0.5)
-		if not game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("BGui") then
+		if not game:GetService("CoreGui") then
 			character = player.Character or player.CharacterAdded:Wait()
 			local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
 			if invisiblePart ~= nil or invisibleEnabled == true then
@@ -1652,7 +1652,7 @@ local function NoClipButton()
 
 	while true do
 		task.wait(0.5)
-		if not game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("BGui") then
+		if not game:GetService("CoreGui") then
 			if noClipEnabled == true then
 				noClipEnabled = false
 				toggleNoClip()
@@ -1705,7 +1705,7 @@ local function ClickToTPButton()
 	end)
 	while true do 
 		task.wait(0.5)
-		if not game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("BGui") then
+		if not game:GetService("CoreGui") then
 			if enabled == true then
 				enabled = false
 			end
@@ -2087,17 +2087,28 @@ local function EspLoaderButtonScript()
 
 		local function ESPloader()
 			local scr = Instance.new('Script', ESP_2)
+
 			local player = game.Players.LocalPlayer
 			local camera = workspace.CurrentCamera
 			local ESP = scr.Parent
-			local xOffset, yOffset = 0, -50
-			local trackedPersons, personFrames = {}, {}
-			local boxenabled, nameenabled, healthenabled = false, false, false
-			local MAX_TRACKED_PLAYERS = 20
+			local xOffset = 0
+			local yOffset = -50
 
+			local trackedPersons = {}
+			local personFrames = {}
+
+			local boxenabled = false
+			local nameenabled = false
+			local healthenabled = false
+
+			-- Limit for the number of players to track (e.g., 4 players)
+			local MAX_TRACKED_PLAYERS = 4
+
+			-- Function to create ESP elements for a player
 			local function trackingstuff(person)
 				local frame = Instance.new("ImageLabel")
 				frame.Size = UDim2.new(0, 50, 0, 50)
+				frame.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 				frame.BackgroundTransparency = 1
 				frame.Image = "rbxassetid://86342051669642"
 				frame.ImageColor3 = Color3.fromRGB(130, 0, 0)
@@ -2106,116 +2117,192 @@ local function EspLoaderButtonScript()
 				frame.Parent = ESP
 
 				local name = Instance.new("TextLabel")
-				name.Font, name.TextScaled, name.TextStrokeTransparency = Enum.Font.Michroma, true, 0
-				name.TextStrokeColor3, name.TextColor3 = Color3.fromRGB(74, 0, 0), Color3.new(1, 0, 0)
-				name.Size, name.BackgroundTransparency = UDim2.new(0, 100, 0, 30), 1
-				name.Visible, name.AnchorPoint = false, Vector2.new(0.5, 0.5)
+				name.Font = Enum.Font.Michroma
+				name.TextScaled = true
+				name.TextStrokeColor3 = Color3.fromRGB(74, 0, 0)
+				name.TextStrokeTransparency = 0
+				name.TextColor3 = Color3.new(1, 0, 0)
+				name.Size = UDim2.new(0, 100, 0, 30)
+				name.BackgroundTransparency = 1
+				name.Visible = false
+				name.AnchorPoint = Vector2.new(0.5, 0.5)
 				name.Parent = ESP
 
 				local healthBar = Instance.new("Frame")
-				healthBar.Size, healthBar.BorderSizePixel = UDim2.new(0, 100, 0, 5), 0
+				healthBar.Size = UDim2.new(0, 100, 0, 5)
 				healthBar.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-				healthBar.AnchorPoint, healthBar.Visible = Vector2.new(0.5, 0.5), false
+				healthBar.BorderSizePixel = 0
+				healthBar.AnchorPoint = Vector2.new(0.5, 0.5)
+				healthBar.Visible = false
 				healthBar.Parent = ESP
 
 				personFrames[person] = { Frame = frame, Label = name, HealthBar = healthBar }
 			end
 
+			-- Function to update all ESP elements for tracked players
+			-- Function to start tracking a player
 			local function track(person)
 				if person:IsA("Model") and person:FindFirstChild("HumanoidRootPart") then
-					if person == player.Character then return end
+					if person == player.Character then
+						return
+					end
 					trackedPersons[person] = true
 					trackingstuff(person)
 				end
 			end
 
+			-- Function to stop tracking a player
 			local function untrack(person)
 				if personFrames[person] then
-					for _, element in pairs(personFrames[person]) do element:Destroy() end
+					personFrames[person].Frame:Destroy()
+					personFrames[person].Label:Destroy()
+					personFrames[person].HealthBar:Destroy()
 					personFrames[person] = nil
 				end
 				trackedPersons[person] = nil
 			end
 
+			-- Function to update ESP visuals for tracked players
 			local function update()
+				-- List of players currently being tracked
+				local playersInRange = {}
+
+				-- Loop through all tracked players and update their ESP
 				for person, components in pairs(personFrames) do
+					local frame = components.Frame
+					local name = components.Label
+					local healthBar = components.HealthBar
 					if person:IsA("Model") and person:FindFirstChild("HumanoidRootPart") and person:FindFirstChildOfClass("Humanoid") then
-						local humanoidRootPart, humanoid = person.HumanoidRootPart, person:FindFirstChildOfClass("Humanoid")
-						local screenPosition, isOnScreen = camera:WorldToViewportPoint(humanoidRootPart.Position)
+						local player = game.Players:GetPlayerFromCharacter(person)
+						if player then
+							local humanoidRootPart = person:FindFirstChild("HumanoidRootPart")
+							local humanoid = person:FindFirstChildOfClass("Humanoid")
+							local screenPosition, isOnScreen = camera:WorldToViewportPoint(humanoidRootPart.Position)
 
-						local screenPosition, isOnScreen = camera:WorldToViewportPoint(humanoidRootPart.Position)
+							if isOnScreen and humanoid.Health > 0 then
+								-- Add to players in range
+								table.insert(playersInRange, { player = player, distance = (camera.CFrame.Position - humanoidRootPart.Position).magnitude })
 
-						-- Check if player is visible on screen and in front of the camera
-						if isOnScreen and humanoid.Health > 0 and screenPosition.Z > 0 then
-							-- Update ESP positions and show them
-							local frame = components.Frame
-							local name = components.Label
-							local healthBar = components.HealthBar
-							frame.Position = UDim2.new(0, screenPosition.X + xOffset, 0, screenPosition.Y + yOffset)
-							frame.Visible = boxenabled
+								-- Update ESP visibility based on toggled options
+								if boxenabled then
+									frame.Position = UDim2.new(0, screenPosition.X + xOffset, 0, screenPosition.Y + yOffset)
+									frame.Visible = true
+								else
+									frame.Visible = false
+								end
 
-							name.Position = UDim2.new(0, screenPosition.X + 80, 0, screenPosition.Y - 50)
-							name.Text = person.Name
-							name.Visible = nameenabled
+								if nameenabled then
+									name.Position = UDim2.new(0, screenPosition.X + 80, 0, screenPosition.Y - 50)
+									name.Text = player.Name
+									name.Visible = true
+								else
+									name.Visible = false
+								end
 
-							local healthPercent = humanoid.Health / humanoid.MaxHealth
-							local healthBarWidth = math.max(healthPercent * 100, 1)
-							healthBar.Size = UDim2.new(0, healthBarWidth, 0, 5)
-							healthBar.BackgroundColor3 = Color3.fromRGB(255 * (1 - healthPercent), 255 * healthPercent, 0)
-							healthBar.Position = UDim2.new(0, screenPosition.X + 80, 0, screenPosition.Y - 70)
-							healthBar.Visible = healthenabled
+								if healthenabled then
+									local healthPercent = humanoid.Health / humanoid.MaxHealth
+									local healthBarWidth = math.max(healthPercent * 100, 1)
+
+									healthBar.Size = UDim2.new(0, healthBarWidth, 0, 5)
+									healthBar.BackgroundColor3 = Color3.fromRGB(
+										255 * (1 - healthPercent),
+										255 * healthPercent,
+										0
+									)
+									healthBar.Position = UDim2.new(0, screenPosition.X + 80, 0, screenPosition.Y - 70)
+									healthBar.Visible = true
+								else
+									healthBar.Visible = false
+								end
+							else
+								-- Hide ESP if off-screen or no health
+								frame.Visible = false
+								name.Visible = false
+								healthBar.Visible = false
+							end
 						else
-							local frame = components.Frame
-							local name = components.Label
-							local healthBar = components.HealthBar
+							-- Remove ESP if player is no longer valid
 							frame.Visible = false
 							name.Visible = false
 							healthBar.Visible = false
 						end
-
 					else
-						untrack(person)
+						-- Remove ESP if no humanoid or humanoidRootPart
+						frame.Visible = false
+						name.Visible = false
+						healthBar.Visible = false
+					end
+				end
+
+				-- Sort players by distance (closest first)
+				table.sort(playersInRange, function(a, b)
+					return a.distance < b.distance
+				end)
+
+				-- Track only the closest players (up to MAX_TRACKED_PLAYERS)
+				for _, data in ipairs(playersInRange) do
+					local player = data.player
+					if not trackedPersons[player.Character] then
+						if table.count(trackedPersons) >= MAX_TRACKED_PLAYERS then
+							-- Stop tracking the farthest player (if we exceed the limit)
+							local farthestPlayer = table.remove(trackedPersons, #trackedPersons)
+							untrack(farthestPlayer)
+						end
+						-- Start tracking the player
+						trackedPersons[player.Character] = true
+						trackingstuff(player.Character)
 					end
 				end
 			end
 
-			local function handleCharacter(player)
-				player.CharacterAdded:Connect(function(character)
-					untrack(character)
-					character:WaitForChild("HumanoidRootPart", 5)
-					track(character)
-				end)
-			end
-
+			-- Toggle for visual elements (boxes, names, healthbars)
 			ESP.Bar.Window.Buttons.Visuals.BoxesBox.MouseButton1Click:Connect(function()
 				boxenabled = not boxenabled
+				ESP.Bar.Window.Buttons.Visuals.BoxesBox.BackgroundColor3 = boxenabled and Color3.new(0, 1, 0) or Color3.new(1, 0, 0)
 			end)
 
 			ESP.Bar.Window.Buttons.Visuals.Namesbox.MouseButton1Click:Connect(function()
 				nameenabled = not nameenabled
+				ESP.Bar.Window.Buttons.Visuals.Namesbox.BackgroundColor3 = nameenabled and Color3.new(0, 1, 0) or Color3.new(1, 0, 0)
 			end)
 
 			ESP.Bar.Window.Buttons.Visuals.Healthbars.MouseButton1Click:Connect(function()
 				healthenabled = not healthenabled
+				ESP.Bar.Window.Buttons.Visuals.Healthbars.BackgroundColor3 = healthenabled and Color3.new(0, 1, 0) or Color3.new(1, 0, 0)
 			end)
 
-			for _, targetPlayer in ipairs(game.Players:GetPlayers()) do
-				if targetPlayer.Character then track(targetPlayer.Character) end
-				handleCharacter(targetPlayer)
+			-- Track all players when the script starts
+			for _, targetPlayer in pairs(game.Players:GetPlayers()) do
+				if targetPlayer.Character then
+					track(targetPlayer.Character)
+				end
 			end
 
-			game.Players.PlayerAdded:Connect(function(player)
-				handleCharacter(player)
+			-- Listen for new players joining the game
+			game.Players.PlayerAdded:Connect(function(new)
+				new.CharacterAdded:Connect(function(character)
+					local hrp = character:WaitForChild("HumanoidRootPart", 5)
+					if hrp then
+						track(character)
+					else
+						print("HumanoidRootPart not found for player " .. new.Name)
+					end
+				end)
 			end)
 
+			-- Listen for players leaving the game
 			game.Players.PlayerRemoving:Connect(function(player)
-				if player.Character then untrack(player.Character) end
+				if player.Character then
+					untrack(player.Character)
+				end
 			end)
 
+			-- Call update on every frame
 			game:GetService("RunService").RenderStepped:Connect(update)
 		end
 
 		coroutine.wrap(ESPloader)()
+
 		local function DestroyGUI()
 			local scr = Instance.new('Script', X)
 
@@ -2373,7 +2460,7 @@ local function EspLoaderButtonScript()
 
 			while true do 
 				task.wait(0.5)
-				if not game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("BGui"):FindFirstChild("ESP") then
+				if not game:GetService("CoreGui"):FindFirstChild("ESP") then
 					if aimbot == true or isLeftMouseDown == true then
 						aimbot = false
 						print("false.")
@@ -2427,13 +2514,13 @@ local function EspLoaderButtonScript()
 		})
 	end
 	script.Parent.MouseButton1Click:Connect(function()
-		if not game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("BGui"):FindFirstChild("ESP") then
+		if not game:GetService("CoreGui"):FindFirstChild("ESP") then
 			loadesp()
 			script.Parent.Visible = false
 			send("ESP injected!")
 			while true do
 				task.wait(0.5)
-				if not game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("BGui"):FindFirstChild("ESP") then
+				if not game:GetService("CoreGui"):FindFirstChild("ESP") then
 					script.Parent.Visible = true
 				else
 					script.Parent.Visible = false
