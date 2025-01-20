@@ -1796,7 +1796,7 @@ local function EspLoaderButtonScript()
 		local UICorner_13 = Instance.new("UICorner")
 
 		ESP.Name = "ESP"
-		ESP.Parent = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("BGui")
+		ESP.Parent = game:GetService("CoreGui"):FindFirstChild("BGui")
 		ESP.Enabled = true
 		ESP.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
