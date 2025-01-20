@@ -2143,24 +2143,36 @@ local function EspLoaderButtonScript()
 						local humanoidRootPart, humanoid = person.HumanoidRootPart, person:FindFirstChildOfClass("Humanoid")
 						local screenPosition, isOnScreen = camera:WorldToViewportPoint(humanoidRootPart.Position)
 
-						if isOnScreen and humanoid.Health > 0 then
-							components.Frame.Position = UDim2.new(0, screenPosition.X + xOffset, 0, screenPosition.Y + yOffset)
-							components.Frame.Visible = boxenabled
+						local screenPosition, isOnScreen = camera:WorldToViewportPoint(humanoidRootPart.Position)
 
-							components.Label.Position = UDim2.new(0, screenPosition.X + 80, 0, screenPosition.Y - 50)
-							components.Label.Text = game.Players:GetPlayerFromCharacter(person).Name
-							components.Label.Visible = nameenabled
+						-- Check if player is visible on screen and in front of the camera
+						if isOnScreen and humanoid.Health > 0 and screenPosition.Z > 0 then
+							-- Update ESP positions and show them
+							local frame = components.Frame
+							local name = components.Label
+							local healthBar = components.HealthBar
+							frame.Position = UDim2.new(0, screenPosition.X + xOffset, 0, screenPosition.Y + yOffset)
+							frame.Visible = boxenabled
+
+							name.Position = UDim2.new(0, screenPosition.X + 80, 0, screenPosition.Y - 50)
+							name.Text = person.Name
+							name.Visible = nameenabled
 
 							local healthPercent = humanoid.Health / humanoid.MaxHealth
-							components.HealthBar.Size = UDim2.new(0, math.max(healthPercent * 100, 1), 0, 5)
-							components.HealthBar.BackgroundColor3 = Color3.fromRGB(255 * (1 - healthPercent), 255 * healthPercent, 0)
-							components.HealthBar.Position = UDim2.new(0, screenPosition.X + 80, 0, screenPosition.Y - 70)
-							components.HealthBar.Visible = healthenabled
+							local healthBarWidth = math.max(healthPercent * 100, 1)
+							healthBar.Size = UDim2.new(0, healthBarWidth, 0, 5)
+							healthBar.BackgroundColor3 = Color3.fromRGB(255 * (1 - healthPercent), 255 * healthPercent, 0)
+							healthBar.Position = UDim2.new(0, screenPosition.X + 80, 0, screenPosition.Y - 70)
+							healthBar.Visible = healthenabled
 						else
-							components.Frame.Visible = false
-							components.Label.Visible = false
-							components.HealthBar.Visible = false
+							local frame = components.Frame
+							local name = components.Label
+							local healthBar = components.HealthBar
+							frame.Visible = false
+							name.Visible = false
+							healthBar.Visible = false
 						end
+
 					else
 						untrack(person)
 					end
