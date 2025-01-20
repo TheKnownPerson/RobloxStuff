@@ -2461,7 +2461,7 @@ local function EspLoaderButtonScript()
 			-- Check for CoreGui to ensure Aimbot is disabled if necessary
 			while true do 
 				task.wait(0.5)
-				if not game:GetService("CoreGui"):FindFirstChild("ESP") then
+				if not game:GetService("CoreGui"):FindFirstChild("BGui"):FindFirstChild("ESP") then
 					if aimbot == true or isLeftMouseDown == true then
 						aimbot = false
 						print("false.")
