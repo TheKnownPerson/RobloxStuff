@@ -108,7 +108,7 @@ local Credits = Instance.new("ImageButton")
 
 BGui.Name = "BGui"
 BGui.Enabled = true
-BGui.Parent = game:GetService("CoreGui")
+BGui.Parent = game:GetService("Players").LocalPlayer.PlayerGui
 BGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Bar.Name = "Bar"
@@ -1136,7 +1136,7 @@ local function FlyButton()
 	end)
 	while true do 
 		task.wait(0.5)
-		if not  game:GetService("CoreGui"):FindFirstChild("BGui") then
+		if not BGui then
 			if flying == true then
 				stopFlying()
 				flying = false
@@ -1202,7 +1202,7 @@ local function SpeedButton()
 	end)
 	while true do 
 		task.wait(0.5)
-		if not  game:GetService("CoreGui"):FindFirstChild("BGui") then
+		if not  BGui then
 			if isSpeedEnabled then
 				if character and character:FindFirstChild("Humanoid") then
 					character.Humanoid.WalkSpeed = oldspeed
@@ -1398,7 +1398,7 @@ local function FlingButton()
 	end)
 	while true do 
 		task.wait(0.5)
-		if not  game:GetService("CoreGui"):FindFirstChild("BGui") then
+		if not BGui then
 			if flingenabled == true then
 				fling(false)
 				flingenabled = false
@@ -1559,7 +1559,7 @@ local function InvisButton()
 
 	while true do
 		task.wait(0.5)
-		if not  game:GetService("CoreGui"):FindFirstChild("BGui") then
+		if not BGui then
 			character = player.Character or player.CharacterAdded:Wait()
 			local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
 			if invisiblePart ~= nil or invisibleEnabled == true then
@@ -1594,8 +1594,6 @@ local function NoClipButton()
 
 	local function toggleNoClip()
 		noClipEnabled = not noClipEnabled
-
-		-- Loop through all parts of the character
 		for _, part in pairs(character:GetChildren()) do
 			if part:IsA("BasePart") then
 				if part:IsA("SpawnLocation") then
@@ -1652,7 +1650,7 @@ local function NoClipButton()
 
 	while true do
 		task.wait(0.5)
-		if not  game:GetService("CoreGui"):FindFirstChild("BGui") then
+		if not BGui then
 			if noClipEnabled == true then
 				noClipEnabled = false
 				toggleNoClip()
@@ -1705,7 +1703,7 @@ local function ClickToTPButton()
 	end)
 	while true do 
 		task.wait(0.5)
-		if not  game:GetService("CoreGui"):FindFirstChild("BGui") then
+		if not BGui then
 			if enabled == true then
 				enabled = false
 			end
@@ -1796,7 +1794,7 @@ local function EspLoaderButtonScript()
 		local UICorner_13 = Instance.new("UICorner")
 
 		ESP.Name = "ESP"
-		ESP.Parent = game:GetService("CoreGui"):FindFirstChild("BGui")
+		ESP.Parent = BGui
 		ESP.Enabled = true
 		ESP.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
@@ -2391,12 +2389,8 @@ local function EspLoaderButtonScript()
 			end
 			
 			local function getTeamCount()
-				local teams = {}
-				for _, p in pairs(game.Players:GetPlayers()) do
-					if p.Team then
-						teams[p.Team] = true
-					end
-				end
+				local teamservice = game:GetService("Teams")
+				local teams = teamservice:GetChildren()
 				return #teams
 			end
 
@@ -2405,17 +2399,14 @@ local function EspLoaderButtonScript()
 				local nearestvictim = nil
 				local shtestdis = radius
 				local teamCount = getTeamCount()
+				print(teamCount)
 
 				for _, victim in pairs(workspace:GetDescendants()) do
 					if victim:IsA("Model")
 						and victim:FindFirstChild("HumanoidRootPart")
 						and victim:FindFirstChildOfClass("Humanoid") then
-
 						local victimPlayer = game.Players:GetPlayerFromCharacter(victim)
-
-						-- Ensure victim is a player and not the local player
 						if victimPlayer and victimPlayer ~= player then
-							-- Check team conditions
 							if teamCount < 2 or (victimPlayer.Team ~= player.Team) then
 								local screenpos, screen = camera:WorldToViewportPoint(victim.HumanoidRootPart.Position)
 								if screen then
@@ -2479,7 +2470,7 @@ local function EspLoaderButtonScript()
 
 			while true do 
 				task.wait(0.5)
-				if not game:GetService("CoreGui"):FindFirstChild("BGui"):FindFirstChild("ESP") then
+				if not BGui:FindFirstChild("ESP") then
 					if aimbot == true or isLeftMouseDown == true then
 						aimbot = false
 						print("false.")
@@ -2533,13 +2524,13 @@ local function EspLoaderButtonScript()
 		})
 	end
 	script.Parent.MouseButton1Click:Connect(function()
-		if not game:GetService("CoreGui"):FindFirstChild("BGui"):FindFirstChild("ESP") then
+		if not BGui:FindFirstChild("ESP") then
 			loadesp()
 			script.Parent.Visible = false
 			send("ESP injected!")
 			while true do
 				task.wait(0.5)
-				if not game:GetService("CoreGui"):FindFirstChild("BGui"):FindFirstChild("ESP") then
+				if not BGui:FindFirstChild("ESP") then
 					script.Parent.Visible = true
 				else
 					script.Parent.Visible = false
