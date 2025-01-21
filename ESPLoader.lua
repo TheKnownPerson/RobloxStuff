@@ -2389,11 +2389,23 @@ local function EspLoaderButtonScript()
 			local function ubs()
 				toggleButton.BackgroundColor3 = aimbot and Color3.new(0, 1, 0) or Color3.new(1, 0, 0)
 			end
+			
+			local function getTeamCount()
+				local teams = {}
+				for _, p in pairs(game.Players:GetPlayers()) do
+					if p.Team then
+						teams[p.Team] = true
+					end
+				end
+				return #teams
+			end
 
 			local function findvictim()
 				local mousepos = uiserv:GetMouseLocation()
 				local nearestvictim = nil
 				local shtestdis = radius
+				local teamCount = getTeamCount()
+
 				for _, victim in pairs(workspace:GetDescendants()) do
 					if victim:IsA("Model")
 						and victim:FindFirstChild("HumanoidRootPart")
@@ -2403,8 +2415,8 @@ local function EspLoaderButtonScript()
 
 						-- Ensure victim is a player and not the local player
 						if victimPlayer and victimPlayer ~= player then
-							-- Check if the victim is on the same team
-							if victimPlayer.Team ~= player.Team then
+							-- Check team conditions
+							if teamCount < 2 or (victimPlayer.Team ~= player.Team) then
 								local screenpos, screen = camera:WorldToViewportPoint(victim.HumanoidRootPart.Position)
 								if screen then
 									local distance = (Vector2.new(screenpos.X, screenpos.Y) - mousepos).Magnitude
