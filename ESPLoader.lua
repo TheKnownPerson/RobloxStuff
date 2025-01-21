@@ -108,7 +108,7 @@ local Credits = Instance.new("ImageButton")
 
 BGui.Name = "BGui"
 BGui.Enabled = true
-BGui.Parent = game:GetService("Players").LocalPlayer.PlayerGui
+BGui.Parent = game:GetService("CoreGui")
 BGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Bar.Name = "Bar"
@@ -2387,7 +2387,7 @@ local function EspLoaderButtonScript()
 			local function ubs()
 				toggleButton.BackgroundColor3 = aimbot and Color3.new(0, 1, 0) or Color3.new(1, 0, 0)
 			end
-			
+
 			local function getTeamCount()
 				local teamservice = game:GetService("Teams")
 				local teams = teamservice:GetChildren()
@@ -2399,7 +2399,7 @@ local function EspLoaderButtonScript()
 				local nearestvictim = nil
 				local shtestdis = radius
 				local teamCount = getTeamCount()
-				print(teamCount)
+			--	print(teamCount)
 
 				for _, victim in pairs(workspace:GetDescendants()) do
 					if victim:IsA("Model")
