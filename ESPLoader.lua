@@ -105,6 +105,7 @@ local UICorner_38 = Instance.new("UICorner")
 local Icons = Instance.new("Folder")
 local Houseicon = Instance.new("ImageButton")
 local Credits = Instance.new("ImageButton")
+local oldcam
 
 BGui.Name = "BGui"
 BGui.Enabled = true
@@ -2370,8 +2371,7 @@ local function EspLoaderButtonScript()
 		end
 		coroutine.wrap(HealthbarLoader)()
 		local function AimbotLoader()
-			local scr = Instance.new('Script', AimBot)
-			local oldcam 
+			local scr = Instance.new('Script', AimBot) 
 			local uiserv = game:GetService("UserInputService")
 			local rs = game:GetService("RunService")
 			local camera = workspace.CurrentCamera
@@ -2399,7 +2399,6 @@ local function EspLoaderButtonScript()
 				local nearestvictim = nil
 				local shtestdis = radius
 				local teamCount = getTeamCount()
-			--	print(teamCount)
 
 				for _, victim in pairs(workspace:GetDescendants()) do
 					if victim:IsA("Model")
@@ -2425,7 +2424,7 @@ local function EspLoaderButtonScript()
 
 			local function victim(target)
 				if target and target:FindFirstChild("HumanoidRootPart") then
-					if player.CameraMode == Enum.CameraMode.Classic then
+					if oldcam == Enum.CameraMode.Classic then
 						player.CameraMode = Enum.CameraMode.LockFirstPerson
 					end
 					local position = target.HumanoidRootPart.Position
@@ -2436,7 +2435,9 @@ local function EspLoaderButtonScript()
 
 			toggleButton.MouseButton1Click:Connect(function()
 				aimbot = not aimbot
-				if not aimbot and player.CameraMode ~= Enum.CameraMode.Classic then
+				oldcam = player.CameraMode
+				print(oldcam)
+				if not aimbot and player.CameraMode ~= Enum.CameraMode.Classic and oldcam ~= Enum.CameraMode.LockFirstPerson then
 					player.CameraMode = Enum.CameraMode.Classic
 				end
 				ubs()
@@ -2451,11 +2452,11 @@ local function EspLoaderButtonScript()
 			uiserv.InputEnded:Connect(function(input)
 				if input.UserInputType == Enum.UserInputType.MouseButton1 then
 					isLeftMouseDown = false
-					if player.CameraMode ~= Enum.CameraMode.Classic then
-						task.delay(0.1, function()
+					task.delay(0.1, function()
+						if oldcam ~= Enum.CameraMode.LockFirstPerson then
 							player.CameraMode = Enum.CameraMode.Classic
-						end)
-					end
+						end
+					end)
 				end
 			end)
 
@@ -2481,6 +2482,7 @@ local function EspLoaderButtonScript()
 
 			ubs()
 		end
+
 		coroutine.wrap(AimbotLoader)()
 		local function ChooseFrame()
 			local scr = Instance.new('Script', Choose)
@@ -2494,8 +2496,11 @@ local function EspLoaderButtonScript()
 		local function YesF()
 			local player = game.Players.LocalPlayer
 			local scr = Instance.new('Script', Yes)
+			oldcam = player.CameraMode
 			scr.Parent.MouseButton1Click:Connect(function()
-				player.CameraMode = Enum.CameraMode.Classic
+				if oldcam ~= Enum.CameraMode.LockFirstPerson and player.CameraMode ~= Enum.CameraMode.Classic then
+					player.CameraMode = Enum.CameraMode.Classic
+				end
 				local function send(text)
 					local Startergui = game:GetService("StarterGui")
 					Startergui:SetCore("SendNotification", { Title = "Made by Knownperson_", Text = text, Duration = 5})
