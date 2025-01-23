@@ -109,7 +109,7 @@ local oldcam
 
 BGui.Name = "BGui"
 BGui.Enabled = true
-BGui.Parent = game:GetService("CoreGui")
+BGui.Parent = game:GetService("Players").LocalPlayer.PlayerGui
 BGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Bar.Name = "Bar"
