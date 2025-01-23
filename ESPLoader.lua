@@ -1793,7 +1793,13 @@ local function EspLoaderButtonScript()
 		local UICorner_12 = Instance.new("UICorner")
 		local Question = Instance.new("TextLabel")
 		local UICorner_13 = Instance.new("UICorner")
-
+		local BodyPartChooseButton = Instance.new("TextButton")
+		local ScrollingFrame = Instance.new("ScrollingFrame")
+		local HeadPart = Instance.new("TextButton")
+		local TorsoPart = Instance.new("TextButton")
+		local UICorner_20e = Instance.new("UICorner")
+		local UICorner_21e = Instance.new("UICorner")
+		local UICorner_22e = Instance.new("UICorner")
 		ESP.Name = "ESP"
 		ESP.Parent = BGui
 		ESP.Enabled = true
@@ -1858,6 +1864,65 @@ local function EspLoaderButtonScript()
 		Window.Position = UDim2.new(-0.000149773157, 0, 1, 0)
 		Window.Size = UDim2.new(0, 452, 0, 159)
 
+		BodyPartChooseButton.Name = "BodyPartChooseButton"
+		BodyPartChooseButton.Parent = Window
+		BodyPartChooseButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+		BodyPartChooseButton.BorderColor3 = Color3.fromRGB(88, 88, 88)
+		BodyPartChooseButton.Position = UDim2.new(0.731114089, 0, 0.371070325, 0)
+		BodyPartChooseButton.Size = UDim2.new(0, 80, 0, 14)
+		BodyPartChooseButton.ZIndex = 17
+		BodyPartChooseButton.Font = Enum.Font.FredokaOne
+		BodyPartChooseButton.Text = "Bodypart ↓"
+		BodyPartChooseButton.TextColor3 = Color3.fromRGB(216, 216, 216)
+		BodyPartChooseButton.TextScaled = true
+		BodyPartChooseButton.TextSize = 14.000
+		BodyPartChooseButton.TextWrapped = true
+
+		ScrollingFrame.Parent = BodyPartChooseButton
+		ScrollingFrame.Active = true
+		ScrollingFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+		ScrollingFrame.BackgroundTransparency = 0.250
+		ScrollingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		ScrollingFrame.BorderSizePixel = 0
+		ScrollingFrame.Position = UDim2.new(0.0124221798, 0, 0.931121826, 0)
+		ScrollingFrame.Size = UDim2.new(0, 81, 0, 20)
+		ScrollingFrame.Visible = false
+		ScrollingFrame.CanvasPosition = Vector2.new(0, 33.2999992)
+		ScrollingFrame.CanvasSize = UDim2.new(0, 0, 4.0999999, 0)
+		ScrollingFrame.ScrollBarThickness = 5
+
+		HeadPart.Name = "HeadPart"
+		HeadPart.Parent = ScrollingFrame
+		HeadPart.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+		HeadPart.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		HeadPart.BorderSizePixel = 0
+		HeadPart.Position = UDim2.new(0, 0, 0.600000024, 0)
+		HeadPart.Size = UDim2.new(0, 74, 0, 20)
+		HeadPart.Font = Enum.Font.FredokaOne
+		HeadPart.Text = "Head"
+		HeadPart.TextColor3 = Color3.fromRGB(216, 216, 216)
+		HeadPart.TextScaled = true
+		HeadPart.TextSize = 14.000
+		HeadPart.TextWrapped = true
+
+		UICorner_21e.CornerRadius = UDim.new(0, 15)
+		UICorner_21e.Parent = HeadPart
+
+		TorsoPart.Name = "TorsoPart"
+		TorsoPart.Parent = ScrollingFrame
+		TorsoPart.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
+		TorsoPart.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		TorsoPart.BorderSizePixel = 0
+		TorsoPart.Size = UDim2.new(0, 74, 0, 20)
+		TorsoPart.Font = Enum.Font.FredokaOne
+		TorsoPart.Text = "Torso"
+		TorsoPart.TextColor3 = Color3.fromRGB(216, 216, 216)
+		TorsoPart.TextScaled = true
+		TorsoPart.TextSize = 14.000
+		TorsoPart.TextWrapped = true
+
+		UICorner_22e.CornerRadius = UDim.new(0, 15)
+		UICorner_22e.Parent = TorsoPart
 		UICorner.CornerRadius = UDim.new(0, 15)
 		UICorner.Parent = Window
 
@@ -2083,7 +2148,6 @@ local function EspLoaderButtonScript()
 
 		UICorner_13.CornerRadius = UDim.new(0, 15)
 		UICorner_13.Parent = Question
-
 		local function ESPloader()
 			local scr = Instance.new('Script', ESP_2)
 
@@ -2299,7 +2363,6 @@ local function EspLoaderButtonScript()
 
 			game:GetService("RunService").RenderStepped:Connect(update)
 		end
-
 		coroutine.wrap(ESPloader)()
 
 		local function DestroyGUI()
@@ -2427,9 +2490,37 @@ local function EspLoaderButtonScript()
 					if oldcam == Enum.CameraMode.Classic then
 						player.CameraMode = Enum.CameraMode.LockFirstPerson
 					end
-					local position = target.HumanoidRootPart.Position
-					local camposition = camera.CFrame.Position
-					camera.CFrame = CFrame.lookAt(camposition, position)
+
+					local torso = target:FindFirstChild("UpperTorso") == nil
+					local position
+
+					if TorsoPart and TorsoPart.BackgroundColor3 == Color3.fromRGB(90,90,90) then
+						if torso then
+							if target:FindFirstChild("Torso") then
+								position = target.Torso.Position
+								radius = 35
+								print("R6")
+							end
+						else
+							if target:FindFirstChild("UpperTorso") then
+								position = target.UpperTorso.Position
+								radius = 35
+								print("R15")
+							end
+						end
+					elseif HeadPart and HeadPart.BackgroundColor3 == Color3.fromRGB(90,90,90) then
+						if target:FindFirstChild("Head") then
+							position = target.Head.Position
+							radius = 35
+						end
+					end
+
+					if position then
+						local camposition = camera.CFrame.Position
+						camera.CFrame = CFrame.lookAt(camposition, position)
+					else
+						warn("No valid position found for camera focus")
+					end
 				end
 			end
 
@@ -2484,6 +2575,54 @@ local function EspLoaderButtonScript()
 		end
 
 		coroutine.wrap(AimbotLoader)()
+		local function Buttonloader()
+			local scr = Instance.new('LocalScript', BodyPartChooseButton)
+			local aimbotbutton = AimBot
+			scr.Parent.Visible = false
+
+			AimBot.MouseButton1Click:Connect(function()
+				if AimBot.BackgroundColor3 ~= Color3.new(1,0,0) then
+					scr.Parent.Visible = false
+				else
+					scr.Parent.Visible = true
+				end
+			end)
+
+			scr.Parent:FindFirstChild("ScrollingFrame")
+			scr.Parent.MouseButton1Click:Connect(function()
+				print("button")
+				ScrollingFrame.Visible = not ScrollingFrame.Visible
+			end)
+		end
+		coroutine.wrap(Buttonloader)()
+		local function Headpartbuttonloader()
+			local scr = Instance.new('LocalScript', HeadPart)
+
+			scr.Parent.MouseButton1Click:Connect(function()
+				if scr.Parent.BackgroundColor3 ~= Color3.fromRGB(60,60,60) then
+					scr.Parent.BackgroundColor3 = Color3.fromRGB(60,60,60)
+					scr.Parent.Parent.TorsoPart.BackgroundColor3 = Color3.fromRGB(90,90,90)
+				else
+					scr.Parent.BackgroundColor3 = Color3.fromRGB(90,90,90)
+					scr.Parent.Parent.TorsoPart.BackgroundColor3 = Color3.fromRGB(60,60,60)
+				end
+			end)
+		end
+		coroutine.wrap(Headpartbuttonloader)()
+		local function Torsopartbuttonloader()
+			local scr = Instance.new('LocalScript', TorsoPart)
+
+			scr.Parent.MouseButton1Click:Connect(function()
+				if scr.Parent.BackgroundColor3 ~= Color3.fromRGB(60,60,60) then
+					scr.Parent.BackgroundColor3 = Color3.fromRGB(60,60,60)
+					HeadPart.BackgroundColor3 = Color3.fromRGB(90,90,90)
+				else
+					scr.Parent.BackgroundColor3 = Color3.fromRGB(90,90,90)
+					HeadPart.BackgroundColor3 = Color3.fromRGB(60,60,60)
+				end
+			end)
+		end
+		coroutine.wrap(Torsopartbuttonloader)()
 		local function ChooseFrame()
 			local scr = Instance.new('Script', Choose)
 
