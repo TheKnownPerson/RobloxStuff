@@ -1156,7 +1156,7 @@ local function SpeedButton()
 	local oldspeed
 	local character = player.Character or player.CharacterAdded:Wait()
 
-	oldspeed = character.Humanoid.WalkSpeed
+	oldspeed = character:WaitForChild("Humanoid").WalkSpeed
 
 	local function send(text)
 		local StarterGui = game:GetService("StarterGui")
@@ -1170,7 +1170,7 @@ local function SpeedButton()
 	player.CharacterAdded:Connect(function(newCharacter)
 		character = newCharacter
 		if character and character:FindFirstChild("Humanoid") then
-			oldspeed = character.Humanoid.WalkSpeed
+			oldspeed = character:WaitForChild("Humanoid").WalkSpeed
 		end
 	end)
 
@@ -1182,13 +1182,13 @@ local function SpeedButton()
 			send("Activated " .. script.Parent.Name)
 			speed = walkspeed
 			if character and character:FindFirstChild("Humanoid") then
-				character.Humanoid.WalkSpeed = walkspeed
+				character:WaitForChild("Humanoid").WalkSpeed = walkspeed
 			end
 		else
 			send("Deactivated " .. script.Parent.Name)
 			speed = oldspeed
 			if character and character:FindFirstChild("Humanoid") then
-				character.Humanoid.WalkSpeed = oldspeed
+				character:WaitForChild("Humanoid").WalkSpeed = oldspeed
 			end
 		end
 	end)
@@ -1206,7 +1206,7 @@ local function SpeedButton()
 		if not  BGui then
 			if isSpeedEnabled then
 				if character and character:FindFirstChild("Humanoid") then
-					character.Humanoid.WalkSpeed = oldspeed
+					character:WaitForChild("Humanoid").WalkSpeed = oldspeed
 				end
 			end
 
@@ -1251,7 +1251,7 @@ local function FlingButton()
 				local att1 = Instance.new("Attachment", fakepart)
 				local att2 = Instance.new("Attachment", character.HumanoidRootPart)
 				local body = Instance.new("AlignPosition", fakepart)
-
+				local humanoid = character:WaitForChild("Humanoid")
 				body.Attachment0 = att2
 				body.Attachment1 = att1
 				body.RigidityEnabled = true
@@ -1261,7 +1261,7 @@ local function FlingButton()
 				body.MaxAxesForce = Vector3.new(math.huge, math.huge, math.huge)
 				body.Visible = true
 				body.Mode = Enum.PositionAlignmentMode.TwoAttachment
-				character.Humanoid:ChangeState(Enum.HumanoidStateType.StrafingNoPhysics)
+				humanoid:ChangeState(Enum.HumanoidStateType.StrafingNoPhysics)
 				oldcf = character.HumanoidRootPart.CFrame
 				character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(40000000, 40000000, 40000000)) * CFrame.fromEulerAnglesXYZ(math.rad(180), 0, 0)
 				character.HumanoidRootPart.Velocity = Vector3.new(0, 1000000, 0)
@@ -1354,9 +1354,9 @@ local function FlingButton()
 					character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
 
 					if math.random(0, 1) == 1 then
-						character.Humanoid.Jump = true
+						character:WaitForChild("Humanoid").Jump = true
 					else
-						character.Humanoid.Jump = false
+						character:WaitForChild("Humanoid").Jump = false
 					end
 
 					character.HumanoidRootPart.Velocity = Vector3.new(math.random(-250, 250), math.random(-500, 500), math.random(-250, 250))
@@ -2498,13 +2498,13 @@ local function EspLoaderButtonScript()
 						if torso then
 							if target:FindFirstChild("Torso") then
 								position = target.Torso.Position
-								radius = 35
+								radius = 40
 								print("R6")
 							end
 						else
 							if target:FindFirstChild("UpperTorso") then
 								position = target.UpperTorso.Position
-								radius = 35
+								radius = 40
 								print("R15")
 							end
 						end
@@ -2517,13 +2517,14 @@ local function EspLoaderButtonScript()
 
 					if position then
 						local camposition = camera.CFrame.Position
-						camera.CFrame = CFrame.lookAt(camposition, position)
+						local targetCFrame = CFrame.lookAt(camposition, position)
+
+						camera.CFrame = camera.CFrame:Lerp(targetCFrame, 0.325)
 					else
 						warn("No valid position found for camera focus")
 					end
 				end
 			end
-
 			toggleButton.MouseButton1Click:Connect(function()
 				aimbot = not aimbot
 				oldcam = player.CameraMode
@@ -2535,13 +2536,13 @@ local function EspLoaderButtonScript()
 			end)
 
 			uiserv.InputBegan:Connect(function(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+				if input.UserInputType == Enum.UserInputType.MouseButton2 then
 					isLeftMouseDown = true
 				end
 			end)
 
 			uiserv.InputEnded:Connect(function(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+				if input.UserInputType == Enum.UserInputType.MouseButton2 then
 					isLeftMouseDown = false
 					task.delay(0.1, function()
 						if oldcam ~= Enum.CameraMode.LockFirstPerson then
