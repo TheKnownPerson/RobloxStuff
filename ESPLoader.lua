@@ -801,7 +801,7 @@ FeatureDesc_6.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
 FeatureDesc_6.BorderColor3 = Color3.fromRGB(0, 0, 0)
 FeatureDesc_6.BorderSizePixel = 0
 FeatureDesc_6.Size = UDim2.new(0, 81, 0, 40)
-FeatureDesc_6.Visible = false
+FeatureDesc_6.Visible = true
 FeatureDesc_6.ZIndex = 2
 FeatureDesc_6.Font = Enum.Font.FredokaOne
 FeatureDesc_6.Text = "Discord: knownperson_"
@@ -840,7 +840,7 @@ FeatureDesc_7.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
 FeatureDesc_7.BorderColor3 = Color3.fromRGB(0, 0, 0)
 FeatureDesc_7.BorderSizePixel = 0
 FeatureDesc_7.Size = UDim2.new(0, 81, 0, 40)
-FeatureDesc_7.Visible = false
+FeatureDesc_7.Visible = true
 FeatureDesc_7.ZIndex = 2
 FeatureDesc_7.Font = Enum.Font.FredokaOne
 FeatureDesc_7.Text = "Discord: knownperson_"
@@ -1887,7 +1887,7 @@ local function EspLoaderButtonScript()
 		ScrollingFrame.Position = UDim2.new(0.0124221798, 0, 0.931121826, 0)
 		ScrollingFrame.Size = UDim2.new(0, 81, 0, 20)
 		ScrollingFrame.Visible = false
-		ScrollingFrame.CanvasPosition = Vector2.new(0, 33.2999992)
+		ScrollingFrame.CanvasPosition = Vector2.new(0, 0)
 		ScrollingFrame.CanvasSize = UDim2.new(0, 0, 4.0999999, 0)
 		ScrollingFrame.ScrollBarThickness = 5
 
