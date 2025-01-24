@@ -106,10 +106,13 @@ local Icons = Instance.new("Folder")
 local Houseicon = Instance.new("ImageButton")
 local Credits = Instance.new("ImageButton")
 local oldcam
+local player = game:GetService("Players").LocalPlayer
+local Character = player.Character or player.CharacterAdded:Wait()
+local oldspeed = Character:WaitForChild("Humanoid").WalkSpeed
 
 BGui.Name = "BGui"
 BGui.Enabled = true
-BGui.Parent = game:GetService("Players").LocalPlayer.PlayerGui
+BGui.Parent = game:GetService("CoreGui")
 BGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Bar.Name = "Bar"
@@ -936,8 +939,6 @@ local function YesButton()
 
 		local humanoid = character:FindFirstChildOfClass("Humanoid")
 		if humanoid then
-			local oldspeed = humanoid.WalkSpeed
-
 			script.Parent.MouseButton1Click:Connect(function()
 				script.Parent.Parent.Parent.Parent.Parent.Parent:Destroy()
 				if humanoid then
@@ -1149,14 +1150,265 @@ coroutine.wrap(FlyButton)()
 local function SpeedButton()
 	local script = Instance.new('Script', Speedboost)
 
-	local walkspeed = 100
-	local player = game.Players.LocalPlayer
-	local speed = walkspeed
-	local isSpeedEnabled = false
-	local oldspeed
-	local character = player.Character or player.CharacterAdded:Wait()
+	local BarSpeed = Instance.new("Frame")
+	local minimize = Instance.new("TextButton")
+	local Speedname = Instance.new("TextLabel")
+	local SpeedWindow = Instance.new("Frame")
+	local UICorner = Instance.new("UICorner")
+	local Folder = Instance.new("Folder")
+	local OutlineSlider = Instance.new("Frame")
+	local UIGradient = Instance.new("UIGradient")
+	local UICorner_2 = Instance.new("UICorner")
+	local SliderFrame = Instance.new("Frame")
+	local UIGradient_2 = Instance.new("UIGradient")
+	local UICorner_3 = Instance.new("UICorner")
+	local SliderButton = Instance.new("TextButton")
+	local ValueLabel = Instance.new("TextLabel")
+	local UICorner_4 = Instance.new("UICorner")
+	local UIGradient_3 = Instance.new("UIGradient")
+	local UIGradient_4 = Instance.new("UIGradient")
+	local UICorner_5 = Instance.new("UICorner")
+	local Outline = Instance.new("TextLabel")
+	local UICorner_6 = Instance.new("UICorner")
+	local UIGradient_5 = Instance.new("UIGradient")
+	local tut = Instance.new("TextLabel")
+	local NoGapSpeed = Instance.new("Frame")
 
-	oldspeed = character:WaitForChild("Humanoid").WalkSpeed
+	BarSpeed.Name = "BarSpeed"
+	BarSpeed.Parent = BGui
+	BarSpeed.Visible = false
+	BarSpeed.Active = false
+	BarSpeed.Draggable = true
+	BarSpeed.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+	BarSpeed.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	BarSpeed.BorderSizePixel = 0
+	BarSpeed.Position = UDim2.new(0.592544258, 0, 0.674000025, 0)
+	BarSpeed.Size = UDim2.new(0, 185, 0, 16)
+
+	minimize.Name = "minimize"
+	minimize.Parent = BarSpeed
+	minimize.BackgroundColor3 = Color3.fromRGB(255, 255, 0)
+	minimize.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	minimize.BorderSizePixel = 0
+	minimize.Position = UDim2.new(0.916637123, 0, 0.117999807, 0)
+	minimize.Size = UDim2.new(0, 12, 0, 12)
+	minimize.Font = Enum.Font.SourceSans
+	minimize.TextColor3 = Color3.fromRGB(0, 0, 0)
+	minimize.TextSize = 14.000
+	minimize.TextTransparency = 1.000
+
+	Speedname.Name = "Speedname"
+	Speedname.Parent = BarSpeed
+	Speedname.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Speedname.BackgroundTransparency = 1.000
+	Speedname.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	Speedname.BorderSizePixel = 0
+	Speedname.Position = UDim2.new(0.111825317, 0, -0.0620002747, 0)
+	Speedname.Size = UDim2.new(0, 142, 0, 16)
+	Speedname.Font = Enum.Font.FredokaOne
+	Speedname.Text = "Walkspeed"
+	Speedname.TextColor3 = Color3.fromRGB(195, 195, 195)
+	Speedname.TextScaled = true
+	Speedname.TextSize = 14.000
+	Speedname.TextWrapped = true
+
+	SpeedWindow.Name = "SpeedWindow"
+	SpeedWindow.Parent = BarSpeed
+	SpeedWindow.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
+	SpeedWindow.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	SpeedWindow.BorderSizePixel = 0
+	SpeedWindow.Position = UDim2.new(-0, 0, 0.975000024, 0)
+	SpeedWindow.Size = UDim2.new(0, 185, 0, 71)
+	SpeedWindow.ZIndex = 3
+
+	UICorner.CornerRadius = UDim.new(0, 15)
+	UICorner.Parent = SpeedWindow
+
+	Folder.Parent = SpeedWindow
+
+	OutlineSlider.Name = "OutlineSlider"
+	OutlineSlider.Parent = SpeedWindow
+	OutlineSlider.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	OutlineSlider.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	OutlineSlider.BorderSizePixel = 0
+	OutlineSlider.Position = UDim2.new(0, 22, 0, 36)
+	OutlineSlider.Size = UDim2.new(0, 140, 0, 12)
+
+	UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(154, 0, 72)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(58, 0, 116))}
+	UIGradient.Rotation = 3
+	UIGradient.Parent = OutlineSlider
+
+	UICorner_2.Parent = OutlineSlider
+
+	SliderFrame.Name = "SliderFrame"
+	SliderFrame.Parent = SpeedWindow
+	SliderFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	SliderFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	SliderFrame.BorderSizePixel = 0
+	SliderFrame.Position = UDim2.new(0, 24, 0, 38)
+	SliderFrame.Size = UDim2.new(0, 136, 0, 8)
+	SliderFrame.ZIndex = 2
+
+	UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 115)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(102, 0, 203))}
+	UIGradient_2.Rotation = 3
+	UIGradient_2.Parent = SliderFrame
+
+	UICorner_3.Parent = SliderFrame
+
+	SliderButton.Name = "SliderButton"
+	SliderButton.Parent = SliderFrame
+	SliderButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	SliderButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	SliderButton.BorderSizePixel = 0
+	SliderButton.Position = UDim2.new(-0, 0, -0.5, 0)
+	SliderButton.Size = UDim2.new(0, 15, 0, 15)
+	SliderButton.Font = Enum.Font.SourceSans
+	SliderButton.Text = ""
+	SliderButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+	SliderButton.TextSize = 14.000
+
+	ValueLabel.Name = "ValueLabel"
+	ValueLabel.Parent = SliderButton
+	ValueLabel.BackgroundColor3 = Color3.fromRGB(77, 77, 77)
+	ValueLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	ValueLabel.BorderSizePixel = 0
+	ValueLabel.Position = UDim2.new(0, -15, 0, -29)
+	ValueLabel.Size = UDim2.new(0, 45, 0, 20)
+	ValueLabel.ZIndex = 2
+	ValueLabel.Font = Enum.Font.FredokaOne
+	ValueLabel.Text = "14"
+	ValueLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+	ValueLabel.TextScaled = true
+	ValueLabel.TextSize = 14.000
+	ValueLabel.TextWrapped = true
+
+	UICorner_4.CornerRadius = UDim.new(0, 15)
+	UICorner_4.Parent = ValueLabel
+
+	UIGradient_3.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(208, 208, 208)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 255, 255))}
+	UIGradient_3.Parent = ValueLabel
+
+	UIGradient_4.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(208, 208, 208)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 255, 255))}
+	UIGradient_4.Parent = SliderButton
+
+	UICorner_5.CornerRadius = UDim.new(0, 15)
+	UICorner_5.Parent = SliderButton
+
+	Outline.Name = "Outline"
+	Outline.Parent = SliderButton
+	Outline.BackgroundColor3 = Color3.fromRGB(182, 182, 182)
+	Outline.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	Outline.BorderSizePixel = 0
+	Outline.Position = UDim2.new(0, -17, 0, -31)
+	Outline.Size = UDim2.new(0, 49, 0, 24)
+	Outline.Font = Enum.Font.SourceSans
+	Outline.Text = ""
+	Outline.TextColor3 = Color3.fromRGB(0, 0, 0)
+	Outline.TextSize = 14.000
+
+	UICorner_6.CornerRadius = UDim.new(0, 15)
+	UICorner_6.Parent = Outline
+
+	UIGradient_5.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(181, 181, 181))}
+	UIGradient_5.Parent = Outline
+
+	tut.Name = "tut"
+	tut.Parent = SpeedWindow
+	tut.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	tut.BackgroundTransparency = 1.000
+	tut.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	tut.BorderSizePixel = 0
+	tut.Position = UDim2.new(0.111825645, 0, 0.676056325, 0)
+	tut.Size = UDim2.new(0, 148, 0, 23)
+	tut.Font = Enum.Font.FredokaOne
+	tut.Text = "Choose your speed."
+	tut.TextColor3 = Color3.fromRGB(255, 255, 255)
+	tut.TextScaled = true
+	tut.TextSize = 14.000
+	tut.TextWrapped = true
+
+	NoGapSpeed.Name = "NoGapSpeed"
+	NoGapSpeed.Parent = SpeedWindow
+	NoGapSpeed.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
+	NoGapSpeed.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	NoGapSpeed.BorderSizePixel = 0
+	NoGapSpeed.Position = UDim2.new(0, 0, -0.0140845068, 0)
+	NoGapSpeed.Size = UDim2.new(0, 185, 0, 24)
+
+	local function minimizelilbro()
+		local script = Instance.new('LocalScript', minimize)
+
+		local Frame = script.Parent.Parent.SpeedWindow
+		script.Parent.MouseButton1Click:Connect(function()
+			if Frame.Visible == true then
+				Frame.Visible = false
+			else
+				Frame.Visible = true
+			end
+		end)
+	end
+	coroutine.wrap(minimizelilbro)()
+	local function sliderframe()
+		local script = Instance.new('LocalScript', SliderFrame)
+
+		local slider = script.Parent
+		local sliderButton = slider:FindFirstChild("SliderButton")
+		local valueLabel = sliderButton:FindFirstChild("ValueLabel")
+		local player = game:GetService("Players").LocalPlayer
+		local Character = player.Character or player.CharacterAdded:Wait()
+		local minValue, maxValue = oldspeed, 200
+		local uis = game:GetService("UserInputService")
+		local dragging = false
+		BarSpeed.Visible = false
+
+		local function setInitialPosition()
+			local midPosition = 0
+			sliderButton.Position = UDim2.new(midPosition, -sliderButton.Size.X.Offset / 2, 0.5, -sliderButton.Size.Y.Offset / 2)
+
+			local newValue = math.floor(minValue + (maxValue - minValue) * midPosition)
+			valueLabel.Text = newValue
+			if Character and Character:FindFirstChild("Humanoid") and BarSpeed.Visible == true then
+				Character:FindFirstChild("Humanoid").WalkSpeed = newValue
+			else
+				Character:WaitForChild("Humanoid").WalkSpeed = oldspeed
+			end
+		end
+		local function updateSlider(input)
+			local sliderPosition = (input.Position.X - slider.AbsolutePosition.X) / slider.AbsoluteSize.X
+			sliderPosition = math.clamp(sliderPosition, 0, 1)
+
+			local newValue = math.floor(minValue + (maxValue - minValue) * sliderPosition)
+			sliderButton.Position = UDim2.new(sliderPosition, -sliderButton.Size.X.Offset / 2, 0.5, -sliderButton.Size.Y.Offset / 2)
+
+			valueLabel.Text = newValue
+		end
+
+		sliderButton.InputBegan:Connect(function(input)
+			if input.UserInputType == Enum.UserInputType.MouseButton1 then
+				dragging = true
+			end
+		end)
+
+		uis.InputChanged:Connect(function(input)
+			if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+				updateSlider(input)
+			end
+		end)
+
+		uis.InputEnded:Connect(function(input)
+			if input.UserInputType == Enum.UserInputType.MouseButton1 then
+				dragging = false
+			end
+		end)
+
+		setInitialPosition()
+
+	end
+	coroutine.wrap(sliderframe)()
+	local player = game:GetService("Players").LocalPlayer
+	local character = player.Character or player.CharacterAdded:Wait()
+	local speed = ValueLabel.Text
+	local isSpeedEnabled = false
 
 	local function send(text)
 		local StarterGui = game:GetService("StarterGui")
@@ -1167,26 +1419,23 @@ local function SpeedButton()
 		})
 	end
 
-	player.CharacterAdded:Connect(function(newCharacter)
-		character = newCharacter
-		if character and character:FindFirstChild("Humanoid") then
-			oldspeed = character:WaitForChild("Humanoid").WalkSpeed
-		end
-	end)
-
 	script.Parent.MouseButton1Click:Connect(function()
 		isSpeedEnabled = not isSpeedEnabled
 		script.Parent.BackgroundColor3 = isSpeedEnabled and Color3.new(0, 1, 0) or Color3.new(1, 0, 0)
-
 		if isSpeedEnabled then
 			send("Activated " .. script.Parent.Name)
-			speed = walkspeed
+			BarSpeed.Visible = true
+			BarSpeed.Active = true
 			if character and character:FindFirstChild("Humanoid") then
-				character:WaitForChild("Humanoid").WalkSpeed = walkspeed
+				print(ValueLabel.Text)
+				speed = ValueLabel.Text
+
 			end
 		else
 			send("Deactivated " .. script.Parent.Name)
 			speed = oldspeed
+			BarSpeed.Visible = false
+			BarSpeed.Active = false
 			if character and character:FindFirstChild("Humanoid") then
 				character:WaitForChild("Humanoid").WalkSpeed = oldspeed
 			end
@@ -1194,13 +1443,16 @@ local function SpeedButton()
 	end)
 
 	game:GetService("RunService").Heartbeat:Connect(function()
-		if isSpeedEnabled == true and character and character:FindFirstChild("Humanoid") then
+		if isSpeedEnabled and character and character:FindFirstChild("Humanoid") then
 			local humanoid = character.Humanoid
-			if humanoid.WalkSpeed ~= speed then
-				humanoid.WalkSpeed = speed
+			local targetSpeed = tonumber(ValueLabel.Text) -- Convert to number
+			if humanoid.WalkSpeed ~= targetSpeed then
+				humanoid.WalkSpeed = targetSpeed
+				print("reset")
 			end
 		end
 	end)
+
 	while true do 
 		task.wait(0.5)
 		if not  BGui then
@@ -1209,7 +1461,8 @@ local function SpeedButton()
 					character:WaitForChild("Humanoid").WalkSpeed = oldspeed
 				end
 			end
-
+			BarSpeed.Visible = false
+			BarSpeed.Active = false
 			isSpeedEnabled = false
 			speed = oldspeed
 		end
@@ -2815,3 +3068,5 @@ local function BarScript()
 	send("Injected BGui.")
 end
 coroutine.wrap(BarScript)()
+task.wait(0.05)
+Character:WaitForChild("Humanoid").WalkSpeed = oldspeed
