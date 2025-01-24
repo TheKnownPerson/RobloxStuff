@@ -1348,7 +1348,7 @@ local function SpeedButton()
 		end)
 	end
 	coroutine.wrap(minimizelilbro)()
-	local function sliderframe()
+	local function sliderframee()
 		local script = Instance.new('LocalScript', SliderFrame)
 
 		local slider = script.Parent
@@ -1404,7 +1404,7 @@ local function SpeedButton()
 		setInitialPosition()
 
 	end
-	coroutine.wrap(sliderframe)()
+	coroutine.wrap(sliderframee)()
 	local player = game:GetService("Players").LocalPlayer
 	local character = player.Character or player.CharacterAdded:Wait()
 	local speed = ValueLabel.Text
@@ -1422,24 +1422,24 @@ local function SpeedButton()
 	script.Parent.MouseButton1Click:Connect(function()
 		isSpeedEnabled = not isSpeedEnabled
 		script.Parent.BackgroundColor3 = isSpeedEnabled and Color3.new(0, 1, 0) or Color3.new(1, 0, 0)
-		if isSpeedEnabled then
-			send("Activated " .. script.Parent.Name)
-			BarSpeed.Visible = true
-			BarSpeed.Active = true
-			if character and character:FindFirstChild("Humanoid") then
-				print(ValueLabel.Text)
-				speed = ValueLabel.Text
-
+			if isSpeedEnabled then
+				send("Activated " .. script.Parent.Name)
+				BarSpeed.Visible = true
+				BarSpeed.Active = true
+				if character and character:FindFirstChild("Humanoid") then
+					print(ValueLabel.Text)
+					speed = ValueLabel.Text
+					
+				end
+			else
+				send("Deactivated " .. script.Parent.Name)
+				speed = oldspeed
+				BarSpeed.Visible = false
+				BarSpeed.Active = false
+				if character and character:FindFirstChild("Humanoid") then
+					character:WaitForChild("Humanoid").WalkSpeed = oldspeed
+				end
 			end
-		else
-			send("Deactivated " .. script.Parent.Name)
-			speed = oldspeed
-			BarSpeed.Visible = false
-			BarSpeed.Active = false
-			if character and character:FindFirstChild("Humanoid") then
-				character:WaitForChild("Humanoid").WalkSpeed = oldspeed
-			end
-		end
 	end)
 
 	game:GetService("RunService").Heartbeat:Connect(function()
@@ -1454,7 +1454,7 @@ local function SpeedButton()
 	end)
 
 	while true do 
-		task.wait(0.5)
+		task.wait(0.25)
 		if not  BGui then
 			if isSpeedEnabled then
 				if character and character:FindFirstChild("Humanoid") then
@@ -1466,8 +1466,15 @@ local function SpeedButton()
 			isSpeedEnabled = false
 			speed = oldspeed
 		end
+		local Humanoid = Character:WaitForChild("Humanoid")
+		if Humanoid.Health == 0 then
+			script.Parent.BackgroundColor3 = Color3.new(1,0,0)
+			isSpeedEnabled = false
+			Humanoid.WalkSpeed = oldspeed
+			BarSpeed.Visible = false
+		end
 	end
-
+	
 end
 coroutine.wrap(SpeedButton)()
 local function FlingButton()
@@ -1658,6 +1665,12 @@ local function FlingButton()
 				flingenabled = false
 			end
 		end
+		local Humanoid = Character:WaitForChild("Humanoid")
+		if Humanoid.Health == 0 then
+			script.Parent.BackgroundColor3 = Color3.new(1,0,0)
+			flingenabled = false
+			fling(false)
+		end
 	end
 end
 coroutine.wrap(FlingButton)()
@@ -1828,6 +1841,22 @@ local function InvisButton()
 				end
 			end
 		end
+		local Humanoid = Character:WaitForChild("Humanoid")
+		if Humanoid.Health == 0 then
+				script.Parent.BackgroundColor3 = Color3.new(1, 0, 0)
+				invisibleEnabled = false
+				if character:FindFirstChildOfClass("Humanoid") then
+					character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+				end
+				local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+				humanoidRootPart.Anchored = false
+				if invisiblePart then
+					humanoidRootPart.CFrame = invisiblePart.CFrame
+					invisiblePart:Destroy()
+					invisiblePart = nil
+				end
+				camera.CameraSubject = character:FindFirstChild("Humanoid")
+		end
 	end
 end
 coroutine.wrap(InvisButton)()
@@ -1910,6 +1939,14 @@ local function NoClipButton()
 				toggleNoClip()
 			end
 		end
+		local Humanoid = Character:WaitForChild("Humanoid")
+		if Humanoid.Health == 0 then
+			if noClipEnabled == true then
+				noClipEnabled = false
+				toggleNoClip()
+			end
+			script.Parent.BackgroundColor3 = Color3.new(1, 0, 0)
+		end
 	end
 end
 
@@ -1962,6 +1999,11 @@ local function ClickToTPButton()
 				enabled = false
 			end
 		end
+		local Humanoid = Character:WaitForChild("Humanoid")
+		if Humanoid.Health == 0 then
+			enabled = false
+			script.Parent.BackgroundColor3 = Color3.new(1,0,0)
+		end
 	end
 end
 coroutine.wrap(ClickToTPButton)()
@@ -1975,6 +2017,13 @@ local function FeatureTemp2()
 			script.Parent.BackgroundColor3 = Color3.new(1,0,0)
 		end
 	end)
+	while true do 
+		task.wait(0.5)
+		local Humanoid = Character:WaitForChild("Humanoid")
+		if Humanoid.Health == 0 then
+			script.Parent.BackgroundColor3 = Color3.new(1,0,0)
+		end
+	end
 end
 coroutine.wrap(FeatureTemp2)()
 local function FeatureTemp3()
@@ -1987,6 +2036,13 @@ local function FeatureTemp3()
 			script.Parent.BackgroundColor3 = Color3.new(1,0,0)
 		end
 	end)
+	while true do 
+		task.wait(0.5)
+		local Humanoid = Character:WaitForChild("Humanoid")
+		if Humanoid.Health == 0 then
+			script.Parent.BackgroundColor3 = Color3.new(1,0,0)
+		end
+	end
 end
 coroutine.wrap(FeatureTemp3)()
 local function FeatureTemp4()
@@ -1999,6 +2055,13 @@ local function FeatureTemp4()
 			script.Parent.BackgroundColor3 = Color3.new(1,0,0)
 		end
 	end)
+	while true do 
+		task.wait(0.5)
+		local Humanoid = Character:WaitForChild("Humanoid")
+		if Humanoid.Health == 0 then
+			script.Parent.BackgroundColor3 = Color3.new(1,0,0)
+		end
+	end
 end
 coroutine.wrap(FeatureTemp4)()
 local function EspLoaderButtonScript()
