@@ -1469,9 +1469,11 @@ local function SpeedButton()
 		local Humanoid = Character:WaitForChild("Humanoid")
 		if Humanoid.Health == 0 then
 			script.Parent.BackgroundColor3 = Color3.new(1,0,0)
+			if isSpeedEnabled then
 			isSpeedEnabled = false
 			Humanoid.WalkSpeed = oldspeed
 			BarSpeed.Visible = false
+			end
 		end
 	end
 	
@@ -1666,7 +1668,7 @@ local function FlingButton()
 			end
 		end
 		local Humanoid = Character:WaitForChild("Humanoid")
-		if Humanoid.Health == 0 then
+		if Humanoid.Health == 0 and flingenabled then
 			script.Parent.BackgroundColor3 = Color3.new(1,0,0)
 			flingenabled = false
 			fling(false)
@@ -1842,7 +1844,7 @@ local function InvisButton()
 			end
 		end
 		local Humanoid = Character:WaitForChild("Humanoid")
-		if Humanoid.Health == 0 then
+		if Humanoid.Health == 0 and invisibleEnabled then
 				script.Parent.BackgroundColor3 = Color3.new(1, 0, 0)
 				invisibleEnabled = false
 				if character:FindFirstChildOfClass("Humanoid") then
