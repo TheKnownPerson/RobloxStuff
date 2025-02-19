@@ -112,7 +112,7 @@ local oldspeed = Character:WaitForChild("Humanoid").WalkSpeed
 
 BGui.Name = "BGui"
 BGui.Enabled = true
-BGui.Parent = game:GetService("CoreGui")
+BGui.Parent = game:GetService("Players").LocalPlayer.PlayerGui
 BGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Bar.Name = "Bar"
@@ -2534,6 +2534,9 @@ local function EspLoaderButtonScript()
 		local UICorner_13 = Instance.new("UICorner")
 		local BodyPartChooseButton = Instance.new("TextButton")
 		local ScrollingFrame = Instance.new("ScrollingFrame")
+		local Togglesmooth = Instance.new("TextButton")
+		local smoothness
+		local UICorner144 = Instance.new("UICorner")
 		local HeadPart = Instance.new("TextButton")
 		local TorsoPart = Instance.new("TextButton")
 		local UICorner_20e = Instance.new("UICorner")
@@ -2624,10 +2627,10 @@ local function EspLoaderButtonScript()
 		ScrollingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		ScrollingFrame.BorderSizePixel = 0
 		ScrollingFrame.Position = UDim2.new(0.0124221798, 0, 0.931121826, 0)
-		ScrollingFrame.Size = UDim2.new(0, 81, 0, 20)
+		ScrollingFrame.Size = UDim2.new(0, 81, 0, 33)
 		ScrollingFrame.Visible = false
 		ScrollingFrame.CanvasPosition = Vector2.new(0, 0)
-		ScrollingFrame.CanvasSize = UDim2.new(0, 0, 4.0999999, 0)
+		ScrollingFrame.CanvasSize = UDim2.new(0, 0, 6.1, 0)
 		ScrollingFrame.ScrollBarThickness = 5
 
 		HeadPart.Name = "HeadPart"
@@ -2635,7 +2638,7 @@ local function EspLoaderButtonScript()
 		HeadPart.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 		HeadPart.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		HeadPart.BorderSizePixel = 0
-		HeadPart.Position = UDim2.new(0, 0, 0.600000024, 0)
+		HeadPart.Position = UDim2.new(0, 0, 0.3, 0)
 		HeadPart.Size = UDim2.new(0, 74, 0, 20)
 		HeadPart.Font = Enum.Font.FredokaOne
 		HeadPart.Text = "Head"
@@ -2884,6 +2887,23 @@ local function EspLoaderButtonScript()
 		Question.TextScaled = true
 		Question.TextSize = 14.000
 		Question.TextWrapped = true
+		
+		Togglesmooth.Name = "Togglesmooth"
+		Togglesmooth.Parent = ScrollingFrame
+		Togglesmooth.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
+		Togglesmooth.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Togglesmooth.BorderSizePixel = 0
+		Togglesmooth.Position = UDim2.new(0, 0, 0.600000024, 0)
+		Togglesmooth.Size = UDim2.new(0, 74, 0, 20)
+		Togglesmooth.Font = Enum.Font.FredokaOne
+		Togglesmooth.Text = "Toggle Snooth"
+		Togglesmooth.TextColor3 = Color3.fromRGB(216, 216, 216)
+		Togglesmooth.TextScaled = true
+		Togglesmooth.TextSize = 14.000
+		Togglesmooth.TextWrapped = true
+		smoothness = true
+		UICorner144.CornerRadius = UDim.new(0, 15)
+		UICorner144.Parent = Togglesmooth
 
 		UICorner_13.CornerRadius = UDim.new(0, 15)
 		UICorner_13.Parent = Question
@@ -3257,8 +3277,11 @@ local function EspLoaderButtonScript()
 					if position then
 						local camposition = camera.CFrame.Position
 						local targetCFrame = CFrame.lookAt(camposition, position)
-
-						camera.CFrame = camera.CFrame:Lerp(targetCFrame, 0.325)
+						if smoothness then
+							camera.CFrame = camera.CFrame:Lerp(targetCFrame, 0.35)
+						else
+							camera.CFrame = targetCFrame
+						end
 					else
 						warn("No valid position found for camera focus")
 					end
@@ -3363,6 +3386,28 @@ local function EspLoaderButtonScript()
 			end)
 		end
 		coroutine.wrap(Torsopartbuttonloader)()
+		
+		local function Togglesmoothbutton()
+			local script = Instance.new('LocalScript', Togglesmooth)
+
+			local button = script.Parent
+
+			button.MouseButton1Click:Connect(function()
+				if button.BackgroundColor3 ~= Color3.fromRGB(60,60,60) then
+					button.BackgroundColor3 = Color3.fromRGB(60,60,60)
+					if smoothness then
+						smoothness = false
+					end
+				else
+					if not smoothness then
+						button.BackgroundColor3 = Color3.fromRGB(90,90,90)
+						smoothness = true
+					end
+				end
+			end)
+		end
+		coroutine.wrap(Togglesmoothbutton)()
+
 		local function ChooseFrame()
 			local scr = Instance.new('Script', Choose)
 
