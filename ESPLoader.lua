@@ -112,7 +112,7 @@ local oldspeed = Character:WaitForChild("Humanoid").WalkSpeed
 
 BGui.Name = "BGui"
 BGui.Enabled = true
-BGui.Parent = game:GetService("Players").LocalPlayer.PlayerGui
+BGui.Parent = game:GetService("CoreGui")
 BGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Bar.Name = "Bar"
@@ -2430,24 +2430,24 @@ local function FreecamButton()
 		end
 
 		ContextActionService:BindActionAtPriority("FreecamToggle", HandleActivationInput, false, TOGGLE_INPUT_PRIORITY, FREECAM_MACRO_KB[#FREECAM_MACRO_KB])
-			script.Parent.MouseButton1Click:Connect(function()
-				if script.Parent.BackgroundColor3 ~= Color3.new(0,1,0) then
-					script.Parent.BackgroundColor3 = Color3.new(0,1,0)
-					StartFreecam()
-				else
-					script.Parent.BackgroundColor3 = Color3.new(1,0,0)
-					StopFreecam()
-				end
-			end)
-			while true do 
-				task.wait(0.5)
-				local Humanoid = Character:WaitForChild("Humanoid")
-				if Humanoid.Health == 0 then
-					script.Parent.BackgroundColor3 = Color3.new(1,0,0)
-				end
+		script.Parent.MouseButton1Click:Connect(function()
+			if script.Parent.BackgroundColor3 ~= Color3.new(0,1,0) then
+				script.Parent.BackgroundColor3 = Color3.new(0,1,0)
+				StartFreecam()
+			else
+				script.Parent.BackgroundColor3 = Color3.new(1,0,0)
+				StopFreecam()
+			end
+		end)
+		while true do 
+			task.wait(0.5)
+			local Humanoid = Character:WaitForChild("Humanoid")
+			if Humanoid.Health == 0 then
+				script.Parent.BackgroundColor3 = Color3.new(1,0,0)
 			end
 		end
 	end
+end
 coroutine.wrap(FreecamButton)()
 local function FeatureTemp3()
 	local script = Instance.new('Script', Feature_3)
@@ -2887,7 +2887,7 @@ local function EspLoaderButtonScript()
 		Question.TextScaled = true
 		Question.TextSize = 14.000
 		Question.TextWrapped = true
-		
+
 		Togglesmooth.Name = "Togglesmooth"
 		Togglesmooth.Parent = ScrollingFrame
 		Togglesmooth.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
@@ -3386,7 +3386,7 @@ local function EspLoaderButtonScript()
 			end)
 		end
 		coroutine.wrap(Torsopartbuttonloader)()
-		
+
 		local function Togglesmoothbutton()
 			local script = Instance.new('LocalScript', Togglesmooth)
 
