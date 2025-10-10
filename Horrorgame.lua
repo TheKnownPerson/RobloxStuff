@@ -1,1 +1,0 @@
-local player = game:GetService("Players").Localplayer
