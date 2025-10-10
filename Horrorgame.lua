@@ -6,8 +6,7 @@ local behind = entity:WaitForChild("look behind you")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local function randomchance()
-	local chance = math.random(1,4)
-	return chance
+	return math.random(1,4)
 end
 
 behind.Changed:Connect(function(prop)
@@ -15,8 +14,9 @@ behind.Changed:Connect(function(prop)
 		if behind.Visible then
 			local chance = randomchance()
 			if chance == 1 then
-				Flower.Parent = game:GetService("Workspace")
+							Flower.Parent = game:GetService("Workspace")
 			task.wait(math.random(3, 6)) 
+			game:GetService:("Workspace"):WaitForChild("Flower").Parent = ReplicatedStorage
 			end
 		end
 	end
