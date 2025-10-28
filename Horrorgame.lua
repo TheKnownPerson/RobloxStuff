@@ -33,9 +33,9 @@ local Camera = workspace:WaitForChild("CurrentCamera")
 
 -- local Settings
 
-local BaseWalkSpeed = 16
+local BaseWalkSpeed = Humanoid.WalkSpeed
 local RunSpeed = 24
-local BaseFOV = 70
+local BaseFOV = Camera.FieldOfView
 local RunFov = 90
 
    
