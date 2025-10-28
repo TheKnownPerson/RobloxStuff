@@ -23,6 +23,20 @@ behind.Changed:Connect(function(prop)
 end)
 
 --  Sprint script in StarterPlayerScripts
+
+-- local Locations
+
 local Player = script.Parent.Parent
-local Character = Player:CharacterAdded()
+local Character = Player.Character or Player.CharacterAdded:Wait()
 local Humanoid = Character:WaitForChild("Humanoid")
+local Camera = workspace:WaitForChild("CurrentCamera")
+
+-- local Settings
+
+local BaseWalkSpeed = 16
+local RunSpeed = 24
+local BaseFOV = 70
+local RunFov = 90
+
+   
+Humanoid.WalkSpeed = BaseWalkSpeed
