@@ -24,19 +24,82 @@ end)
 
 --  Sprint script in StarterPlayerScripts
 
--- local Locations
+-- Locations
 
-local Player = script.Parent.Parent
+local Player = game.Players.LocalPlayer
 local Character = Player.Character or Player.CharacterAdded:Wait()
 local Humanoid = Character:WaitForChild("Humanoid")
-local Camera = workspace:WaitForChild("CurrentCamera")
+local Camera = workspace.CurrentCamera
+local OldValue = script.Parent:WaitForChild("RunValue")
+OldValue.Parent = Player
+local Value = Player:WaitForChild("RunValue")
 
--- local Settings
+
+-- Settings
 
 local BaseWalkSpeed = Humanoid.WalkSpeed
 local RunSpeed = 24
 local BaseFOV = Camera.FieldOfView
-local RunFov = 90
+local RunFOV = 90
+local Shift = Enum.KeyCode.LeftShift
+local Running = false
 
-   
-Humanoid.WalkSpeed = BaseWalkSpeed
+
+-- Services
+
+local Input = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+
+
+-- Functions
+
+local function StartRunning()
+	if Value.Value > 0 then
+		print("lala")
+		Running = true
+		Humanoid.WalkSpeed = RunSpeed
+		Camera.FieldOfView = RunFOV
+		print("Started running")
+	end
+end
+
+local function StopRunning()
+	if Running then
+		Running = false
+		Humanoid.WalkSpeed = BaseWalkSpeed
+		Camera.FieldOfView = BaseFOV
+		print("Stopped running")
+	end
+end
+
+
+-- Input Detection
+
+Input.InputBegan:Connect(function(inputObj, gameProcessed)
+	if gameProcessed then print("blabla") return end
+	if inputObj.KeyCode == Shift then
+		
+		StartRunning()
+	end
+end)
+
+Input.InputEnded:Connect(function(inputObj, gameProcessed)
+	if gameProcessed then return end
+	if inputObj.KeyCode == Shift then
+		StopRunning()
+	end
+end)
+
+
+-- Stamina loss
+
+RunService.Heartbeat:Connect(function(dt)
+	if Running then
+		Value.Value = math.max(0, Value.Value - dt * 5)
+		if Value.Value <= 0 then
+			StopRunning()
+		end
+	end
+end)
+
+-- TODO: add stamina regen when not running for 3 Seconds
