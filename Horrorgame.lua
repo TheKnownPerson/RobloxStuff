@@ -21,3 +21,8 @@ behind.Changed:Connect(function(prop)
 		end
 	end
 end)
+
+--  Sprint script in StarterPlayerScripts
+local Player = script.Parent.Parent
+local Character = Player:CharacterAdded()
+local Humanoid = Character:WaitForChild("Humanoid")
