@@ -1,29 +1,3 @@
-local flowerrig = game:GetService("ReplicatedStorage"):WaitForChild("Flower")
-local Player = game:GetService("Players").LocalPlayer
-local GUI = Player:WaitForChild("PlayerGui")
-local entity = GUI:WaitForChild("ScreenGui"):WaitForChild("entity"):WaitForChild("done")
-local behind = entity:WaitForChild("look behind you")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
-local function randomchance()
-	return math.random(1,4)
-end
-
-behind.Changed:Connect(function(prop)
-	if prop == "Visible" then
-		if behind.Visible then
-			local chance = randomchance()
-			if chance == 1 then
-							Flower.Parent = game:GetService("Workspace")
-			task.wait(math.random(3, 6)) 
-			game:GetService:("Workspace"):WaitForChild("Flower").Parent = ReplicatedStorage
-			end
-		end
-	end
-end)
-
---  Sprint script in StarterPlayerScripts
-
 -- Locations
 
 local Player = game.Players.LocalPlayer
@@ -33,6 +7,7 @@ local Camera = workspace.CurrentCamera
 local OldValue = script.Parent:WaitForChild("RunValue")
 OldValue.Parent = Player
 local Value = Player:WaitForChild("RunValue")
+local ScreenGUI = Player.PlayerGui:WaitForChild("Staminahealth")
 
 
 -- Settings
@@ -90,33 +65,64 @@ Input.InputEnded:Connect(function(inputObj, gameProcessed)
 	end
 end)
 
+
 -- Stamina loss
 
 RunService.Heartbeat:Connect(function(dt)
 	if Running then
-		Value.Value = math.max(0, Value.Value - dt * 5)
+		Value.Value = math.max(0, Value.Value - 12.5 * dt)
 		if Value.Value <= 0 then
 			StopRunning()
 		end
-  if Value.Value <
 	end
 end)
 
--- timer
+
+-- Timer
 
 local targettime = 3
 local timer = 0
+local regenerating = false
 
-RunService.Heartbeat:Connect(function(dt)       --UNTESTED
-	if Running == false and Value.Value >= 9 then
+local function clockstrikes12midnightarrives()
+	regenerating = true
+	task.spawn(function()
+		while not Running and Value.Value < 100 do
+			Value.Value += 1
+			print("Regenerating... Value is now", Value.Value)
+			task.wait(0.3)
+		end
+		regenerating = false
+	end)
+end
+
+local function radiation()
+	if not regenerating and not Running and Value.Value < 100 then
+		clockstrikes12midnightarrives()
+	end
+end
+
+RunService.Heartbeat:Connect(function(dt)
+	if not Running and Value.Value < 100 then
 		timer += dt
 		if timer >= targettime then
-			task.wait(0.2)
-			Value.Value += 1
+			radiation()
 		end
 	else
 		timer = 0
 	end
 end)
 
--- TODO: add stamina regen when not running for 3 Seconds
+-- GUI
+
+local Staminabar = ScreenGUI:WaitForChild("Background"):WaitForChild("Stamina")
+
+Value:GetPropertyChangedSignal("Value"):Connect(function()
+	print("Value changed to:", Value.Value)
+	Staminabar.Size = UDim2.new(
+		Staminabar.Size.X.Scale * (Value.Value / ), -- make the x scale dependant to the value, scale is 0.935 and value 100 which decreases by 12.5 every second.
+		Staminabar.Size.X.Offset, -- X scale (0 to 1)
+		Staminabar.Size.Y.Scale,                           -- X offset (pixels)
+		Staminabar.Size.Y.Offset     -- keep Y scale
+	)
+end)
