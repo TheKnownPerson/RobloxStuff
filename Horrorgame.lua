@@ -90,7 +90,6 @@ Input.InputEnded:Connect(function(inputObj, gameProcessed)
 	end
 end)
 
-
 -- Stamina loss
 
 RunService.Heartbeat:Connect(function(dt)
@@ -99,6 +98,24 @@ RunService.Heartbeat:Connect(function(dt)
 		if Value.Value <= 0 then
 			StopRunning()
 		end
+  if Value.Value <
+	end
+end)
+
+-- timer
+
+local targettime = 3
+local timer = 0
+
+RunService.Heartbeat:Connect(function(dt)       --UNTESTED
+	if Running == false and Value.Value >= 9 then
+		timer += dt
+		if timer >= targettime then
+			task.wait(0.2)
+			Value.Value += 1
+		end
+	else
+		timer = 0
 	end
 end)
 
