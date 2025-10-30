@@ -18,6 +18,7 @@ local BaseFOV = Camera.FieldOfView
 local RunFOV = 90
 local Shift = Enum.KeyCode.LeftShift
 local Running = false
+local maxstamina = 100
 
 
 -- Services
@@ -97,13 +98,13 @@ local function clockstrikes12midnightarrives()
 end
 
 local function radiation()
-	if not regenerating and not Running and Value.Value < 100 then
+	if not regenerating and not Running and Value.Value < maxstamina then
 		clockstrikes12midnightarrives()
 	end
 end
 
 RunService.Heartbeat:Connect(function(dt)
-	if not Running and Value.Value < 100 then
+	if not Running and Value.Value < stamina then
 		timer += dt
 		if timer >= targettime then
 			radiation()
@@ -114,13 +115,12 @@ RunService.Heartbeat:Connect(function(dt)
 end)
 
 -- GUI
-
 local Staminabar = ScreenGUI:WaitForChild("Background"):WaitForChild("Stamina")
-
+local lala = 0.935
 Value:GetPropertyChangedSignal("Value"):Connect(function()
 	print("Value changed to:", Value.Value)
 	Staminabar.Size = UDim2.new(
-		Staminabar.Size.X.Scale * (Value.Value / ), -- make the x scale dependant to the value, scale is 0.935 and value 100 which decreases by 12.5 every second.
+		lala * (Value.Value / maxstamina), -- make the x scale dependant to the value, scale is 0.935 and value 100 which decreases by 12.5 every second.
 		Staminabar.Size.X.Offset, -- X scale (0 to 1)
 		Staminabar.Size.Y.Scale,                           -- X offset (pixels)
 		Staminabar.Size.Y.Offset     -- keep Y scale
