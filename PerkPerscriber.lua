@@ -1,4 +1,4 @@
-local Players = game:GetSerivce("Players")
+^xylocal Players = game:GetSerivce("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Player = Players.AddedPlayer
 local Remoteevent = Instance.new("RemoteEvent")
